@@ -16,37 +16,26 @@ If back-end development pushes any changes to main, pull them to ensure API func
 
 ## Backend
 
-Importantly, **❗️branch the database in Neon before doing any back-end development!❗️**
+Importantly, **❗️branch the database in Neon before doing any back-end development!❗️** Preferably, name it the same thing as your Github branch for simplicity.
 
 Once the database is branched, go back to the dashboard. Select the correct branch, reveal the password by clicking the static rectangle, and switch the connection type from psql to Prisma. Update your `.env` file with the new branch's `DATABASE_URL` and `DIRECT_URL`. This allows Prisma to connect with the correct, development branch of the database.
 
-There are two ways to edit the database schema.
-
-1. Edit the `prisma/schema.prisma` file. This allows Prisma to automatically generate a migration based on what you changed.
-2. Write your own SQL migrations. This then updates the Prisma schema to match.
-
 Refer to the [Prisma Schema API](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string) documentation to see how Prisma maps to Postgres.
 
-### Changing the schema directly
+To edit the database schema, first edit the `prisma/schema.prisma` file.
 
 To make changes but not persist them to a migration, run
 
 > npx prisma db push
 
-This is useful to test out schema changes without saving them.
+To reset any changes caused by `db push`, do
 
-Once you're satisfied with the changes to the schema, to automatically generate a SQL migration and run it against the database, run
+> npx prisma migrate reset
 
-> npx prisma migrate dev
-
-Enter a name for the migration when prompted.
-
-### Manually writing SQL Migrations
-
-To create a migration but not apply it (say, to manually write it), run
+Once you're satisfied with the changes to the schema, to automatically generate a SQL migration, run
 
 > npx prisma migrate dev --create-only
 
-To apply this migration once you're done with it, run
+Enter a name for the migration when prompted. Edit the generated SQL file if necessary, i.e. to potentially add constraints that Prisma does not define. To apply this migration once you're done with it, run
 
 > npx prisma migrate dev
