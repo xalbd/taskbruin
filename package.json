@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "TEMP_URL=$DATABASE_URL && export DATABASE_URL=$(echo $TEMP_URL+'?pgbouncer=true&connect_timeout=10' | sed 's/.us-west/-pooler.us-west/') && export DIRECT_URL=$(echo $TEMP_URL+'?connect_timeout=10') && echo $DATABASE_URL && echo $DIRECT_URL && prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "TEMP_URL=$DATABASE_URL && export DATABASE_URL=$(echo $TEMP_URL'?pgbouncer=true&connect_timeout=10' | sed 's/.us-west/-pooler.us-west/') && export DIRECT_URL=$(echo $TEMP_URL'?connect_timeout=10') && echo $DATABASE_URL && echo $DIRECT_URL && prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2",
