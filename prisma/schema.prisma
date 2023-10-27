@@ -9,8 +9,10 @@ datasource db {
 }
 
 model Task {
-  id    Int    @id @default(autoincrement())
-  title String
+  id          Int    @id @default(autoincrement())
+  title       String
+  price       Int    @default(1)
+  description String @default("No description given.")
 
   @@map("task")
 }
