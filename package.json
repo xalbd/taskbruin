@@ -7,13 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "ts-node db/migrate",
+    "migrate": "ts-node db/migrate.ts",
     "generate": "drizzle-kit generate:pg",
     "vercel-build": "npm run migrate && next build"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.6.0",
-    "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",
     "next": "13.5.6",
     "react": "^18",
@@ -24,6 +23,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
+    "dotenv": "^16.3.1",
     "drizzle-kit": "^0.19.13",
     "eslint": "^8",
     "eslint-config-next": "13.5.6",
