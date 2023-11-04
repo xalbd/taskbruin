@@ -1,14 +1,27 @@
 "use client";
 
 import React from "react";
+import PostTasks from "./tasks-post";
 
 export default function Dev() {
   const [displayOutput, setDisplayOutput] = React.useState("");
+  const [requestOutput, setRequestOutput] = React.useState("");
 
   return (
     <>
-      <GrabTasks setOutput={setDisplayOutput} />
-      <DisplayOutput output={displayOutput} />
+      <div className="grid grid-cols-2">
+        <div className="col-span-1">
+          <GrabTasks setOutput={setDisplayOutput} />
+          <PostTasks
+            setRequestDisplay={setRequestOutput}
+            setOutput={setDisplayOutput}
+          />
+        </div>
+        <div className="col-span-1">
+          <DisplayOutput title="Last Request Body" output={requestOutput} />
+          <DisplayOutput title="Last Response" output={displayOutput} />
+        </div>
+      </div>
     </>
   );
 }
@@ -29,8 +42,14 @@ function GrabTasks({ setOutput }: GrabTasksProps) {
 }
 
 interface DisplayOutputProps {
+  title: string;
   output: string;
 }
-function DisplayOutput({ output }: DisplayOutputProps) {
-  return <p>{output}</p>;
+function DisplayOutput({ title, output }: DisplayOutputProps) {
+  return (
+    <>
+      <h2>{title}</h2>
+      <p className="outline p-3">{output}</p>
+    </>
+  );
 }
