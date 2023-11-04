@@ -2,7 +2,7 @@
 
 ## Architecture and Setup
 
-Our Postgres QL database is hosted on [Neon](https://console.neon.tech). The data is accessed through the [Drizzle](https://orm.drizzle.team/docs/overview) ORM.
+Our Postgres database is hosted on [Neon](https://console.neon.tech). The data is accessed through the [Drizzle](https://orm.drizzle.team/docs/overview) ORM.
 
 Before you try doing anything, make sure you're connected to eduroam, and not UCLA_WEB or UCLA_WIFI. Neon will not let you connect to a database if you're not a secured network.
 
