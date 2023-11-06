@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-
+      "%/*": ["./db/*"]
     }
   },
   "ts-node": {
@@ -28,6 +28,12 @@
       "module": "CommonJS"
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/dev/page.jsx"
+  ],
   "exclude": ["node_modules"]
 }
