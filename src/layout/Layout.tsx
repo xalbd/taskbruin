@@ -2,6 +2,7 @@
 import { ReactNode } from 'react'
 import { ThemeProvider } from 'next-themes'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import '@/app/globals.css'
 
 interface LayoutProps {
@@ -13,6 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <ThemeProvider enableSystem={true} attribute="class">
       <Navbar />
       {children}
+      <Footer />
     </ThemeProvider>
   );
 };
