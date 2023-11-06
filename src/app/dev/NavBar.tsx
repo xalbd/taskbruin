@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 function AuthButton() {
@@ -7,15 +6,19 @@ function AuthButton() {
   if (session) {
     return (
       <>
-        {session?.user?.name} <br />
-        <button onClick={() => signOut()}>Sign Out</button>
+        {session?.user?.name}
+        <button className="outline m-2 p-1" onClick={() => signOut()}>
+          Sign Out
+        </button>
       </>
     );
   }
   return (
     <>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign In</button>
+      Not signed in
+      <button className="outline m-2 p-1" onClick={() => signIn()}>
+        Sign In
+      </button>
     </>
   );
 }
