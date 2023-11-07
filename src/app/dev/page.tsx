@@ -3,7 +3,11 @@
 import React from "react";
 import PostTasks from "./PostTasks";
 import GetTasks from "./GetTasks";
+<<<<<<< HEAD
 import DelTasks from "./DelTasks";
+=======
+import NavBar from "./NavBar";
+>>>>>>> origin/auth
 
 export default function Dev() {
   const [responseBody, setResponseBody] = React.useState("");
@@ -12,6 +16,7 @@ export default function Dev() {
 
   return (
     <>
+      <NavBar />
       <div className="grid grid-cols-2">
         <div className="col-span-1 flex flex-col space-y-3">
           <GetTasks

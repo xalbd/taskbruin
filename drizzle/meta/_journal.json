@@ -8,6 +8,27 @@
       "when": 1698549621598,
       "tag": "0000_faulty_blizzard",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1699230961067,
+      "tag": "0001_bizarre_silver_fox",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1699231041527,
+      "tag": "0002_polite_princess_powerful",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1699231282545,
+      "tag": "0003_dry_luminals",
+      "breakpoints": true
     }
   ]
 }

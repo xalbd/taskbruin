@@ -12,9 +12,12 @@
     "vercel-build": "npm run migrate && next build"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^0.3.5",
     "@neondatabase/serverless": "^0.6.0",
     "drizzle-orm": "^0.28.6",
     "next": "13.5.6",
+    "next-auth": "^4.24.4",
+    "pg": "^8.11.3",
     "react": "^18",
     "react-dom": "^18"
   },
