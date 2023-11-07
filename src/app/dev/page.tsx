@@ -3,6 +3,7 @@
 import React from "react";
 import PostTasks from "./PostTasks";
 import GetTasks from "./GetTasks";
+import DelTasks from "./DelTasks";
 
 export default function Dev() {
   const [responseBody, setResponseBody] = React.useState("");
@@ -21,6 +22,11 @@ export default function Dev() {
             setRequest={setRequestBody}
             setResponseStatus={setResponseStatus}
             setResponse={setResponseBody}
+          />
+          <DelTasks
+             setRequest={setRequestBody}
+             setResponseStatus={setResponseStatus}
+             setResponse={setResponseBody}
           />
         </div>
         <div className="col-span-1">
