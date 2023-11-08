@@ -1,4 +1,4 @@
-DELETE FROM "task";
+DELETE FROM "task";--> statement-breakpoint
 ALTER TABLE "task" ALTER COLUMN "price" DROP DEFAULT;--> statement-breakpoint
 ALTER TABLE "task" ALTER COLUMN "description" DROP DEFAULT;--> statement-breakpoint
 ALTER TABLE "task" ADD COLUMN "userId" text NOT NULL;--> statement-breakpoint
