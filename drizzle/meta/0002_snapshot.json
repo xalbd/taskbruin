@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "4f931422-94e4-4ba9-a757-5ee3f75935e3",
+  "id": "b326b99e-16d2-4092-b278-7013abdcb7c1",
   "prevId": "5da5d505-96f0-474a-a8a9-543d5c15e04c",
   "tables": {
     "account": {
@@ -164,15 +164,13 @@
           "name": "price",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "default": 1
+          "notNull": true
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'No description given.'"
+          "notNull": true
         },
         "userId": {
           "name": "userId",
