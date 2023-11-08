@@ -48,7 +48,7 @@ const Navbar = () => {
                         href={item.href}
                         className={classNames(
                           item.current ? "" : "hover:underline",
-                          "rounded-md px-3 py-2 text-xl font-medium"
+                          "rounded-md px-3 py-2 text-xl font-medium",
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
@@ -111,7 +111,7 @@ const Navbar = () => {
                     item.current
                       ? "bg-gray-700 text-white"
                       : " hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
+                    "block rounded-md px-3 py-2 text-base font-medium",
                   )}
                   aria-current={item.current ? "page" : undefined}
                 >

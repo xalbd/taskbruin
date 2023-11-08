@@ -3,6 +3,7 @@
 import React from "react";
 import PostTasks from "./PostTasks";
 import GetTasks from "./GetTasks";
+import DelTasks from "./DelTasks";
 
 export default function Dev() {
   const [responseBody, setResponseBody] = React.useState("");
@@ -18,6 +19,11 @@ export default function Dev() {
             setResponseStatus={setResponseStatus}
           />
           <PostTasks
+            setRequest={setRequestBody}
+            setResponseStatus={setResponseStatus}
+            setResponse={setResponseBody}
+          />
+          <DelTasks
             setRequest={setRequestBody}
             setResponseStatus={setResponseStatus}
             setResponse={setResponseBody}
