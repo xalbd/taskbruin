@@ -8,7 +8,7 @@ import ProfileOption from "@/components/ProfileOption";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
-  { name: "Create Task", href: "#", current: false },
+  { name: "Create Task", href: "", current: false },
   { name: "Dev", href: "/dev", current: false },
 ];
 
