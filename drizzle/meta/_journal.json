@@ -8,6 +8,20 @@
       "when": 1698549621598,
       "tag": "0000_faulty_blizzard",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1699230961067,
+      "tag": "0001_bizarre_silver_fox",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1699439021232,
+      "tag": "0002_neat_lyja",
+      "breakpoints": true
     }
   ]
 }

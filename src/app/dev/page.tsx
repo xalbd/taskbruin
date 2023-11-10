@@ -3,6 +3,7 @@
 import React from "react";
 import PostTasks from "./PostTasks";
 import GetTasks from "./GetTasks";
+import NavBar from "./NavBar";
 import DelTasks from "./DelTasks";
 
 export default function Dev() {
@@ -12,6 +13,7 @@ export default function Dev() {
 
   return (
     <>
+      <NavBar />
       <div className="grid grid-cols-2">
         <div className="col-span-1 flex flex-col space-y-3">
           <GetTasks
