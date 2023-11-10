@@ -1,5 +1,4 @@
 import TaskCard from "@/components/TaskCard";
-import Layout from "@/layout/Layout";
 
 const TaskDisplay = () => {
   const mockData = [
@@ -48,21 +47,19 @@ const TaskDisplay = () => {
   ];
 
   return (
-    <Layout>
-      <div className="max-w-screen-lg mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {mockData.map((data, index) => (
-            <TaskCard
-              key={index}
-              title={data.title}
-              date={data.date}
-              summary={data.summary}
-              image_url={data.image_url}
-            />
-          ))}
-        </div>
+    <div className="max-w-screen-lg mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {mockData.map((data, index) => (
+          <TaskCard
+            key={index}
+            title={data.title}
+            date={data.date}
+            summary={data.summary}
+            image_url={data.image_url}
+          />
+        ))}
       </div>
-    </Layout>
+    </div>
   );
 };
 
