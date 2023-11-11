@@ -1,10 +1,5 @@
-import Footer from "@/components/Footer";
-import TaskDisplay from "@/pages/TaskDisplay";
+import TaskDisplay from "@/components/TaskDisplay";
 
 export default function Home() {
-  return (
-    <>
-      <TaskDisplay />
-    </>
-  );
+  return <TaskDisplay />;
 }

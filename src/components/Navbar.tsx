@@ -1,3 +1,5 @@
+"use client";
+
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -5,10 +7,9 @@ import ThemeButton from "@/components/ThemeButton";
 import ProfileOption from "@/components/ProfileOption";
 
 const navigation = [
-  { name: "Home", href: "#", current: true },
-  { name: "Explore", href: "/TaskDisplay", current: false },
-  { name: "Create Task", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
+  { name: "Home", href: "/", current: true },
+  { name: "Create Task", href: "", current: false },
+  { name: "Dev", href: "/dev", current: false },
 ];
 
 function classNames<T extends string>(...classes: T[]) {
