@@ -1,15 +1,23 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 
 interface InputProps {
   title: string;
   placeholder?: string;
   rows?: number;
+  type?: string;
   isRequired: boolean;
+  value: string | number;
+  onInputChange: (value: any) => void;
 }
 
-const Input: React.FC<InputProps> = ({ title, placeholder, rows, isRequired }) => {
+const Input: React.FC<InputProps> = ({ title, placeholder, rows, type, value, isRequired, onInputChange }) => {
   const inputStyles =
     "border border-gray-400 text-base rounded-md block w-full p-3";
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const value = event.currentTarget.value;
+    onInputChange(value);
+  };
 
   return (
     <>
@@ -19,13 +27,18 @@ const Input: React.FC<InputProps> = ({ title, placeholder, rows, isRequired }) =
           className={`${inputStyles}`}
           placeholder={placeholder}
           rows={rows}
-          required = {isRequired}
+          required={isRequired}
+          value={value} 
+          onChange={handleChange}
         />
       ) : (
         <input
           className={`${inputStyles}`}
           placeholder={placeholder}
-          required = {isRequired}
+          type={type}
+          required={isRequired}
+          value={value} 
+          onChange={handleChange}
         />
       )}
     </>
