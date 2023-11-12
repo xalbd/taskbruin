@@ -10,9 +10,7 @@ const TaskForm = () => {
   const [price, setPrice] = React.useState(0);
   const [startDate, setStartDate] = React.useState("");
   const [endDate, setEndDate] = React.useState("");
-  const [selectedFiles, setSelectedFiles] = React.useState<FileList | null>(
-    null,
-  );
+  const [selectedFiles, setSelectedFiles] = React.useState<FileList | null>(null,);
 
   const resetForm = async () => {
     setTitle("");
@@ -43,14 +41,9 @@ const TaskForm = () => {
     }
   };
 
-  React.useEffect(() => {
-    console.log(description);
-  }, [description]);
-
   return (
     <div className="max-w-md mx-auto mt-8 p-6">
       <h2 className="text-2xl font-semibold mb-4">Create Task</h2>
-
       <input
         className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
         id="file_input"
