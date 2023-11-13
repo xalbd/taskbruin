@@ -2,7 +2,7 @@ import { task } from "%/schema";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "../auth/[...nextauth]/auth";
 import { eq, and } from "drizzle-orm";
 
 const sql = neon(process.env.DATABASE_URL!);
