@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Menu } from "@headlessui/react";
+import Link from "next/link";
 
 function classNames<T extends string>(...classes: T[]) {
   return classes.filter(Boolean).join(" ");
@@ -13,7 +14,7 @@ const ProfileOption: React.FC<ProfileOptionsProps> = (props) => {
   return (
     <Menu.Item>
       {({ active }) => (
-        <a
+        <Link
           href="#"
           className={classNames(
             active ? "bg-gray-100" : "",
@@ -21,7 +22,7 @@ const ProfileOption: React.FC<ProfileOptionsProps> = (props) => {
           )}
         >
           {props.title}
-        </a>
+        </Link>
       )}
     </Menu.Item>
   );

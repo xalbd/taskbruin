@@ -5,6 +5,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import ThemeButton from "@/components/ThemeButton";
 import ProfileOption from "@/components/ProfileOption";
+import Link from "next/link";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -44,7 +45,7 @@ const Navbar = () => {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
@@ -54,7 +55,7 @@ const Navbar = () => {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
