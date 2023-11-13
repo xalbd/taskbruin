@@ -3,6 +3,7 @@ import React from "react";
 import Input from "@/components/Input";
 import toast, { Toaster } from "react-hot-toast";
 import TextArea from "@/components/TextArea";
+import { useSession } from "next-auth/react";
 
 const TaskForm = () => {
   const [title, setTitle] = React.useState("");
@@ -14,6 +15,17 @@ const TaskForm = () => {
   const [selectedFiles, setSelectedFiles] = React.useState<FileList | null>(
     null,
   );
+
+  // control usage of submit button
+  const { status: authStatus } = useSession();
+  const [formWaiting, setFormWaiting] = React.useState(false);
+  const formButtonDisabled = formWaiting || authStatus !== "authenticated";
+  const formButtonMessage =
+    authStatus !== "authenticated"
+      ? "Sign in before submitting!"
+      : formWaiting
+      ? "Submitting..."
+      : "Submit";
 
   const resetForm = async () => {
     setTitle("");
@@ -32,16 +44,18 @@ const TaskForm = () => {
       description,
       price,
     });
+    setFormWaiting(true);
     const response = await fetch("api/tasks", {
       method: "POST",
       body: requestBody,
     });
     if (response.ok) {
       await resetForm();
-      toast.success("Task created!");
+      toast.success("Task created!", { id: "created" });
     } else {
-      toast.error("Task creation failed.");
+      toast.error("Task creation failed.", { id: "failed" });
     }
+    setFormWaiting(false);
   };
 
   return (
@@ -111,10 +125,11 @@ const TaskForm = () => {
         />
 
         <button
-          className="mt-5 font-bold py-2 px-4 rounded border border-gray-400 text-base block w-full p-3"
+          className="mt-5 font-bold py-2 px-4 rounded border border-gray-400 bg-green-600 hover:bg-green-500 text-base block w-full p-3 disabled:text-gray-400 disabled:bg-gray-600"
           type="submit"
+          disabled={formButtonDisabled}
         >
-          Create Task
+          {formButtonMessage}
         </button>
       </form>
       <Toaster />
