@@ -20,3 +20,10 @@ No request body necessary. Returns all tasks in database.
 
 Requires authentication.
 Request body should provide `title`, `description`, and `price` of task to be added. Returns assigned `id` if insert was successful.
+
+## /api/me
+
+### GET
+
+Requires authentication.
+No request body necessary. Returns the tasks that the current user has created.

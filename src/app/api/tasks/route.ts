@@ -37,6 +37,7 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   const session = await getServerSession(authOptions);
+  console.log(session);
   if (!session || !session.user) {
     return Response.json({}, { status: 401 });
   }
