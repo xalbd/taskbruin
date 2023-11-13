@@ -1,4 +1,5 @@
 import React from "react";
+import { uploadImageToS3 } from "../aws/s3Utils";
 
 interface SetTasksProps {
   setRequest: React.Dispatch<React.SetStateAction<string>>;
@@ -13,19 +14,28 @@ export default function PostTasks({
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState("");
+  const [image, setImage] = React.useState<File | null>(null);
 
   const id = React.useId();
   const titleId = `${id}-title`;
   const descriptionId = `${id}-message`;
   const priceId = `${id}-price`;
+  const imageId = `${id}-image`;
 
   async function handlePostTasksSubmit(event: React.FormEvent) {
     event.preventDefault();
+
+    let imageUrl = '';
+    if (image) {
+      imageUrl = await uploadImageToS3(image);
+    }
     const requestBody = JSON.stringify({
       title,
       description,
       price,
+      imageUrl,
     });
+
     setRequest(requestBody);
 
     const response = await fetch("api/tasks", {
@@ -36,7 +46,7 @@ export default function PostTasks({
     setResponse(JSON.stringify(json));
     setResponseStatus(response.status.toString());
   }
-
+  
   return (
     <form
       onSubmit={handlePostTasksSubmit}
@@ -74,9 +84,20 @@ export default function PostTasks({
         onChange={(event) => {
           setPrice(event.target.value);
         }}
+        />
+        
+      <label htmlFor={imageId}>Image</label>
+      <input
+        id={imageId}
+        type="file"
+        accept="image/*"
+        onChange={(event) => {
+          const file = event.target.files && event.target.files[0];
+          setImage(file);
+        }}
       />
 
-      <button className="outline">/api/tasks POST</button>
+      <button className="outline">Post Task</button>
     </form>
   );
 }
