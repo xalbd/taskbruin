@@ -48,7 +48,7 @@ const TaskDisplay = () => {
 
   return (
     <div className="p-5 sm:p-8">
-      <div className="columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-3 lg:columns-4">
+      <div className="columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6">
         {mockData.map((data, index) => (
           <TaskCard
             key={index}
