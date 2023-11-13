@@ -1,46 +1,31 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useId } from "react";
 
-interface InputProps {
+interface InputProps extends React.ComponentProps<"input"> {
   title: string;
-  placeholder?: string;
-  rows?: number;
-  type?: string;
-  isRequired: boolean;
-  value: string | number;
-  onInputChange: (value: any) => void;
+  setValue: (value: any) => void;
 }
 
-const Input: React.FC<InputProps> = ({ title, placeholder, rows, type, value, isRequired, onInputChange }) => {
+const Input: React.FC<InputProps> = ({ title, setValue, ...rest }) => {
+  const id = useId();
   const inputStyles =
     "border border-gray-400 text-base rounded-md block w-full p-3";
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
-    onInputChange(value);
+    setValue(value);
   };
 
   return (
     <>
-      <label className="mt-6 block text-base font-bold mb-2">{title}</label>
-      {rows && rows > 0 ? (
-        <textarea
-          className={`${inputStyles}`}
-          placeholder={placeholder}
-          rows={rows}
-          required={isRequired}
-          value={value} 
-          onChange={handleChange}
-        />
-      ) : (
-        <input
-          className={`${inputStyles}`}
-          placeholder={placeholder}
-          type={type}
-          required={isRequired}
-          value={value} 
-          onChange={handleChange}
-        />
-      )}
+      <label htmlFor={id} className="mt-6 block text-base font-bold mb-2">
+        {title}
+      </label>
+      <input
+        id={id}
+        className={`${inputStyles}`}
+        onChange={handleChange}
+        {...rest}
+      />
     </>
   );
 };

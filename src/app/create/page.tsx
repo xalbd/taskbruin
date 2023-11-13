@@ -2,21 +2,24 @@
 import React from "react";
 import Input from "@/components/Input";
 import toast, { Toaster } from "react-hot-toast";
+import TextArea from "@/components/TextArea";
 
 const TaskForm = () => {
   const [title, setTitle] = React.useState("");
   const [taskType, setTaskType] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const [price, setPrice] = React.useState(0);
+  const [price, setPrice] = React.useState(1);
   const [startDate, setStartDate] = React.useState("");
   const [endDate, setEndDate] = React.useState("");
-  const [selectedFiles, setSelectedFiles] = React.useState<FileList | null>(null,);
+  const [selectedFiles, setSelectedFiles] = React.useState<FileList | null>(
+    null,
+  );
 
   const resetForm = async () => {
     setTitle("");
     setTaskType("");
     setDescription("");
-    setPrice(0);
+    setPrice(1);
     setStartDate("");
     setEndDate("");
     setSelectedFiles(null);
@@ -44,64 +47,68 @@ const TaskForm = () => {
   return (
     <div className="max-w-md mx-auto mt-8 p-6">
       <h2 className="text-2xl font-semibold mb-4">Create Task</h2>
-      <input
-        className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
-        id="file_input"
-        type="file"
-        onChange={(event) => {
-          const files = event.target.files;
-          if (files) {
-            setSelectedFiles(files);
-          }
-        }}
-      />
-
       <form onSubmit={handleTasksSubmit}>
         <Input
           title="Task Name"
-          isRequired={true}
+          required={true}
           value={title}
-          onInputChange={setTitle}
+          setValue={setTitle}
         />
         <Input
           title="Task Type/Category"
-          isRequired={true}
+          required={true}
           value={taskType}
-          onInputChange={setTaskType}
+          setValue={setTaskType}
         />
-        <Input
+        <TextArea
           title="Task Description"
           rows={3}
-          isRequired={true}
+          required={true}
           value={description}
-          onInputChange={setDescription}
+          setValue={setDescription}
         />
         <Input
           title="Task Price"
           type="number"
-          isRequired={true}
+          min={1}
+          required={true}
           value={price}
-          onInputChange={setPrice}
+          setValue={setPrice}
         />
 
         <div className="flex">
-          <div className="mr-2">
+          <div className="mr-2 grow">
             <Input
               title="Start Time"
-              isRequired={false}
+              required={false}
               value={startDate}
-              onInputChange={setStartDate}
+              setValue={setStartDate}
+              type="date"
             />
           </div>
-          <div>
+          <div className="grow">
             <Input
               title="End Time"
-              isRequired={false}
+              required={false}
               value={endDate}
-              onInputChange={setEndDate}
+              setValue={setEndDate}
+              type="date"
             />
           </div>
         </div>
+        <Input
+          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
+          type="file"
+          title="Image"
+          setValue={() => {}}
+          onChange={(event) => {
+            // override internal input handler using rest spreading
+            const files = event.target.files;
+            if (files) {
+              setSelectedFiles(files);
+            }
+          }}
+        />
 
         <button
           className="mt-5 font-bold py-2 px-4 rounded border border-gray-400 text-base block w-full p-3"
