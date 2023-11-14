@@ -29,7 +29,7 @@ const TaskDisplay = () => {
 
   const filterData = () => {
     if (searchString.length !== 0 && data) {
-      const searchWords = new Set(searchString.split(/\s+/));
+      const searchWords = new Set(searchString.toLowerCase().split(/\s+/));
       const filteredData = data.filter((item: Task) => {
         const titleWords = item.title.toLowerCase().split(/\s+/);
         return titleWords.some((word) => searchWords.has(word));
