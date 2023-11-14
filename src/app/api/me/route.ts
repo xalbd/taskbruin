@@ -1,16 +1,11 @@
 import { task } from "%/schema";
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/auth";
 import { eq } from "drizzle-orm";
-
-const sql = neon(process.env.DATABASE_URL!);
-const db = drizzle(sql);
+import getServerSessionUserId from "@/utils/getServerSessionUserId";
+import db from "@/utils/getDrizzle";
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
-  if (!session || !session.user) {
+  const userId = await getServerSessionUserId();
+  if (!userId) {
     return Response.json({}, { status: 401 });
   }
 
@@ -23,7 +18,7 @@ export async function GET() {
         price: task.price,
       })
       .from(task)
-      .where(eq(task.userId, session.user.id!));
+      .where(eq(task.userId, userId));
 
     return Response.json(result, { status: 200 });
   } catch (error) {

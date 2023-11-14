@@ -1,12 +1,7 @@
 import { task } from "%/schema";
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/auth";
 import { eq, and } from "drizzle-orm";
-
-const sql = neon(process.env.DATABASE_URL!);
-const db = drizzle(sql);
+import getServerSessionUserId from "@/utils/getServerSessionUserId";
+import db from "@/utils/getDrizzle";
 
 export async function GET() {
   try {
@@ -18,8 +13,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session || !session.user) {
+  const userId = await getServerSessionUserId();
+  if (!userId) {
     return Response.json({}, { status: 401 });
   }
 
@@ -27,7 +22,7 @@ export async function POST(request: Request) {
     const req = await request.json();
     const result = await db
       .insert(task)
-      .values({ userId: session.user.id, ...req })
+      .values({ userId: userId, ...req })
       .returning({ id: task.id });
     return Response.json(result, { status: 200 });
   } catch (error) {
@@ -36,16 +31,16 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const session = await getServerSession(authOptions);
-  console.log(session);
-  if (!session || !session.user) {
+  const userId = await getServerSessionUserId();
+  if (!userId) {
     return Response.json({}, { status: 401 });
   }
+
   try {
     const req = await request.json();
     const result = await db
       .delete(task)
-      .where(and(eq(task.userId, session.user.id!), eq(task.id, req.id)))
+      .where(and(eq(task.userId, userId), eq(task.id, req.id)))
       .returning({ deletedId: task.id });
 
     return Response.json(result, {
