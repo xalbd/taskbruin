@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "migrate": "ts-node db/migrate.ts",
+    "push": "drizzle-kit push:pg",
     "generate": "drizzle-kit generate:pg",
     "vercel-build": "npm run migrate && next build"
   },
