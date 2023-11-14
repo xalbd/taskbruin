@@ -41,7 +41,7 @@ export async function DELETE(request: Request) {
     const result = await db
       .delete(task)
       .where(and(eq(task.userId, userId), eq(task.id, req.id)))
-      .returning({ deletedId: task.id });
+      .returning({ id: task.id });
 
     return Response.json(result, {
       status: Object.keys(result).length !== 0 ? 200 : 400,
