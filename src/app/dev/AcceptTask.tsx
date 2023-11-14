@@ -1,22 +1,22 @@
 import React from "react";
 import { RequestResponseDisplayProps } from "./page";
 
-export default function DeleteTask({
+export default function AcceptTask({
   setRequest,
   setResponse,
   setResponseStatus,
 }: RequestResponseDisplayProps) {
   const [taskId, setTaskId] = React.useState("");
 
-  async function handleDeleteTask(event: React.FormEvent) {
+  async function handleAcceptTask(event: React.FormEvent) {
     event.preventDefault();
     const requestBody = JSON.stringify({
       id: taskId,
     });
     setRequest(requestBody);
 
-    const response = await fetch("/api/tasks/", {
-      method: "DELETE",
+    const response = await fetch("/api/accept/", {
+      method: "PATCH",
       body: requestBody,
     });
     const json = await response.json();
@@ -25,16 +25,16 @@ export default function DeleteTask({
   }
 
   return (
-    <form onSubmit={handleDeleteTask} className="flex-col flex m-2 p-1">
+    <form onSubmit={handleAcceptTask} className="flex-col flex m-2 p-1">
       <label htmlFor={taskId}>Task ID</label>
       <input
         id="task-id"
         value={taskId}
-        required={true}
         type="number"
+        required={true}
         onChange={(event) => setTaskId(event.target.value)}
       />
-      <button className="outline">/api/tasks DELETE</button>
+      <button className="outline">/api/accept PATCH</button>
     </form>
   );
 }

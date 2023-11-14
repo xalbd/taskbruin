@@ -16,6 +16,7 @@ export async function GET() {
         title: task.title,
         description: task.description,
         price: task.price,
+        acceptedByUserId: task.acceptedByUserId,
       })
       .from(task)
       .where(eq(task.userId, userId));

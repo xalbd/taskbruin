@@ -5,6 +5,7 @@ import PostTasks from "./PostTasks";
 import GetTasks from "./GetTasks";
 import NavBar from "./NavBar";
 import DelTasks from "./DelTasks";
+import AcceptTask from "./AcceptTask";
 
 export default function Dev() {
   const [responseBody, setResponseBody] = React.useState("");
@@ -25,6 +26,11 @@ export default function Dev() {
             setResponseStatus={setResponseStatus}
             setResponse={setResponseBody}
           />
+          <AcceptTask
+            setRequest={setRequestBody}
+            setResponseStatus={setResponseStatus}
+            setResponse={setResponseBody}
+          />
           <DelTasks
             setRequest={setRequestBody}
             setResponseStatus={setResponseStatus}
@@ -39,6 +45,12 @@ export default function Dev() {
       </div>
     </>
   );
+}
+
+export interface RequestResponseDisplayProps {
+  setRequest: React.Dispatch<React.SetStateAction<string>>;
+  setResponse: React.Dispatch<React.SetStateAction<string>>;
+  setResponseStatus: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface DisplayOutputProps {
