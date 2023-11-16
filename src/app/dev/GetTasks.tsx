@@ -1,11 +1,9 @@
-interface GrabTasksProps {
-  setResponse: React.Dispatch<React.SetStateAction<string>>;
-  setResponseStatus: React.Dispatch<React.SetStateAction<string>>;
-}
+import { ResponseDisplayProps } from "./page";
+
 export default function GrabTasks({
   setResponse,
   setResponseStatus,
-}: GrabTasksProps) {
+}: ResponseDisplayProps) {
   async function handleGrabTasks(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
