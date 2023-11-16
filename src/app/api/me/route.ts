@@ -10,7 +10,7 @@ export async function GET() {
   }
 
   try {
-    const result = await db
+    const created = await db
       .select({
         id: task.id,
         title: task.title,
@@ -21,7 +21,18 @@ export async function GET() {
       .from(task)
       .where(eq(task.userId, userId));
 
-    return Response.json(result, { status: 200 });
+    const accepted = await db
+      .select({
+        id: task.id,
+        title: task.title,
+        description: task.description,
+        price: task.price,
+        createdByUserId: task.userId,
+      })
+      .from(task)
+      .where(eq(task.acceptedByUserId, userId));
+
+    return Response.json({ created, accepted }, { status: 200 });
   } catch (error) {
     return Response.json({ error }, { status: 500 });
   }

@@ -43,7 +43,7 @@ Status 200 for success, 401 for unauthenticated, 400 when no deletion occured, a
 
 Requires authentication.
 No request body necessary.
-Returns all tasks that the current user has created.
+Returns a json object with the key `created` corresponding to an array of all tasks the user created and the key `accepted` corresponding to an array of all tasks the user has accepted.
 
 Status 200 for success, 401 for unauthenticated, and 500 for error server-side.
 
