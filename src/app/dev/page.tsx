@@ -5,6 +5,8 @@ import PostTasks from "./PostTasks";
 import GetTasks from "./GetTasks";
 import NavBar from "./NavBar";
 import DelTasks from "./DelTasks";
+import AcceptTask from "./AcceptTask";
+import GetUser from "./GetUser";
 
 export default function Dev() {
   const [responseBody, setResponseBody] = React.useState("");
@@ -20,12 +22,21 @@ export default function Dev() {
             setResponse={setResponseBody}
             setResponseStatus={setResponseStatus}
           />
+          <GetUser
+            setResponse={setResponseBody}
+            setResponseStatus={setResponseStatus}
+          />
           <PostTasks
             setRequest={setRequestBody}
             setResponseStatus={setResponseStatus}
             setResponse={setResponseBody}
           />
           <DelTasks
+            setRequest={setRequestBody}
+            setResponseStatus={setResponseStatus}
+            setResponse={setResponseBody}
+          />
+          <AcceptTask
             setRequest={setRequestBody}
             setResponseStatus={setResponseStatus}
             setResponse={setResponseBody}
@@ -39,6 +50,17 @@ export default function Dev() {
       </div>
     </>
   );
+}
+
+export interface ResponseDisplayProps {
+  setResponse: React.Dispatch<React.SetStateAction<string>>;
+  setResponseStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface RequestResponseDisplayProps {
+  setRequest: React.Dispatch<React.SetStateAction<string>>;
+  setResponse: React.Dispatch<React.SetStateAction<string>>;
+  setResponseStatus: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface DisplayOutputProps {

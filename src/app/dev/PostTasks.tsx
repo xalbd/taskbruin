@@ -1,15 +1,11 @@
 import React from "react";
+import { RequestResponseDisplayProps } from "./page";
 
-interface SetTasksProps {
-  setRequest: React.Dispatch<React.SetStateAction<string>>;
-  setResponse: React.Dispatch<React.SetStateAction<string>>;
-  setResponseStatus: React.Dispatch<React.SetStateAction<string>>;
-}
 export default function PostTasks({
   setRequest,
   setResponse,
   setResponseStatus,
-}: SetTasksProps) {
+}: RequestResponseDisplayProps) {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState("");
@@ -38,12 +34,10 @@ export default function PostTasks({
   }
 
   return (
-    <form
-      onSubmit={handlePostTasksSubmit}
-      className="text-red-500 flex-col flex m-2 p-1"
-    >
+    <form onSubmit={handlePostTasksSubmit} className="flex-col flex m-2">
       <label htmlFor={titleId}>Title</label>
       <input
+        className="outline p-1"
         id={titleId}
         value={title}
         required={true}
@@ -54,6 +48,7 @@ export default function PostTasks({
 
       <label htmlFor={descriptionId}>Description</label>
       <textarea
+        className="outline p-1"
         id={descriptionId}
         value={description}
         placeholder="no description given"
@@ -64,6 +59,7 @@ export default function PostTasks({
 
       <label htmlFor={priceId}>Price</label>
       <input
+        className="outline p-1"
         id={priceId}
         value={price}
         type="number"
@@ -76,7 +72,7 @@ export default function PostTasks({
         }}
       />
 
-      <button className="outline">/api/tasks POST</button>
+      <button className="outline p-1">/api/tasks POST</button>
     </form>
   );
 }

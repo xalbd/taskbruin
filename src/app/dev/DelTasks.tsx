@@ -1,16 +1,11 @@
 import React from "react";
-
-interface DeleteTaskProps {
-  setRequest: React.Dispatch<React.SetStateAction<string>>;
-  setResponse: React.Dispatch<React.SetStateAction<string>>;
-  setResponseStatus: React.Dispatch<React.SetStateAction<string>>;
-}
+import { RequestResponseDisplayProps } from "./page";
 
 export default function DeleteTask({
   setRequest,
   setResponse,
   setResponseStatus,
-}: DeleteTaskProps) {
+}: RequestResponseDisplayProps) {
   const [taskId, setTaskId] = React.useState("");
 
   async function handleDeleteTask(event: React.FormEvent) {
@@ -30,15 +25,13 @@ export default function DeleteTask({
   }
 
   return (
-    <form
-      onSubmit={handleDeleteTask}
-      className="text-red-500 flex-col flex m-2 p-1"
-    >
+    <form onSubmit={handleDeleteTask} className="flex-col flex m-2 p-1">
       <label htmlFor={taskId}>Task ID</label>
       <input
         id="task-id"
         value={taskId}
         required={true}
+        type="number"
         onChange={(event) => setTaskId(event.target.value)}
       />
       <button className="outline">/api/tasks DELETE</button>
