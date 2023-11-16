@@ -58,7 +58,7 @@ const TaskDisplay = () => {
         )}
         {!tasksToRender && searchString.length !== 0 && (
           <h1 className="mt-5 text-2xl text-center text-gray-400">
-            No results found for "{searchString}"
+            {`No results found for ${searchString}`}
           </h1>
         )}
 
