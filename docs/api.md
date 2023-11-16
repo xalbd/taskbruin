@@ -49,10 +49,18 @@ Status 200 for success, 401 for unauthenticated, and 500 for error server-side.
 
 ## /api/accept
 
-### PATCH
+### POST
 
 Requires authentication.
 Request body should provide `id` of task to be accepted.
 Returns same `id` back if successful acceptance occured.
+
+Status 200 for success, 401 for unauthenticated, 400 when no task was successfully accepted, and 500 for error server-side.
+
+### DELETE
+
+Requires authentication.
+Request body should provide `id` of task to be un-accepted.
+Returns same `id` back if task was successfully un-accepted.
 
 Status 200 for success, 401 for unauthenticated, 400 when no task was successfully accepted, and 500 for error server-side.

@@ -3,7 +3,7 @@ import { eq, and, isNull, ne } from "drizzle-orm";
 import db from "@/utils/getDrizzle";
 import getServerSessionUserId from "@/utils/getServerSessionUserId";
 
-export async function PATCH(request: Request) {
+export async function POST(request: Request) {
   const userId = await getServerSessionUserId();
   if (!userId) {
     return Response.json({}, { status: 401 });
@@ -21,6 +21,28 @@ export async function PATCH(request: Request) {
           ne(task.userId, userId),
         ),
       )
+      .returning({ id: task.id });
+
+    return Response.json(result, {
+      status: Object.keys(result).length !== 0 ? 200 : 400,
+    });
+  } catch (error) {
+    return Response.json({ error }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  const userId = await getServerSessionUserId();
+  if (!userId) {
+    return Response.json({}, { status: 401 });
+  }
+
+  try {
+    const req = await request.json();
+    const result = await db
+      .update(task)
+      .set({ acceptedByUserId: null })
+      .where(and(eq(task.id, req.id), eq(task.acceptedByUserId, userId)))
       .returning({ id: task.id });
 
     return Response.json(result, {
