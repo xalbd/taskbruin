@@ -10,14 +10,9 @@ export default function DeleteTask({
 
   async function handleDeleteTask(event: React.FormEvent) {
     event.preventDefault();
-    const requestBody = JSON.stringify({
-      id: taskId,
-    });
-    setRequest(requestBody);
 
-    const response = await fetch("/api/tasks/", {
+    const response = await fetch(`/api/task/${taskId}`, {
       method: "DELETE",
-      body: requestBody,
     });
     const json = await response.json();
     setResponse(JSON.stringify(json));
@@ -34,7 +29,7 @@ export default function DeleteTask({
         type="number"
         onChange={(event) => setTaskId(event.target.value)}
       />
-      <button className="outline">/api/tasks DELETE</button>
+      <button className="outline">/api/task/[id] DELETE</button>
     </form>
   );
 }

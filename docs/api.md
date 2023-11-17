@@ -10,7 +10,7 @@ If it is false, the error is reported in the body of the response.
 - 401: unauthenticated
 - 500: error occured server-side
 
-## /api/tasks
+## /api/task
 
 ### GET
 
@@ -29,10 +29,12 @@ Note: no server-side validation of body: will just error out if the database doe
 
 Status 200 for success, 401 for unauthenticated, and 500 for error server-side.
 
+## /api/task/[id]
+
 ### DELETE
 
 Requires authentication.
-Request body should provide `id` of task to be deleted.
+Attempts to delete task with provided `id`.
 Returns same `id` back if deletion was successful.
 
 Status 200 for success, 401 for unauthenticated, 400 when no deletion occured, and 500 for error server-side.
@@ -65,7 +67,7 @@ Returns same `id` back if task was successfully un-accepted.
 
 Status 200 for success, 401 for unauthenticated, 400 when no task was successfully accepted, and 500 for error server-side.
 
-## /api/user/[id]
+## /api/user -- /api/user/[id]
 
 ### GET
 
