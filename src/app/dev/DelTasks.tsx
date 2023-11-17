@@ -1,11 +1,10 @@
 import React from "react";
-import { RequestResponseDisplayProps } from "./page";
+import { ResponseDisplayProps } from "./page";
 
 export default function DeleteTask({
-  setRequest,
   setResponse,
   setResponseStatus,
-}: RequestResponseDisplayProps) {
+}: ResponseDisplayProps) {
   const [taskId, setTaskId] = React.useState("");
 
   async function handleDeleteTask(event: React.FormEvent) {
