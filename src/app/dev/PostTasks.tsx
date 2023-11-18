@@ -24,7 +24,7 @@ export default function PostTasks({
     });
     setRequest(requestBody);
 
-    const response = await fetch("api/tasks", {
+    const response = await fetch("api/task", {
       method: "POST",
       body: requestBody,
     });
@@ -72,7 +72,7 @@ export default function PostTasks({
         }}
       />
 
-      <button className="outline p-1">/api/tasks POST</button>
+      <button className="outline p-1">/api/task POST</button>
     </form>
   );
 }

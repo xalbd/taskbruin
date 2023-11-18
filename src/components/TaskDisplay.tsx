@@ -24,7 +24,7 @@ const fetcher = async (endpoint: string) => {
 };
 
 const TaskDisplay = () => {
-  const { data, error, isLoading } = useSWR("/api/tasks", fetcher);
+  const { data, error, isLoading } = useSWR("/api/task", fetcher);
   const [searchString, setSearchString] = React.useState("");
 
   const filterData = () => {

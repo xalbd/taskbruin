@@ -32,12 +32,10 @@ export default function Dev() {
             setResponse={setResponseBody}
           />
           <DelTasks
-            setRequest={setRequestBody}
             setResponseStatus={setResponseStatus}
             setResponse={setResponseBody}
           />
           <AcceptTask
-            setRequest={setRequestBody}
             setResponseStatus={setResponseStatus}
             setResponse={setResponseBody}
           />
