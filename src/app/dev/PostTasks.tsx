@@ -1,5 +1,4 @@
 import React from "react";
-import { uploadImageToS3 } from "../aws/s3Utils";
 
 interface SetTasksProps {
   setRequest: React.Dispatch<React.SetStateAction<string>>;
@@ -25,15 +24,11 @@ export default function PostTasks({
   async function handlePostTasksSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    let imageUrl = '';
-    if (image) {
-      imageUrl = await uploadImageToS3(image);
-    }
     const requestBody = JSON.stringify({
       title,
       description,
       price,
-      imageUrl,
+      image,
     });
 
     setRequest(requestBody);
@@ -46,7 +41,7 @@ export default function PostTasks({
     setResponse(JSON.stringify(json));
     setResponseStatus(response.status.toString());
   }
-  
+
   return (
     <form
       onSubmit={handlePostTasksSubmit}
@@ -84,19 +79,20 @@ export default function PostTasks({
         onChange={(event) => {
           setPrice(event.target.value);
         }}
-        />
-        
+      />
+
       <label htmlFor={imageId}>Image</label>
       <input
         id={imageId}
         type="file"
         accept="image/*"
         onChange={(event) => {
-          const file = event.target.files && event.target.files[0];
-          setImage(file);
+          const files = event.target.files;
+          if (files && files.length > 0) {
+            setImage(files[0]);
+          }
         }}
       />
-
       <button className="outline">Post Task</button>
     </form>
   );

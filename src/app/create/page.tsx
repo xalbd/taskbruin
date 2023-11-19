@@ -43,6 +43,7 @@ const TaskForm = () => {
       title,
       description,
       price,
+      selectedFiles
     });
     setFormWaiting(true);
     const response = await fetch("api/tasks", {
