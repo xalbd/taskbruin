@@ -46,7 +46,7 @@ const TaskForm = () => {
       selectedFiles
     });
     setFormWaiting(true);
-    const response = await fetch("api/tasks", {
+    const response = await fetch("api/task", {
       method: "POST",
       body: requestBody,
     });

@@ -1,15 +1,11 @@
 import React from "react";
+import { RequestResponseDisplayProps } from "./page";
 
-interface SetTasksProps {
-  setRequest: React.Dispatch<React.SetStateAction<string>>;
-  setResponse: React.Dispatch<React.SetStateAction<string>>;
-  setResponseStatus: React.Dispatch<React.SetStateAction<string>>;
-}
 export default function PostTasks({
   setRequest,
   setResponse,
   setResponseStatus,
-}: SetTasksProps) {
+}: RequestResponseDisplayProps) {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState("");
@@ -33,7 +29,7 @@ export default function PostTasks({
 
     setRequest(requestBody);
 
-    const response = await fetch("api/tasks", {
+    const response = await fetch("api/task", {
       method: "POST",
       body: requestBody,
     });
@@ -43,12 +39,10 @@ export default function PostTasks({
   }
 
   return (
-    <form
-      onSubmit={handlePostTasksSubmit}
-      className="text-red-500 flex-col flex m-2 p-1"
-    >
+    <form onSubmit={handlePostTasksSubmit} className="flex-col flex m-2">
       <label htmlFor={titleId}>Title</label>
       <input
+        className="outline p-1"
         id={titleId}
         value={title}
         required={true}
@@ -59,6 +53,7 @@ export default function PostTasks({
 
       <label htmlFor={descriptionId}>Description</label>
       <textarea
+        className="outline p-1"
         id={descriptionId}
         value={description}
         placeholder="no description given"
@@ -69,6 +64,7 @@ export default function PostTasks({
 
       <label htmlFor={priceId}>Price</label>
       <input
+        className="outline p-1"
         id={priceId}
         value={price}
         type="number"
@@ -80,20 +76,7 @@ export default function PostTasks({
           setPrice(event.target.value);
         }}
       />
-
-      <label htmlFor={imageId}>Image</label>
-      <input
-        id={imageId}
-        type="file"
-        accept="image/*"
-        onChange={(event) => {
-          const files = event.target.files;
-          if (files && files.length > 0) {
-            setImage(files[0]);
-          }
-        }}
-      />
-      <button className="outline">Post Task</button>
+      <button className="outline">/api/task POST</button>
     </form>
   );
 }

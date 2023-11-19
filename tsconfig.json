@@ -34,6 +34,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/app/s3-upload/route.ts", "src/app/s3-upload/upload.jsx"  ],
+, "src/app/upload/route.ts", "src/app/upload/upload.tsx"  ],
   "exclude": ["node_modules"]
 }
