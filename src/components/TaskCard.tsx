@@ -5,6 +5,7 @@ interface TaskCardProps {
   date: string;
   description: string;
   image_url: string;
+  onClick?: () => void;
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({
@@ -12,11 +13,13 @@ const TaskCard: React.FC<TaskCardProps> = ({
   date,
   description,
   image_url,
+  onClick,
 }) => {
   return (
     <div
       className="flex-shrink-0 rounded-lg overflow-hidden flex p-4 mb-11"
       style={{ boxShadow: "0 4px 6px rgba(100, 149, 237, 0.5)" }}
+      onClick={onClick}
     >
       <div className="w-full p-4">
         <img
