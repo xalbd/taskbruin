@@ -13,6 +13,8 @@ export const task = pgTable("task", {
   title: text("title").notNull(),
   price: integer("price").notNull(),
   description: text("description").notNull(),
+  startDate: text("startDate"),
+  endDate: text("endDate"),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),

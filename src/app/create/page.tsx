@@ -43,6 +43,8 @@ const TaskForm = () => {
       title,
       description,
       price,
+      startDate,
+      endDate
     });
     setFormWaiting(true);
     const response = await fetch("api/task", {
