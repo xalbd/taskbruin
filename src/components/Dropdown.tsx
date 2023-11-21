@@ -14,11 +14,11 @@ interface InputProps extends React.ComponentProps<"input"> {
 
 const tasks: Task[] = [
   { id: 1, name: "Food Delivery" },
-  { id: 2, name: "Drugs" },
+  { id: 2, name: "Do my homework" },
   { id: 3, name: "Laundry" },
   { id: 4, name: "Scooter Rentals" },
   { id: 5, name: "Apartment Listings" },
-  { id: 6, name: "Alcohol Delivery" },
+  { id: 6, name: "Other" },
 ];
 
 const Dropdown: React.FC<InputProps> = ({ title, setValue }) => {
@@ -49,12 +49,7 @@ const Dropdown: React.FC<InputProps> = ({ title, setValue }) => {
             displayValue={(task: Task) => task.name}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-            <ChevronUpDownIcon
-              className="h-5 w-5 text-gray-400"
-              aria-hidden="true"
-            />
-          </Combobox.Button>
+          <Combobox.Button className="absolute inset-y-0 flex items-center pr-2 w-full h-full" />
         </div>
         <Transition
           as={Fragment}
