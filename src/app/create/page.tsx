@@ -3,11 +3,12 @@ import React from "react";
 import Input from "@/components/Input";
 import toast, { Toaster } from "react-hot-toast";
 import TextArea from "@/components/TextArea";
+import Dropdown from "@/components/Dropdown"
 import { useSession } from "next-auth/react";
 
 const TaskForm = () => {
   const [title, setTitle] = React.useState("");
-  const [taskType, setTaskType] = React.useState("");
+  const [category, setCategory] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState(1);
   const [startDate, setStartDate] = React.useState("");
@@ -29,7 +30,7 @@ const TaskForm = () => {
 
   const resetForm = async () => {
     setTitle("");
-    setTaskType("");
+    setCategory("");
     setDescription("");
     setPrice(1);
     setStartDate("");
@@ -76,11 +77,9 @@ const TaskForm = () => {
           value={title}
           setValue={setTitle}
         />
-        <Input
-          title="Task Type/Category"
-          required={true}
-          value={taskType}
-          setValue={setTaskType}
+        <Dropdown
+          title="Category"
+          setValue={setCategory}
         />
         <TextArea
           title="Task Description"
