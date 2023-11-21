@@ -5,6 +5,7 @@ import {
   serial,
   timestamp,
   primaryKey,
+  date,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 
@@ -13,6 +14,9 @@ export const task = pgTable("task", {
   title: text("title").notNull(),
   price: integer("price").notNull(),
   description: text("description").notNull(),
+  creationTime: timestamp("creationTime").defaultNow(),
+  startDate: timestamp("startDate", { mode:"string" }),
+  endDate: timestamp("endDate", { mode:"string" }),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),

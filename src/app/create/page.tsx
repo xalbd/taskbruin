@@ -39,10 +39,18 @@ const TaskForm = () => {
 
   const handleTasksSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+    if (startDateObj > endDateObj) {
+      toast.error("Start date must be before end date.", { id: "failed" });
+      return;
+    }
     const requestBody = JSON.stringify({
       title,
       description,
       price,
+      startDate: startDateObj,
+      endDate: endDateObj,
     });
     setFormWaiting(true);
     const response = await fetch("api/task", {
