@@ -4,6 +4,7 @@ import React from "react";
 import TaskCard from "@/components/TaskCard";
 import useSWR from "swr";
 import SearchBar from "@/components/SearchBar";
+import FilterMenu from "@/components/FilterMenu"
 
 interface Task {
   id: number;
@@ -26,6 +27,7 @@ const fetcher = async (endpoint: string) => {
 const TaskDisplay = () => {
   const { data, error, isLoading } = useSWR("/api/task", fetcher);
   const [searchString, setSearchString] = React.useState("");
+  const [selectedCategories, setSelectedCategories] = React.useState<number[]>([]);
 
   const filterData = () => {
     if (searchString.length !== 0 && data) {
@@ -50,7 +52,16 @@ const TaskDisplay = () => {
   return (
     <>
       <div className="max-w-7xl m-auto p-5 sm:p-8">
-        <SearchBar setResults={setSearchString} />
+        <div className="flex justify-center  ">
+          <SearchBar setResults={setSearchString} />
+        </div>
+        <div className="mt-5">
+          <FilterMenu 
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+          />
+        </div>
+        
         {isLoading && (
           <h1 className="mt-5 text-2xl text-center text-gray-400">
             Loading...
