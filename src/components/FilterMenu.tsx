@@ -24,8 +24,10 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ selectedCategories, setSelected
         categories.map((category, index) => (
           <button
             key={index}
-            className={`mr-3 mb-2 text-sm px-4 py-2 border rounded-full border-gray-400 ${
-              selectedCategories.includes(index) ? 'border-blue-500 text-blue-500' : ''
+            className={`mr-3 mb-2 text-sm px-4 py-2 rounded-full ${
+              selectedCategories.includes(index)
+                ? 'border border-blue-500 text-blue-500'
+                : 'border border-gray-400'
             }`}
             onClick={() => handleCategoryClick(index)}
           >
