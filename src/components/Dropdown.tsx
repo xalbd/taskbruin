@@ -20,7 +20,7 @@ const Dropdown: React.FC<InputProps> = ({ categories, title, setValue }) => {
   // Both these usages of useEffect are SUPER bad.
   useEffect(() => {
     setValue(selectedCategory.id);
-  }, [selectedCategory]);
+  }, [selectedCategory, setValue]);
 
   useEffect(() => {
     if (categories.length !== 0) {
