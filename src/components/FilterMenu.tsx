@@ -1,29 +1,20 @@
-import React from "react";
+import React from 'react';
 
 interface FilterMenuProps {
-  selectedCategory: number | null;
-  setSelectedCategory: (selectedCategory: number | null) => void;
+  selectedCategories: number[];
+  setSelectedCategories: (selectedCategories: number[]) => void;
 }
 
-const categories = [
-  "Laundry",
-  "Food Delivery",
-  "Scooter Rental",
-  "Apartment Listings",
-  "Other",
-];
+const categories = ["Laundry", "Food Delivery", "Scooter Rental", "Apartment Listings", "Other"];
 
-const FilterMenu: React.FC<FilterMenuProps> = ({
-  selectedCategory,
-  setSelectedCategory,
-}) => {
+const FilterMenu: React.FC<FilterMenuProps> = ({ selectedCategories, setSelectedCategories }) => {
   const handleCategoryClick = (index: number) => {
-    const isSelected = selectedCategory === index;
+    const isSelected = selectedCategories.includes(index);
 
     if (isSelected) {
-      setSelectedCategory(null);
+      setSelectedCategories(selectedCategories.filter((selectedIndex) => selectedIndex !== index));
     } else {
-      setSelectedCategory(index);
+      setSelectedCategories([...selectedCategories, index]);
     }
   };
 
@@ -34,9 +25,9 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
           <button
             key={index}
             className={`mr-3 mb-2 text-sm px-4 py-2 rounded-full ${
-              selectedCategory === index
-                ? "border border-blue-500 text-blue-500"
-                : "border border-gray-400"
+              selectedCategories.includes(index)
+                ? 'border border-blue-500 text-blue-500'
+                : 'border border-gray-400'
             }`}
             onClick={() => handleCategoryClick(index)}
           >

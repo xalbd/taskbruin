@@ -4,7 +4,7 @@ import React from "react";
 import TaskCard from "@/components/TaskCard";
 import useSWR from "swr";
 import SearchBar from "@/components/SearchBar";
-import FilterMenu from "@/components/FilterMenu";
+import FilterMenu from "@/components/FilterMenu"
 
 interface Task {
   id: number;
@@ -25,11 +25,9 @@ const fetcher = async (endpoint: string) => {
 };
 
 const TaskDisplay = () => {
-  const { data, isLoading } = useSWR("/api/task", fetcher);
+  const { data, error, isLoading } = useSWR("/api/task", fetcher);
   const [searchString, setSearchString] = React.useState("");
-  const [selectedCategory, setSelectedCategory] = React.useState<number | null>(
-    null,
-  );
+  const [selectedCategories, setSelectedCategories] = React.useState<number[]>([]);
 
   const filterData = () => {
     if (searchString.length !== 0 && data) {
@@ -58,12 +56,12 @@ const TaskDisplay = () => {
           <SearchBar setResults={setSearchString} />
         </div>
         <div className="mt-5">
-          <FilterMenu
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
+          <FilterMenu 
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
           />
         </div>
-
+        
         {isLoading && (
           <h1 className="mt-5 text-2xl text-center text-gray-400">
             Loading...
