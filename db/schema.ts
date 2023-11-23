@@ -15,14 +15,22 @@ export const task = pgTable("task", {
   price: integer("price").notNull(),
   description: text("description").notNull(),
   creationTime: timestamp("creationTime").defaultNow(),
-  startDate: timestamp("startDate", { mode:"string" }),
-  endDate: timestamp("endDate", { mode:"string" }),
+  startDate: timestamp("startDate", { mode: "string" }),
+  endDate: timestamp("endDate", { mode: "string" }),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   acceptedByUserId: text("acceptedByUserId").references(() => users.id, {
     onDelete: "set null",
   }),
+  category: integer("category").references(() => category.id, {
+    onDelete: "set null",
+  }),
+});
+
+export const category = pgTable("category", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
 });
 
 export const users = pgTable("user", {
