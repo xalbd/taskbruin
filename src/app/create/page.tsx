@@ -3,16 +3,24 @@ import React from "react";
 import Input from "@/components/Input";
 import toast, { Toaster } from "react-hot-toast";
 import TextArea from "@/components/TextArea";
-import Dropdown from "@/components/Dropdown"
+import Dropdown from "@/components/Dropdown";
 import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import fetcher from "@/utils/getFetcher";
+import offsetDate from "@/utils/getOffsetDate";
 
 const TaskForm = () => {
+  const { data: categoryData, isLoading: categoryDataIsLoading } = useSWR(
+    "/api/category",
+    fetcher,
+  );
+
   const [title, setTitle] = React.useState("");
-  const [category, setCategory] = React.useState("");
+  const [category, setCategory] = React.useState(0);
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState(1);
-  const [startDate, setStartDate] = React.useState("");
-  const [endDate, setEndDate] = React.useState("");
+  const [startDate, setStartDate] = React.useState(offsetDate(0));
+  const [endDate, setEndDate] = React.useState(offsetDate(7));
   const [selectedFiles, setSelectedFiles] = React.useState<FileList | null>(
     null,
   );
@@ -30,11 +38,11 @@ const TaskForm = () => {
 
   const resetForm = async () => {
     setTitle("");
-    setCategory("");
+    setCategory(0);
     setDescription("");
     setPrice(1);
-    setStartDate("");
-    setEndDate("");
+    setStartDate(offsetDate(0));
+    setEndDate(offsetDate(7));
     setSelectedFiles(null);
   };
 
@@ -50,6 +58,7 @@ const TaskForm = () => {
       title,
       description,
       price,
+      category,
       startDate: startDateObj,
       endDate: endDateObj,
     });
@@ -78,6 +87,9 @@ const TaskForm = () => {
           setValue={setTitle}
         />
         <Dropdown
+          categories={
+            categoryDataIsLoading ? [{ id: 0, name: "Other" }] : categoryData
+          }
           title="Category"
           setValue={setCategory}
         />
@@ -100,7 +112,7 @@ const TaskForm = () => {
         <div className="flex">
           <div className="mr-2 grow">
             <Input
-              title="Start Time"
+              title="Start Date"
               required={false}
               value={startDate}
               setValue={setStartDate}
@@ -109,7 +121,7 @@ const TaskForm = () => {
           </div>
           <div className="grow">
             <Input
-              title="End Time"
+              title="End Date"
               required={false}
               value={endDate}
               setValue={setEndDate}

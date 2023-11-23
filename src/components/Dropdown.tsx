@@ -1,52 +1,51 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { CheckIcon } from "@heroicons/react/20/solid";
 
-interface Task {
+interface Category {
   id: number;
   name: string;
 }
 
 interface InputProps extends React.ComponentProps<"input"> {
+  categories: Array<Category>;
   title: string;
-  setValue: (value: string) => void;
+  setValue: (value: number) => void;
 }
 
-const tasks: Task[] = [
-  { id: 1, name: "Food Delivery" },
-  { id: 2, name: "Do my homework" },
-  { id: 3, name: "Laundry" },
-  { id: 4, name: "Scooter Rentals" },
-  { id: 5, name: "Apartment Listings" },
-  { id: 6, name: "Other" },
-];
-
-const Dropdown: React.FC<InputProps> = ({ title, setValue }) => {
-  const [selectedTask, setSelectedTask] = useState(tasks[0]);
+const Dropdown: React.FC<InputProps> = ({ categories, title, setValue }) => {
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [query, setQuery] = useState("");
 
+  // Both these usages of useEffect are SUPER bad.
   useEffect(() => {
-    setValue(selectedTask.name);
-  }, [selectedTask, setValue]);
+    setValue(selectedCategory.id);
+  }, [selectedCategory]);
 
-  const filteredPeople: Task[] =
+  useEffect(() => {
+    if (categories.length !== 0) {
+      setSelectedCategory(categories[categories.length - 1]);
+    }
+  }, [categories]);
+
+  const filteredPeople: Category[] =
     query === ""
-      ? tasks
-      : tasks.filter((task) =>
-          task.name
+      ? categories
+      : categories.filter((category) =>
+          category.name
             .toLowerCase()
             .replace(/\s+/g, "")
             .includes(query.toLowerCase().replace(/\s+/g, "")),
         );
 
   return (
-    <Combobox value={selectedTask} onChange={setSelectedTask}>
+    <Combobox value={selectedCategory} onChange={setSelectedCategory}>
       <label className="mt-6 block text-base font-bold mb-2">{title}</label>
       <div className="relative mt-1 border border-gray-400 rounded-md ">
         <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left">
           <Combobox.Input
             className="w-full border-none p-4 text-base leading-5 focus:ring-0"
-            displayValue={(task: Task) => task.name}
+            displayValue={(category: Category) => category.name}
             onChange={(event) => setQuery(event.target.value)}
           />
           <Combobox.Button className="absolute inset-y-0 flex items-center pr-2 w-full h-full" />
