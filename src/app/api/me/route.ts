@@ -10,25 +10,10 @@ export async function GET() {
   }
 
   try {
-    const created = await db
-      .select({
-        id: task.id,
-        title: task.title,
-        description: task.description,
-        price: task.price,
-        acceptedByUserId: task.acceptedByUserId,
-      })
-      .from(task)
-      .where(eq(task.userId, userId));
+    const created = await db.select().from(task).where(eq(task.userId, userId));
 
     const accepted = await db
-      .select({
-        id: task.id,
-        title: task.title,
-        description: task.description,
-        price: task.price,
-        createdByUserId: task.userId,
-      })
+      .select()
       .from(task)
       .where(eq(task.acceptedByUserId, userId));
 

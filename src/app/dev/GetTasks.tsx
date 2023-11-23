@@ -4,19 +4,13 @@ export default function GrabTasks({
   setResponse,
   setResponseStatus,
 }: ResponseDisplayProps) {
-  async function handleGrabTasks(event: React.MouseEvent<HTMLButtonElement>) {
+  async function handleGet(
+    apiURL: string,
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) {
     event.preventDefault();
 
-    const response = await fetch("/api/task", { method: "GET" });
-    const json = await response.json();
-    setResponse(JSON.stringify(json));
-    setResponseStatus(response.status.toString());
-  }
-
-  async function handleGrabMeTasks(event: React.MouseEvent<HTMLButtonElement>) {
-    event.preventDefault();
-
-    const response = await fetch("/api/me", { method: "GET" });
+    const response = await fetch(apiURL, { method: "GET" });
     const json = await response.json();
     setResponse(JSON.stringify(json));
     setResponseStatus(response.status.toString());
@@ -24,12 +18,25 @@ export default function GrabTasks({
 
   return (
     <>
-      <button className="outline m-2 p-1" onClick={handleGrabTasks}>
+      <button
+        className="outline m-2 p-1"
+        onClick={(e) => handleGet("/api/task", e)}
+      >
         /api/task GET
       </button>
 
-      <button className="outline m-2 p-1" onClick={handleGrabMeTasks}>
+      <button
+        className="outline m-2 p-1"
+        onClick={(e) => handleGet("/api/me", e)}
+      >
         /api/me GET
+      </button>
+
+      <button
+        className="outline m-2 p-1"
+        onClick={(e) => handleGet("/api/category", e)}
+      >
+        /api/category GET
       </button>
     </>
   );
