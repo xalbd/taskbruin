@@ -2,7 +2,7 @@
 
 import React from "react";
 import TaskCard from "@/components/TaskCard";
-import useSWR from "swr";
+import useSWR, { preload } from "swr";
 import SearchBar from "@/components/SearchBar";
 import FilterMenu from "@/components/FilterMenu";
 
@@ -25,16 +25,23 @@ const fetcher = async (endpoint: string) => {
 };
 
 const TaskDisplay = () => {
-  const { data, error, isLoading } = useSWR("/api/task", fetcher);
+  const { data: taskData, isLoading: taskDataIsLoading } = useSWR(
+    "/api/task",
+    fetcher,
+  );
+  const { data: categoryData, isLoading: categoryDataIsLoading } = useSWR(
+    "/api/category",
+    fetcher,
+  );
   const [searchString, setSearchString] = React.useState("");
   const [selectedCategories, setSelectedCategories] = React.useState<number[]>(
     [],
   );
 
   const filterData = () => {
-    if (searchString.length !== 0 && data) {
+    if (searchString.length !== 0 && taskData) {
       const searchWords = new Set(searchString.toLowerCase().split(/\s+/));
-      const filteredData = data.filter((item: Task) => {
+      const filteredData = taskData.filter((item: Task) => {
         const titleWords = item.title.toLowerCase().split(/\s+/);
         return titleWords.some((word) => searchWords.has(word));
       });
@@ -45,26 +52,31 @@ const TaskDisplay = () => {
         return filteredData;
       }
     } else {
-      return data;
+      return taskData;
     }
   };
 
   const tasksToRender = filterData();
 
+  // this is a hack: id 0 won't be used by the Postgres SERIAL type (no collisions) and this ensures "Other" is displayed at the end of the list of categories
+  const categoryDataWithOther = categoryDataIsLoading
+    ? []
+    : [...categoryData, { id: 0, name: "Other" }];
+
   return (
     <>
       <div className="max-w-7xl m-auto p-5 sm:p-8">
-        <div className="flex justify-center  ">
-          <SearchBar setResults={setSearchString} />
-        </div>
-        <div className="mt-5">
+        <div className="flex flex-row">
           <FilterMenu
+            categories={categoryDataWithOther}
             selectedCategories={selectedCategories}
             setSelectedCategories={setSelectedCategories}
           />
+          <div className="flex-grow" />
+          <SearchBar setResults={setSearchString} />
         </div>
 
-        {isLoading && (
+        {taskDataIsLoading && (
           <h1 className="mt-5 text-2xl text-center text-gray-400">
             Loading...
           </h1>

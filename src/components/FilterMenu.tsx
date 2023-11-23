@@ -1,19 +1,13 @@
 import React from "react";
 
 interface FilterMenuProps {
+  categories: Array<{ id: number; name: string }>;
   selectedCategories: number[];
   setSelectedCategories: (selectedCategories: number[]) => void;
 }
 
-const categories = [
-  "Laundry",
-  "Food Delivery",
-  "Scooter Rental",
-  "Apartment Listings",
-  "Other",
-];
-
 const FilterMenu: React.FC<FilterMenuProps> = ({
+  categories,
   selectedCategories,
   setSelectedCategories,
 }) => {
@@ -32,17 +26,17 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
   return (
     <div>
       {categories &&
-        categories.map((category, index) => (
+        categories.map((category) => (
           <button
-            key={index}
+            key={category.id}
             className={`mr-3 mb-2 text-sm px-4 py-2 rounded-full ${
-              selectedCategories.includes(index)
+              selectedCategories.includes(category.id)
                 ? "border border-blue-500 text-blue-500"
                 : "border border-gray-400"
             }`}
-            onClick={() => handleCategoryClick(index)}
+            onClick={() => handleCategoryClick(category.id)}
           >
-            {category}
+            {category.name}
           </button>
         ))}
     </div>
