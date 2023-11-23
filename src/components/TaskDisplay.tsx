@@ -2,9 +2,10 @@
 
 import React from "react";
 import TaskCard from "@/components/TaskCard";
-import useSWR, { preload } from "swr";
+import useSWR from "swr";
 import SearchBar from "@/components/SearchBar";
 import FilterMenu from "@/components/FilterMenu";
+import fetcher from "@/utils/getFetcher";
 
 interface Task {
   id: number;
@@ -12,17 +13,8 @@ interface Task {
   price: number;
   description: string;
   userId: string;
+  category: number;
 }
-
-const fetcher = async (endpoint: string) => {
-  const response = await fetch(endpoint);
-  const json = await response.json();
-  if (response.ok) {
-    return json;
-  } else {
-    throw json;
-  }
-};
 
 const TaskDisplay = () => {
   const { data: taskData, isLoading: taskDataIsLoading } = useSWR(
@@ -38,7 +30,7 @@ const TaskDisplay = () => {
     [],
   );
 
-  const filterData = () => {
+  const filterTasksUsingSearch = () => {
     if (searchString.length !== 0 && taskData) {
       const searchWords = new Set(searchString.toLowerCase().split(/\s+/));
       const filteredData = taskData.filter((item: Task) => {
@@ -46,29 +38,29 @@ const TaskDisplay = () => {
         return titleWords.some((word) => searchWords.has(word));
       });
 
-      if (filteredData.length === 0) {
-        return undefined;
-      } else {
-        return filteredData;
-      }
+      return filteredData;
     } else {
       return taskData;
     }
   };
 
-  const tasksToRender = filterData();
+  function filterTasksUsingCategories(tasks: Array<Task>) {
+    if (selectedCategories.length !== 0 && tasks) {
+      return tasks.filter((item: Task) =>
+        selectedCategories.includes(item.category),
+      );
+    }
+    return tasks;
+  }
 
-  // this is a hack: id 0 won't be used by the Postgres SERIAL type (no collisions) and this ensures "Other" is displayed at the end of the list of categories
-  const categoryDataWithOther = categoryDataIsLoading
-    ? []
-    : [...categoryData, { id: 0, name: "Other" }];
+  const tasksToRender = filterTasksUsingCategories(filterTasksUsingSearch());
 
   return (
     <>
       <div className="max-w-7xl m-auto p-5 sm:p-8">
         <div className="flex flex-row">
           <FilterMenu
-            categories={categoryDataWithOther}
+            categories={categoryData}
             selectedCategories={selectedCategories}
             setSelectedCategories={setSelectedCategories}
           />
@@ -81,9 +73,14 @@ const TaskDisplay = () => {
             Loading...
           </h1>
         )}
-        {!tasksToRender && searchString.length !== 0 && (
+        {tasksToRender?.length === 0 && searchString.length !== 0 && (
           <h1 className="mt-5 text-2xl text-center text-gray-400">
-            {`No results found for ${searchString}`}
+            {`No results found for "${searchString}".`}
+          </h1>
+        )}
+        {tasksToRender?.length === 0 && searchString.length === 0 && (
+          <h1 className="mt-5 text-2xl text-center text-gray-400">
+            {`No results found.`}
           </h1>
         )}
 

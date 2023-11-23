@@ -23,9 +23,11 @@ export const task = pgTable("task", {
   acceptedByUserId: text("acceptedByUserId").references(() => users.id, {
     onDelete: "set null",
   }),
-  category: integer("category").references(() => category.id, {
-    onDelete: "set null",
-  }),
+  category: integer("category")
+    .notNull()
+    .references(() => category.id, {
+      onDelete: "cascade",
+    }),
 });
 
 export const category = pgTable("category", {

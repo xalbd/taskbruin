@@ -43,6 +43,13 @@
       "when": 1700729225238,
       "tag": "0005_clammy_starfox",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1700736827115,
+      "tag": "0006_lethal_jack_murdock",
+      "breakpoints": true
     }
   ]
 }
