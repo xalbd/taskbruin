@@ -24,7 +24,7 @@ To edit the database schema, edit the `db/schema.ts` file.
 
 To push edited schema changes to the database but not persist them to a migration, run
 
-> npm run push
+> npx drizzle-kit push:pg
 
 Once you're satisfied with the changes to the schema, to automatically generate a SQL migration, run
 

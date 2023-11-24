@@ -1,36 +1,23 @@
-import { ResponseDisplayProps } from "./page";
-
+interface GrabTasksProps {
+  setResponse: React.Dispatch<React.SetStateAction<string>>;
+  setResponseStatus: React.Dispatch<React.SetStateAction<string>>;
+}
 export default function GrabTasks({
   setResponse,
   setResponseStatus,
-}: ResponseDisplayProps) {
+}: GrabTasksProps) {
   async function handleGrabTasks(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
-    const response = await fetch("/api/task", { method: "GET" });
-    const json = await response.json();
-    setResponse(JSON.stringify(json));
-    setResponseStatus(response.status.toString());
-  }
-
-  async function handleGrabMeTasks(event: React.MouseEvent<HTMLButtonElement>) {
-    event.preventDefault();
-
-    const response = await fetch("/api/me", { method: "GET" });
+    const response = await fetch("/api/tasks", { method: "GET" });
     const json = await response.json();
     setResponse(JSON.stringify(json));
     setResponseStatus(response.status.toString());
   }
 
   return (
-    <>
-      <button className="outline m-2 p-1" onClick={handleGrabTasks}>
-        /api/task GET
-      </button>
-
-      <button className="outline m-2 p-1" onClick={handleGrabMeTasks}>
-        /api/me GET
-      </button>
-    </>
+    <button className="outline m-2 p-1" onClick={handleGrabTasks}>
+      /api/tasks GET
+    </button>
   );
 }
