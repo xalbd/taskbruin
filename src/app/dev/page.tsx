@@ -5,6 +5,7 @@ import PostTasks from "./PostTasks";
 import GetTasks from "./GetTasks";
 import NavBar from "./NavBar";
 import DelTasks from "./DelTasks";
+import Upload from "./Upload";
 
 export default function Dev() {
   const [responseBody, setResponseBody] = React.useState("");
@@ -30,6 +31,7 @@ export default function Dev() {
             setResponseStatus={setResponseStatus}
             setResponse={setResponseBody}
           />
+          <Upload />
         </div>
         <div className="col-span-1">
           <DisplayOutput title="Last Request Body" output={requestBody} />
