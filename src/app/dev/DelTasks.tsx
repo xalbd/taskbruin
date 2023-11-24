@@ -1,28 +1,17 @@
 import React from "react";
-
-interface DeleteTaskProps {
-  setRequest: React.Dispatch<React.SetStateAction<string>>;
-  setResponse: React.Dispatch<React.SetStateAction<string>>;
-  setResponseStatus: React.Dispatch<React.SetStateAction<string>>;
-}
+import { ResponseDisplayProps } from "./page";
 
 export default function DeleteTask({
-  setRequest,
   setResponse,
   setResponseStatus,
-}: DeleteTaskProps) {
+}: ResponseDisplayProps) {
   const [taskId, setTaskId] = React.useState("");
 
   async function handleDeleteTask(event: React.FormEvent) {
     event.preventDefault();
-    const requestBody = JSON.stringify({
-      id: taskId,
-    });
-    setRequest(requestBody);
 
-    const response = await fetch("/api/tasks/", {
+    const response = await fetch(`/api/task/${taskId}`, {
       method: "DELETE",
-      body: requestBody,
     });
     const json = await response.json();
     setResponse(JSON.stringify(json));
@@ -30,18 +19,16 @@ export default function DeleteTask({
   }
 
   return (
-    <form
-      onSubmit={handleDeleteTask}
-      className="text-red-500 flex-col flex m-2 p-1"
-    >
+    <form onSubmit={handleDeleteTask} className="flex-col flex m-2 p-1">
       <label htmlFor={taskId}>Task ID</label>
       <input
         id="task-id"
         value={taskId}
         required={true}
+        type="number"
         onChange={(event) => setTaskId(event.target.value)}
       />
-      <button className="outline">/api/tasks DELETE</button>
+      <button className="outline">/api/task/[id] DELETE</button>
     </form>
   );
 }

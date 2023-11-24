@@ -1,25 +1,23 @@
 import React from "react";
+import { RequestResponseDisplayProps } from "./page";
 
-interface SetTasksProps {
-  setRequest: React.Dispatch<React.SetStateAction<string>>;
-  setResponse: React.Dispatch<React.SetStateAction<string>>;
-  setResponseStatus: React.Dispatch<React.SetStateAction<string>>;
-}
 export default function PostTasks({
   setRequest,
   setResponse,
   setResponseStatus,
-}: SetTasksProps) {
+}: RequestResponseDisplayProps) {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState("");
   const [image, setImage] = React.useState<File | null>(null);
+  const [category, setCategory] = React.useState("");
 
   const id = React.useId();
   const titleId = `${id}-title`;
   const descriptionId = `${id}-message`;
   const priceId = `${id}-price`;
   const imageId = `${id}-image`;
+  const categoryId = `${id}-category`;
 
   async function handlePostTasksSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -28,12 +26,12 @@ export default function PostTasks({
       title,
       description,
       price,
-      image,
+      category,
     });
 
     setRequest(requestBody);
 
-    const response = await fetch("api/tasks", {
+    const response = await fetch("api/task", {
       method: "POST",
       body: requestBody,
     });
@@ -43,12 +41,10 @@ export default function PostTasks({
   }
 
   return (
-    <form
-      onSubmit={handlePostTasksSubmit}
-      className="text-red-500 flex-col flex m-2 p-1"
-    >
+    <form onSubmit={handlePostTasksSubmit} className="flex-col flex m-2">
       <label htmlFor={titleId}>Title</label>
       <input
+        className="outline p-1"
         id={titleId}
         value={title}
         required={true}
@@ -59,6 +55,7 @@ export default function PostTasks({
 
       <label htmlFor={descriptionId}>Description</label>
       <textarea
+        className="outline p-1"
         id={descriptionId}
         value={description}
         placeholder="no description given"
@@ -67,8 +64,21 @@ export default function PostTasks({
         }}
       />
 
+      <label htmlFor={categoryId}>Category</label>
+      <input
+        className="outline p-1"
+        id={categoryId}
+        value={category}
+        type="number"
+        required={true}
+        onChange={(event) => {
+          setCategory(event.target.value);
+        }}
+      />
+
       <label htmlFor={priceId}>Price</label>
       <input
+        className="outline p-1"
         id={priceId}
         value={price}
         type="number"
@@ -81,19 +91,7 @@ export default function PostTasks({
         }}
       />
 
-      <label htmlFor={imageId}>Image</label>
-      <input
-        id={imageId}
-        type="file"
-        accept="image/*"
-        onChange={(event) => {
-          const files = event.target.files;
-          if (files && files.length > 0) {
-            setImage(files[0]);
-          }
-        }}
-      />
-      <button className="outline">Post Task</button>
+      <button className="outline p-1">/api/task POST</button>
     </form>
   );
 }

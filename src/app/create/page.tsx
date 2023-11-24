@@ -3,15 +3,24 @@ import React from "react";
 import Input from "@/components/Input";
 import toast, { Toaster } from "react-hot-toast";
 import TextArea from "@/components/TextArea";
+import Dropdown from "@/components/Dropdown";
 import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import fetcher from "@/utils/getFetcher";
+import offsetDate from "@/utils/getOffsetDate";
 
 const TaskForm = () => {
+  const { data: categoryData, isLoading: categoryDataIsLoading } = useSWR(
+    "/api/category",
+    fetcher,
+  );
+
   const [title, setTitle] = React.useState("");
-  const [taskType, setTaskType] = React.useState("");
+  const [category, setCategory] = React.useState(0);
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState(1);
-  const [startDate, setStartDate] = React.useState("");
-  const [endDate, setEndDate] = React.useState("");
+  const [startDate, setStartDate] = React.useState(offsetDate(0));
+  const [endDate, setEndDate] = React.useState(offsetDate(7));
   const [selectedFiles, setSelectedFiles] = React.useState<FileList | null>(
     null,
   );
@@ -29,24 +38,32 @@ const TaskForm = () => {
 
   const resetForm = async () => {
     setTitle("");
-    setTaskType("");
+    setCategory(0);
     setDescription("");
     setPrice(1);
-    setStartDate("");
-    setEndDate("");
+    setStartDate(offsetDate(0));
+    setEndDate(offsetDate(7));
     setSelectedFiles(null);
   };
 
   const handleTasksSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+    if (startDateObj > endDateObj) {
+      toast.error("Start date must be before end date.", { id: "failed" });
+      return;
+    }
     const requestBody = JSON.stringify({
       title,
       description,
       price,
-      selectedFiles
+      category,
+      startDate: startDateObj,
+      endDate: endDateObj,
     });
     setFormWaiting(true);
-    const response = await fetch("api/tasks", {
+    const response = await fetch("api/task", {
       method: "POST",
       body: requestBody,
     });
@@ -69,11 +86,12 @@ const TaskForm = () => {
           value={title}
           setValue={setTitle}
         />
-        <Input
-          title="Task Type/Category"
-          required={true}
-          value={taskType}
-          setValue={setTaskType}
+        <Dropdown
+          categories={
+            categoryDataIsLoading ? [{ id: 0, name: "Other" }] : categoryData
+          }
+          title="Category"
+          setValue={setCategory}
         />
         <TextArea
           title="Task Description"
@@ -94,7 +112,7 @@ const TaskForm = () => {
         <div className="flex">
           <div className="mr-2 grow">
             <Input
-              title="Start Time"
+              title="Start Date"
               required={false}
               value={startDate}
               setValue={setStartDate}
@@ -103,7 +121,7 @@ const TaskForm = () => {
           </div>
           <div className="grow">
             <Input
-              title="End Time"
+              title="End Date"
               required={false}
               value={endDate}
               setValue={setEndDate}

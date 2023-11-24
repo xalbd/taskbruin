@@ -5,6 +5,7 @@ import {
   serial,
   timestamp,
   primaryKey,
+  date,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 
@@ -13,9 +14,25 @@ export const task = pgTable("task", {
   title: text("title").notNull(),
   price: integer("price").notNull(),
   description: text("description").notNull(),
+  creationTime: timestamp("creationTime").defaultNow(),
+  startDate: timestamp("startDate", { mode: "string" }),
+  endDate: timestamp("endDate", { mode: "string" }),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  acceptedByUserId: text("acceptedByUserId").references(() => users.id, {
+    onDelete: "set null",
+  }),
+  category: integer("category")
+    .notNull()
+    .references(() => category.id, {
+      onDelete: "cascade",
+    }),
+});
+
+export const category = pgTable("category", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
 });
 
 export const users = pgTable("user", {
@@ -45,7 +62,7 @@ export const accounts = pgTable(
   },
   (account) => ({
     compoundKey: primaryKey(account.provider, account.providerAccountId),
-  })
+  }),
 );
 
 export const sessions = pgTable("session", {
@@ -65,5 +82,5 @@ export const verificationTokens = pgTable(
   },
   (vt) => ({
     compoundKey: primaryKey(vt.identifier, vt.token),
-  })
+  }),
 );

@@ -3,20 +3,20 @@ import React from "react";
 interface TaskCardProps {
   title: string;
   date: string;
-  summary: string;
+  description: string;
   image_url: string;
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({
   title,
   date,
-  summary,
+  description,
   image_url,
 }) => {
   return (
     <div
-      className="flex-shrink-0 shadow-md rounded-lg overflow-hidden flex p-4"
-      style={{ width: "100%" }}
+      className="flex-shrink-0 rounded-lg overflow-hidden flex p-4 mb-11"
+      style={{ boxShadow: "0 4px 6px rgba(100, 149, 237, 0.5)" }}
     >
       <div className="w-full p-4">
         <img
@@ -27,7 +27,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
         />
         <p className="mb-2"> {date} </p>
         <h2 className="text-xl font-bold mb-2">{title}</h2>
-        <p>{summary}</p>
+        <p>{description}</p>
       </div>
     </div>
   );

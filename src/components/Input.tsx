@@ -7,8 +7,6 @@ interface InputProps extends React.ComponentProps<"input"> {
 
 const Input: React.FC<InputProps> = ({ title, setValue, ...rest }) => {
   const id = useId();
-  const inputStyles =
-    "border border-gray-400 text-base rounded-md block w-full p-3";
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
@@ -22,7 +20,7 @@ const Input: React.FC<InputProps> = ({ title, setValue, ...rest }) => {
       </label>
       <input
         id={id}
-        className={`${inputStyles}`}
+        className="border border-gray-400 text-base rounded-md block w-full p-3"
         onChange={handleChange}
         {...rest}
       />

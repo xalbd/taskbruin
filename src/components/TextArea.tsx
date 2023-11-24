@@ -13,8 +13,6 @@ const TextArea: React.FC<TextAreaProps> = ({
   ...rest
 }) => {
   const id = useId();
-  const inputStyles =
-    "border border-gray-400 text-base rounded-md block w-full p-3";
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.currentTarget.value;
@@ -28,7 +26,7 @@ const TextArea: React.FC<TextAreaProps> = ({
       </label>
       <textarea
         id={id}
-        className={`${inputStyles}`}
+        className="border border-gray-400 text-base rounded-md block w-full p-3"
         rows={rows}
         onChange={handleChange}
         {...rest}
