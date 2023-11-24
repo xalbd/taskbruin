@@ -4,83 +4,54 @@ import React from "react";
 import TaskCard from "@/components/TaskCard";
 import useSWR from "swr";
 import SearchBar from "@/components/SearchBar";
-import FilterMenu from "@/components/FilterMenu";
-import fetcher from "@/utils/getFetcher";
+import { Task } from "../../types/task"
 
-interface Task {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  userId: string;
-  category: number;
-}
+const fetcher = async (endpoint: string) => {
+  const response = await fetch(endpoint);
+  const json = await response.json();
+  if (response.ok) {
+    return json;
+  } else {
+    throw json;
+  }
+};
 
 const TaskDisplay = () => {
-  const { data: taskData, isLoading: taskDataIsLoading } = useSWR(
-    "/api/task",
-    fetcher,
-  );
-  const { data: categoryData, isLoading: categoryDataIsLoading } = useSWR(
-    "/api/category",
-    fetcher,
-  );
+  const { data, error, isLoading } = useSWR("/api/task", fetcher);
   const [searchString, setSearchString] = React.useState("");
-  const [selectedCategories, setSelectedCategories] = React.useState<number[]>(
-    [],
-  );
 
-  const filterTasksUsingSearch = () => {
-    if (searchString.length !== 0 && taskData) {
+  const filterData = () => {
+    if (searchString.length !== 0 && data) {
       const searchWords = new Set(searchString.toLowerCase().split(/\s+/));
-      const filteredData = taskData.filter((item: Task) => {
+      const filteredData = data.filter((item: Task) => {
         const titleWords = item.title.toLowerCase().split(/\s+/);
         return titleWords.some((word) => searchWords.has(word));
       });
 
-      return filteredData;
+      if (filteredData.length === 0) {
+        return undefined;
+      } else {
+        return filteredData;
+      }
     } else {
-      return taskData;
+      return data;
     }
   };
 
-  function filterTasksUsingCategories(tasks: Array<Task>) {
-    if (selectedCategories.length !== 0 && tasks) {
-      return tasks.filter((item: Task) =>
-        selectedCategories.includes(item.category),
-      );
-    }
-    return tasks;
-  }
-
-  const tasksToRender = filterTasksUsingCategories(filterTasksUsingSearch());
+  const tasksToRender = filterData();
 
   return (
     <>
       <div className="max-w-7xl m-auto p-5 sm:p-8">
-        <div className="flex flex-row">
-          <FilterMenu
-            categories={categoryData}
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-          />
-          <div className="flex-grow" />
-          <SearchBar setResults={setSearchString} />
-        </div>
-
-        {taskDataIsLoading && (
+        <SearchBar setResults={setSearchString} />
+        {isLoading && (
           <h1 className="mt-5 text-2xl text-center text-gray-400">
             Loading...
           </h1>
         )}
-        {tasksToRender?.length === 0 && searchString.length !== 0 && (
+        {!tasksToRender && searchString.length !== 0 && (
           <h1 className="mt-5 text-2xl text-center text-gray-400">
-            {`No results found for "${searchString}".`}
-          </h1>
-        )}
-        {tasksToRender?.length === 0 && searchString.length === 0 && (
-          <h1 className="mt-5 text-2xl text-center text-gray-400">
-            {`No results found.`}
+            {`No results found for ${searchString}`}
           </h1>
         )}
 
