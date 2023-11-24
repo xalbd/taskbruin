@@ -5,15 +5,17 @@ import toast, { Toaster } from "react-hot-toast";
 import TextArea from "@/components/TextArea";
 import Dropdown from "@/components/Dropdown";
 import { useSession } from "next-auth/react";
-import useSWR from "swr";
-import fetcher from "@/utils/getFetcher";
 import offsetDate from "@/utils/getOffsetDate";
 
 const TaskForm = () => {
-  const { data: categoryData, isLoading: categoryDataIsLoading } = useSWR(
-    "/api/category",
-    fetcher,
-  );
+  React.useEffect(() => {
+    fetch("api/category")
+      .then((response) => response.json())
+      .then((data) => setCategoryData(data));
+  }, []);
+  const [categoryData, setCategoryData] = React.useState([
+    { id: 0, name: "Other" },
+  ]);
 
   const [title, setTitle] = React.useState("");
   const [category, setCategory] = React.useState(0);
@@ -87,9 +89,7 @@ const TaskForm = () => {
           setValue={setTitle}
         />
         <Dropdown
-          categories={
-            categoryDataIsLoading ? [{ id: 0, name: "Other" }] : categoryData
-          }
+          categories={categoryData}
           title="Category"
           setValue={setCategory}
         />
