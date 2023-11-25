@@ -1,6 +1,6 @@
 // TaskModal.tsx
 
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import AcceptTask from "@/app/dev/AcceptTask";
 
@@ -15,14 +15,23 @@ interface TaskModalProps {
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
-  const [accepted, setAccepted] = React.useState(false);
+  const [isAccepted, setIsAccepted] = useState(false);
 
   const handleAcceptTask = async () => {
-    if (task && task.id) {
-      await AcceptTask(task.id);
-      setAccepted(true);
+    // Call the API to accept the task
+    const response = await fetch(`/api/accept/${task?.id}`, {
+      method: "POST", // Assuming your API endpoint supports POST method for task acceptance
+    });
+
+    if (response.ok) {
+      setIsAccepted(true);
+      // Optionally, you can handle further logic based on the API response
+    } else {
+      // Handle error cases
+      console.error("Failed to accept task:", response.statusText);
     }
   };
+
   return (
     <Modal
       isOpen={task !== null}
@@ -55,14 +64,14 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
             <button
               type="button"
               className={`mt-3 inline-flex w-full justify-center rounded-md ${
-                accepted
+                isAccepted
                   ? "bg-gray-500 cursor-not-allowed"
                   : "bg-green-800 hover:bg-green-700"
               } px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto`}
               onClick={handleAcceptTask}
-              disabled={accepted}
+              disabled={isAccepted}
             >
-              {accepted ? "Task Accepted!" : "Accept Task!"}
+              {isAccepted ? "Task Accepted!" : "Accept Task!"}
             </button>
           </div>
         </div>
