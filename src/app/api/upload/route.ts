@@ -1,14 +1,20 @@
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { S3Client } from "@aws-sdk/client-s3";
+import getServerSessionUserId from "@/utils/getServerSessionUserId";
 
 export async function POST(request: Request): Promise<Response> {
   const { filename, contentType } = await request.json();
+
+  const userId = await getServerSessionUserId();
+  if (!userId) {
+    return Response.json({}, { status: 401 });
+  }
 
   try {
     const client = new S3Client({ region: process.env.AWS_REGION as string });
     const { url, fields } = await createPresignedPost(client, {
       Bucket: process.env.AWS_BUCKET_NAME as string,
-      Key: filename,
+      Key: `${userId}`,
       Conditions: [
         ["content-length-range", 0, 10485760], // up to 10 MB
         ["starts-with", "$Content-Type", contentType],
