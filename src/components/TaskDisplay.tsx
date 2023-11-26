@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TaskCard from "@/components/TaskCard";
 import useSWR from "swr";
 import SearchBar from "@/components/SearchBar";
@@ -12,6 +12,7 @@ interface Task {
   price: number;
   description: string;
   userId: string;
+  acceptedByUserId: string | null;
 }
 
 const fetcher = async (endpoint: string) => {
