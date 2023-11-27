@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { ResponseDisplayProps } from "./page";
 
-
-export default function Upload({}) {
+export default function Upload({
+  setResponse,
+  setResponseStatus,
+}: ResponseDisplayProps) {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUploadImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!file) {
@@ -24,9 +27,10 @@ export default function Upload({}) {
       },
       body: JSON.stringify({ filename: `${file.name}`, contentType: file.type }),
     });
+    setResponseStatus(response.status.toString());
 
     if (response.ok) {
-      const { url, fields} = await response.json();
+      const {url, fields} = await response.json();
 
       const formData = new FormData();
       Object.entries(fields).forEach(([key, value]) => {
@@ -40,6 +44,7 @@ export default function Upload({}) {
       });
 
       if (uploadResponse.ok) {
+        setResponse(file.name);
         alert("Upload successful!");
       } else {
         console.error("S3 Upload Error:", uploadResponse);
@@ -55,7 +60,7 @@ export default function Upload({}) {
   return (
     <main>
       <h1>Upload a File to S3</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleUploadImage}>
         <input
           id="file"
           type="file"

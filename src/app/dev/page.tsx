@@ -40,7 +40,10 @@ export default function Dev() {
             setResponseStatus={setResponseStatus}
             setResponse={setResponseBody}
           />
-          <Upload />
+          <Upload 
+            setResponseStatus={setResponseStatus}
+            setResponse={setResponseBody}
+          />
         </div>
         <div className="col-span-1">
           <DisplayOutput title="Last Request Body" output={requestBody} />
