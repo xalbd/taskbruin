@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 
-export default function Upload() {
+
+export default function Upload({}) {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -21,11 +22,11 @@ export default function Upload() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ filename: file.name, contentType: file.type }),
+      body: JSON.stringify({ filename: `${file.name}`, contentType: file.type }),
     });
 
     if (response.ok) {
-      const { url, fields } = await response.json();
+      const { url, fields} = await response.json();
 
       const formData = new FormData();
       Object.entries(fields).forEach(([key, value]) => {

@@ -1,5 +1,6 @@
 import React from "react";
 import { RequestResponseDisplayProps } from "./page";
+import Upload from './Upload'
 
 export default function PostTasks({
   setRequest,
@@ -89,8 +90,7 @@ export default function PostTasks({
         onChange={(event) => {
           setPrice(event.target.value);
         }}
-      />
-
+      />      
       <button className="outline p-1">/api/task POST</button>
     </form>
   );
