@@ -4,7 +4,7 @@ import React from "react";
 import TaskCard from "@/components/TaskCard";
 import useSWR from "swr";
 import SearchBar from "@/components/SearchBar";
-import { Task } from "../../types/task"
+import { Task } from "../../types/task";
 
 const fetcher = async (endpoint: string) => {
   const response = await fetch(endpoint);
@@ -56,10 +56,8 @@ const TaskDisplay = () => {
         )}
 
         <div className="mt-8 columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-3 lg:columns-4 xl:columns-5 ">
-          {tasksToRender?.map((task: Task, index: number) => (
-            <TaskCard
-              task = {task}
-            />
+          {tasksToRender?.map((task: Task) => (
+            <TaskCard task={task} key={task.id} />
           ))}
         </div>
       </div>

@@ -20,7 +20,7 @@ const ProfileTasks: React.FC<ProfileTasksProps> = ({ title, tasks }) => {
           ) : (
             <>
               {tasks.map((task) => (
-                <TaskCard task={task} horizontal={true} />
+                <TaskCard key={task.id} task={task} horizontal={true} />
               ))}
             </>
           )}
