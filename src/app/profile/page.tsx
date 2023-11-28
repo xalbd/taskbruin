@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Task } from "../../../types/task";
 import ProfileTasks from "@/components/ProfileTasks";
+import { signIn } from "next-auth/react";
 
 interface UserInfo {
   name: string;
@@ -24,7 +25,8 @@ const Profile = () => {
             setUserInfo(data[0]);
           }
         } else {
-          setUserInfo(null);
+          console.log("NOTHINGGG")
+          signIn()
         }
       } catch (error) {
         console.error(error);

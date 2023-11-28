@@ -56,15 +56,9 @@ const TaskDisplay = () => {
         )}
 
         <div className="mt-8 columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-3 lg:columns-4 xl:columns-5 ">
-          {tasksToRender?.map((data: Task, index: number) => (
+          {tasksToRender?.map((task: Task, index: number) => (
             <TaskCard
-              key={index}
-              title={data.title}
-              date={"10-23-2023"}
-              description={data.description}
-              image_url={
-                "https://upload.wikimedia.org/wikipedia/en/7/79/IOS_17_Homescreen.png"
-              }
+              task = {task}
             />
           ))}
         </div>
