@@ -25,7 +25,7 @@ const Profile = () => {
             setUserInfo(data[0]);
           }
         } else {
-          signIn()
+          signIn();
         }
       } catch (error) {
         console.error(error);
@@ -101,8 +101,10 @@ const Profile = () => {
             </div>
 
             <div className="flex mt-24 mb-10 mr-5 ml-5">
-              <ProfileTasks title={"My Tasks"} tasks={createdTasks} />
-              <div className="ml-9">
+              <div className="w-1/2">
+                <ProfileTasks title={"My Tasks"} tasks={createdTasks} />
+              </div>
+              <div className="ml-9 w-1/2">
                 <ProfileTasks title={"Accepted Tasks"} tasks={acceptedTasks} />
               </div>
             </div>
@@ -114,4 +116,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
