@@ -25,7 +25,6 @@ const Profile = () => {
             setUserInfo(data[0]);
           }
         } else {
-          console.log("NOTHINGGG")
           signIn()
         }
       } catch (error) {
