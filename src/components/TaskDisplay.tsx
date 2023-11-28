@@ -5,15 +5,7 @@ import TaskCard from "@/components/TaskCard";
 import useSWR from "swr";
 import SearchBar from "@/components/SearchBar";
 import TaskModal from "@/components/TaskModal";
-
-interface Task {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  userId: string;
-  acceptedByUserId: string | null;
-}
+import { Task } from "../../types/task";
 
 const fetcher = async (endpoint: string) => {
   const response = await fetch(endpoint);
@@ -74,19 +66,12 @@ const TaskDisplay = () => {
         )}
 
         <div className="mt-8 columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-3 lg:columns-4 xl:columns-5 ">
-          {tasksToRender?.map((data: Task, index: number) => (
-            <div key={index}>
-              <TaskCard
-                key={index}
-                title={data.title}
-                date={"10-23-2023"}
-                description={data.description}
-                image_url={
-                  "https://upload.wikimedia.org/wikipedia/en/7/79/IOS_17_Homescreen.png"
-                }
-                onClick={() => openModal(data)}
-              />
-            </div>
+          {tasksToRender?.map((task: Task) => (
+            <TaskCard
+              task={task}
+              key={task.id}
+              onClick={() => openModal(task)}
+            />
           ))}
         </div>
         {/* Use TaskModal */}

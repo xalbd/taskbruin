@@ -9,11 +9,13 @@ export default function PostTasks({
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState("");
+  const [category, setCategory] = React.useState("");
 
   const id = React.useId();
   const titleId = `${id}-title`;
   const descriptionId = `${id}-message`;
   const priceId = `${id}-price`;
+  const categoryId = `${id}-category`;
 
   async function handlePostTasksSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -21,6 +23,7 @@ export default function PostTasks({
       title,
       description,
       price,
+      category,
     });
     setRequest(requestBody);
 
@@ -54,6 +57,18 @@ export default function PostTasks({
         placeholder="no description given"
         onChange={(event) => {
           setDescription(event.target.value);
+        }}
+      />
+
+      <label htmlFor={categoryId}>Category</label>
+      <input
+        className="outline p-1"
+        id={categoryId}
+        value={category}
+        type="number"
+        required={true}
+        onChange={(event) => {
+          setCategory(event.target.value);
         }}
       />
 
