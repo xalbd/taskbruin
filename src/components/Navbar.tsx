@@ -111,7 +111,7 @@ const Navbar = () => {
                               active ? "bg-gray-100" : "",
                               "w-full block px-4 py-2 text-sm text-gray-700 text-left",
                             )}
-                            onClick={() => signOut()}
+                            onClick={() => signOut({ callbackUrl: '/' })}
                           >
                             Sign Out
                           </button>
