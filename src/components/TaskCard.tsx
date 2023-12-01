@@ -34,7 +34,12 @@ const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
   const renderPrices = (task: Task) => {
     const prices = [];
     for (let i = 0; i < task.price; i++) {
-      prices.push(<GiTicket key={i} className="text-2xl mr-2" />);
+      prices.push(
+        <GiTicket
+          key={i}
+          className={` mr-2 ${horizontal ? "md:text-2xl lg:text-3xl" : "text-3xl"}`}
+        />
+      );
     }
     return prices;
   };
@@ -53,12 +58,12 @@ const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
         className={`${horizontal ? "w-1/2 mr-4 mb-2" : ""} rounded-lg`}
         style={{ maxWidth: "100%" }}
       />
-      <div className={`w-full ${horizontal ? "" : ""}`}>
+      <div className={"w-full "}>
         <p className="mb-2 mt-5 italic">
           {formatDateString(task.startDate)} - {formatDateString(task.endDate)}
         </p>
         <h2 className="text-2xl font-bold mb-2 ">{task.title}</h2>
-        <p className="">{task.description}</p>
+        <p>{task.description}</p>
       </div>
       <div className={`flex justify-center mt-4`}>{renderPrices(task)}</div>
     </div>
