@@ -1,5 +1,6 @@
 import React from "react";
 import { Task } from "../../types/task";
+import { GiTicket } from "react-icons/gi";
 
 interface CardProps {
   task: Task;
@@ -11,21 +12,38 @@ const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
     if (typeof dateString === "string") {
       const date = new Date(dateString);
       const months = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
       ];
       const month = months[date.getMonth()];
       const day = String(date.getDate());
       return `${month} ${day}`;
     }
   };
-  
+
+  const renderPrices = (task: Task) => {
+    const prices = [];
+    for (let i = 0; i < task.price; i++) {
+      prices.push(<GiTicket key={i} className="text-2xl mr-2" />);
+    }
+    return prices;
+  };
 
   return (
     <div
       className={`${
         horizontal ? "flex" : "flex-col "
-      } rounded-lg overflow-hidden p-8 mb-11`}
+      } rounded-lg overflow-hidden cursor-pointer p-8 mb-11`}
       style={{ boxShadow: "0 4px 6px rgba(100, 149, 237, 0.5)" }}
     >
       <img
@@ -41,10 +59,8 @@ const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
         </p>
         <h2 className="text-2xl font-bold mb-2 ">{task.title}</h2>
         <p className="">{task.description}</p>
-        <p className="font-bold mt-2">
-          Swipes: {task.price}
-        </p>
       </div>
+      <div className={`flex justify-center mt-4`}>{renderPrices(task)}</div>
     </div>
   );
 };
