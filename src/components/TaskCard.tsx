@@ -10,12 +10,16 @@ const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
   const formatDateString = (dateString: string | null) => {
     if (typeof dateString === "string") {
       const date = new Date(dateString);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${month}/${day}`;
+      const months = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      ];
+      const month = months[date.getMonth()];
+      const day = String(date.getDate());
+      return `${month} ${day}`;
     }
   };
+  
 
   return (
     <div
@@ -38,7 +42,7 @@ const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
         <h2 className="text-2xl font-bold mb-2 ">{task.title}</h2>
         <p className="">{task.description}</p>
         <p className="font-bold mt-2">
-          Price: {task.price}
+          Swipes: {task.price}
         </p>
       </div>
     </div>
