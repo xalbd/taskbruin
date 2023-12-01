@@ -5,15 +5,19 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { useEffect, useState } from "react";
 import { getOperators } from "drizzle-orm";
+import { redirect } from "next/navigation";
 
 export default function SignIn() {
   const [providers, setProviders] = useState([]);
-  useEffect(() => {
-    const { data: session } = getSession();
 
-    if (session) {
-      return { redirect: { destination: "/" } };
-    }
+  useEffect(() => {
+    const checkIfUser = async () => {
+      const session = await getServerSession();
+      if (session) {
+        redirect("/");
+      }
+    };
+    checkIfUser();
     const getProvidersAsync = async () => {
       const providers = await getProviders();
       setProviders(providers);
@@ -29,7 +33,7 @@ export default function SignIn() {
         {Object.values(providers).map((provider) => (
           <div key={provider.name}>
             <button
-              onClick={() => signIn(provider.id)}
+              onClick={() => signIn(provider.id, { callbackUrl: "/" })}
               class={
                 provider.name == "GitHub"
                   ? "text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 me-2 mb-2"
