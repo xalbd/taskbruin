@@ -7,6 +7,7 @@ import SearchBar from "@/components/SearchBar";
 import FilterMenu from "@/components/FilterMenu";
 import fetcher from "@/utils/getFetcher";
 import { Task } from "../../types/task";
+import FilterMenuPrice from "./FilterMenuPrice";
 
 const TaskDisplay = () => {
   const { data: taskData, isLoading: taskDataIsLoading } = useSWR(
@@ -21,6 +22,7 @@ const TaskDisplay = () => {
   const [selectedCategories, setSelectedCategories] = React.useState<number[]>(
     [],
   );
+  const [value, setValue] =  React.useState<number[]>([1, 50]);
 
   const filterTasksUsingSearch = () => {
     if (searchString.length !== 0 && taskData) {
@@ -43,13 +45,27 @@ const TaskDisplay = () => {
       );
     }
     return tasks;
-  }
+  };
 
-  const tasksToRender = filterTasksUsingCategories(filterTasksUsingSearch());
+  function filterTasksUsingPrice(tasks: Array<Task>) {
+    if (value[0] != 1 || value[1] != 50) {
+      return tasks.filter((item: Task) =>
+        value[0] <= item.price && item.price <= value[1],
+      );
+    }
+    return tasks;
+  };
+
+  const tasksToRender1 = filterTasksUsingCategories(filterTasksUsingSearch());
+  const tasksToRender = filterTasksUsingPrice(tasksToRender1);
 
   return (
     <>
       <div className="max-w-7xl m-auto p-5 sm:p-8">
+        <FilterMenuPrice 
+          value={value}
+          setValue={setValue}
+        />
         <div className="flex flex-row">
           <FilterMenu
             categories={categoryData}
