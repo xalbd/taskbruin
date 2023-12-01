@@ -1,6 +1,6 @@
 import React from "react";
 import { RequestResponseDisplayProps } from "./page";
-import Upload from './Upload'
+import Upload from "./Upload";
 
 export default function PostTasks({
   setRequest,
@@ -10,7 +10,7 @@ export default function PostTasks({
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState("");
-  const [image, setImage] = React.useState<File | null>(null);
+  const [image, setImage] = React.useState("");
   const [category, setCategory] = React.useState("");
 
   const id = React.useId();
@@ -28,6 +28,7 @@ export default function PostTasks({
       description,
       price,
       category,
+      image,
     });
 
     setRequest(requestBody);
@@ -90,9 +91,19 @@ export default function PostTasks({
         onChange={(event) => {
           setPrice(event.target.value);
         }}
-      />      
-      <button className="outline p-1">/api/task POST</button>
+      />
 
+      <label htmlFor={imageId}>Image</label>
+      <input
+        className="outline p-1"
+        id={imageId}
+        value={image}
+        required={true}
+        onChange={(event) => {
+          setImage(event.target.value);
+        }}
+      />
+      <button className="outline p-1">/api/task POST</button>
     </form>
   );
 }

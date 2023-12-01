@@ -14,6 +14,7 @@ interface Task {
   description: string;
   userId: string;
   category: number;
+  image: string;
 }
 
 const TaskDisplay = () => {
@@ -91,9 +92,7 @@ const TaskDisplay = () => {
               title={data.title}
               date={"10-23-2023"}
               description={data.description}
-              image_url={
-                "https://upload.wikimedia.org/wikipedia/en/7/79/IOS_17_Homescreen.png"
-              }
+              image_url={data.image}
             />
           ))}
         </div>

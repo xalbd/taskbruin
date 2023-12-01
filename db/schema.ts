@@ -28,6 +28,7 @@ export const task = pgTable("task", {
     .references(() => category.id, {
       onDelete: "cascade",
     }),
+  image: text("image").notNull(),
 });
 
 export const category = pgTable("category", {
