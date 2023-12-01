@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { ResponseDisplayProps } from "./page";
+import {v4 as uuidv4} from 'uuid';
+
 
 export default function Upload({
   setResponse,
@@ -9,6 +11,7 @@ export default function Upload({
 }: ResponseDisplayProps) {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  let file_uuid = uuidv4();
 
   const handleUploadImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,7 +28,7 @@ export default function Upload({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ filename: `${file.name}`, contentType: file.type }),
+      body: JSON.stringify({filename: file_uuid, contentType: file.type }),
     });
     setResponseStatus(response.status.toString());
 
@@ -44,7 +47,8 @@ export default function Upload({
       });
 
       if (uploadResponse.ok) {
-        setResponse(file.name);
+        let obj_url = 'http://taskbruin.s3.us-west-1.amazonaws.com/' + file_uuid;
+        setResponse(obj_url);
         alert("Upload successful!");
       } else {
         console.error("S3 Upload Error:", uploadResponse);

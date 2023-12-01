@@ -9,12 +9,11 @@ export async function POST(request: Request): Promise<Response> {
   if (!userId) {
     return Response.json({}, { status: 401 });
   }
-
   try {
     const client = new S3Client({ region: process.env.AWS_REGION as string });
     const { url, fields } = await createPresignedPost(client, {
       Bucket: process.env.AWS_BUCKET_NAME as string,
-      Key: `${userId}/${filename}`,
+      Key: `${filename}`,
       Conditions: [
         ["content-length-range", 0, 10485760], // up to 10 MB
         ["starts-with", "$Content-Type", contentType],
@@ -25,7 +24,7 @@ export async function POST(request: Request): Promise<Response> {
       },
       Expires: 600, // Seconds before the presigned post expires. 3600 by default.
     });
-    return new Response(JSON.stringify({ url, fields}), {
+    return new Response(JSON.stringify({ url, fields, userId, filename}), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
