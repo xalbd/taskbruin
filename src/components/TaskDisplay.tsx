@@ -6,16 +6,7 @@ import useSWR from "swr";
 import SearchBar from "@/components/SearchBar";
 import FilterMenu from "@/components/FilterMenu";
 import fetcher from "@/utils/getFetcher";
-
-interface Task {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  userId: string;
-  category: number;
-  image: string;
-}
+import { Task } from "../../types/task";
 
 const TaskDisplay = () => {
   const { data: taskData, isLoading: taskDataIsLoading } = useSWR(
@@ -86,14 +77,8 @@ const TaskDisplay = () => {
         )}
 
         <div className="mt-8 columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-3 lg:columns-4 xl:columns-5 ">
-          {tasksToRender?.map((data: Task, index: number) => (
-            <TaskCard
-              key={index}
-              title={data.title}
-              date={"10-23-2023"}
-              description={data.description}
-              image_url={data.image}
-            />
+          {tasksToRender?.map((task: Task) => (
+            <TaskCard task={task} key={task.id} />
           ))}
         </div>
       </div>
