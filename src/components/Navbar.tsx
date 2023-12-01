@@ -39,11 +39,11 @@ const Navbar = () => {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="hidden sm:ml-6 sm:block">
+              <div className="flex flex-1 items-center justify-center sm:justify-start">
+                <div className="hidden sm:block">
                   <div className="flex space-x-4 items-center">
                     <img
-                      className="h-20 w-auto"
+                      className="h-16 w-auto"
                       src={logo.src}
                       alt="Your Company"
                     />
