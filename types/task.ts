@@ -4,9 +4,10 @@ export interface Task {
   price: number;
   description: string;
   creationTime: string;
-  startDate: string | null; 
+  startDate: string | null;
   endDate: string | null;
   userId: string;
   acceptedByUserId: string;
   category: number;
+  image: string;
 }

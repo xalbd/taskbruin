@@ -5,15 +5,18 @@ import toast, { Toaster } from "react-hot-toast";
 import TextArea from "@/components/TextArea";
 import Dropdown from "@/components/Dropdown";
 import { useSession } from "next-auth/react";
-import useSWR from "swr";
-import fetcher from "@/utils/getFetcher";
 import offsetDate from "@/utils/getOffsetDate";
+import { v4 as uuidv4 } from "uuid";
 
 const TaskForm = () => {
-  const { data: categoryData, isLoading: categoryDataIsLoading } = useSWR(
-    "/api/category",
-    fetcher,
-  );
+  React.useEffect(() => {
+    fetch("api/category")
+      .then((response) => response.json())
+      .then((data) => setCategoryData(data));
+  }, []);
+  const [categoryData, setCategoryData] = React.useState([
+    { id: 0, name: "Other" },
+  ]);
 
   const [title, setTitle] = React.useState("");
   const [category, setCategory] = React.useState(0);
@@ -21,9 +24,7 @@ const TaskForm = () => {
   const [price, setPrice] = React.useState(1);
   const [startDate, setStartDate] = React.useState(offsetDate(0));
   const [endDate, setEndDate] = React.useState(offsetDate(7));
-  const [selectedFiles, setSelectedFiles] = React.useState<FileList | null>(
-    null,
-  );
+  const [file, setFile] = React.useState<File | null>(null);
 
   // control usage of submit button
   const { status: authStatus } = useSession();
@@ -43,7 +44,7 @@ const TaskForm = () => {
     setPrice(1);
     setStartDate(offsetDate(0));
     setEndDate(offsetDate(7));
-    setSelectedFiles(null);
+    setFile(null);
   };
 
   const handleTasksSubmit = async (event: React.FormEvent) => {
@@ -54,6 +55,48 @@ const TaskForm = () => {
       toast.error("Start date must be before end date.", { id: "failed" });
       return;
     }
+
+    const file_uuid = uuidv4();
+    let obj_url = null;
+
+    if (!file) {
+      toast.error("No image selected.", { id: "failed" });
+      return;
+    }
+
+    const upload_response = await fetch("api/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ filename: file_uuid, contentType: file.type }),
+    });
+
+    if (upload_response.ok) {
+      const { url, fields } = await upload_response.json();
+
+      const formData = new FormData();
+      Object.entries(fields).forEach(([key, value]) => {
+        formData.append(key, value as string);
+      });
+      formData.append("file", file);
+
+      const uploadResponse = await fetch(url, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (uploadResponse.ok) {
+        obj_url = "http://taskbruin.s3.us-west-1.amazonaws.com/" + file_uuid;
+      } else {
+        toast.error("Image upload failed.", { id: "failed" });
+        return;
+      }
+    } else {
+      toast.error("Failed to get pre-signed URL.", { id: "failed" });
+      return;
+    }
+
     const requestBody = JSON.stringify({
       title,
       description,
@@ -61,6 +104,7 @@ const TaskForm = () => {
       category,
       startDate: startDateObj,
       endDate: endDateObj,
+      image: obj_url,
     });
     setFormWaiting(true);
     const response = await fetch("api/task", {
@@ -87,9 +131,7 @@ const TaskForm = () => {
           setValue={setTitle}
         />
         <Dropdown
-          categories={
-            categoryDataIsLoading ? [{ id: 0, name: "Other" }] : categoryData
-          }
+          categories={categoryData}
           title="Category"
           setValue={setCategory}
         />
@@ -134,13 +176,13 @@ const TaskForm = () => {
           type="file"
           title="Image"
           setValue={() => {}}
-          onChange={(event) => {
-            // override internal input handler using rest spreading
-            const files = event.target.files;
+          onChange={(e) => {
+            const files = e.target.files;
             if (files) {
-              setSelectedFiles(files);
+              setFile(files[0]);
             }
           }}
+          accept="image/png, image/jpeg"
         />
 
         <button
