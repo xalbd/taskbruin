@@ -1,23 +1,16 @@
 "use client";
 
-import { getProviders, getSession, signIn, useSession } from "next-auth/react";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import { getProviders, signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { getOperators } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 export default function SignIn() {
   const [providers, setProviders] = useState([]);
-
+  const { status: authStatus } = useSession();
+  if (authStatus == "authenticated") {
+    return redirect("/");
+  }
   useEffect(() => {
-    const checkIfUser = async () => {
-      const session = await getServerSession();
-      if (session) {
-        redirect("/");
-      }
-    };
-    checkIfUser();
     const getProvidersAsync = async () => {
       const providers = await getProviders();
       setProviders(providers);
@@ -27,8 +20,12 @@ export default function SignIn() {
   }, []);
   return (
     <>
-      <div className="max-w-7xl m-auto p-5 sm:p-8">
-        <div class="text-3xl">Sign in to TaskBruin!</div>
+      <div className="max-w-md mx-auto mt-8 p-6 flex flex-col items-center">
+        <div class="text-3xl mb-3">Sign In</div>
+        <div class="text-sm text-slate-400">
+          Welcome to TaskBruin, our UCLA service platform that connects you with
+          Bruins to help with food delivery, laundry, scooter rental, and more.
+        </div>
         <br></br>
         {Object.values(providers).map((provider) => (
           <div key={provider.name}>
