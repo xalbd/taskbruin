@@ -25,9 +25,7 @@ const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
       style={{ boxShadow: "0 4px 6px rgba(100, 149, 237, 0.5)" }}
     >
       <img
-        src={
-          "https://static.demilked.com/wp-content/uploads/2018/03/5aaa1cc04ed34-funny-weird-wtf-stock-photos-19-5a3926af95d9d__700.jpg"
-        }
+        src={task.image}
         className={`w-1/2 ${horizontal ? "mr-4 mb-2" : ""} rounded-lg`}
         style={{ maxWidth: "100%" }}
       />
