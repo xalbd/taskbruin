@@ -74,8 +74,9 @@ const TaskDisplay = () => {
             />
           ))}
         </div>
-        {/* Use TaskModal */}
-        <TaskModal task={selectedTask} closeModal={closeModal} />
+        {selectedTask && (
+          <TaskModal task={selectedTask} closeModal={closeModal} />
+        )}
       </div>
     </>
   );

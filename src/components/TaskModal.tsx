@@ -2,20 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
+import toast, { Toaster } from "react-hot-toast";
+import { useSession } from "next-auth/react";
+import { Task } from "../../types/task";
 
 interface TaskModalProps {
-  task: {
-    title: string;
-    description: string;
-    image_url?: string;
-    id: number;
-    acceptedByUserId: string | null;
-  } | null;
+  task: Task;
   closeModal: () => void;
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
   const [isAccepted, setIsAccepted] = useState(false);
+  const { data: session, status: authStatus } = useSession();
+  session?.user.id;
 
   useEffect(() => {
     setIsAccepted(task?.acceptedByUserId !== null);
@@ -29,12 +28,16 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
     if (response.ok) {
       setIsAccepted(true);
     } else {
-      console.error("Failed to accept task:", response.statusText);
+      toast.error("Failed to accept task: ${response.statusText}");
     }
   };
 
   const getButtonContent = () => {
-    if (isAccepted) {
+    if (authStatus !== "authenticated") {
+      return "Log in to accept!";
+    } else if (task?.userId === session.user.id) {
+      return "This is your own task!";
+    } else if (isAccepted) {
       return "Task Accepted!";
     } else if (task?.acceptedByUserId) {
       return "Task Already Accepted";
@@ -84,24 +87,28 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                 {task.description}
               </p>
-              {task.image_url && (
+              {/*task.image_url && (
                 <img
                   src={task.image_url}
                   alt={task.title}
                   className="max-w-full h-auto"
                 />
-              )}
+              )*/}
             </div>
             <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="button"
                 className={`text-white ${
-                  isAccepted
+                  authStatus !== "authenticated" || isAccepted
                     ? "bg-gray-500 cursor-not-allowed"
                     : "bg-green-800 hover:bg-green-700"
                 } px-5 py-2.5 font-medium rounded-lg text-sm`}
                 onClick={handleAcceptTask}
-                disabled={isAccepted}
+                disabled={
+                  task?.userId === session?.user.id ||
+                  authStatus !== "authenticated" ||
+                  isAccepted
+                }
               >
                 {getButtonContent()}
               </button>
