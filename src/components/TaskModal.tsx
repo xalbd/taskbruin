@@ -13,6 +13,7 @@ interface TaskModalProps {
 
 const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
   const [isAccepted, setIsAccepted] = useState(false);
+  const [isAccepting, setIsAccepting] = useState(false);
   const { data: session, status: authStatus } = useSession();
   session?.user.id;
 
@@ -21,14 +22,24 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
   }, [task]);
 
   const handleAcceptTask = async () => {
-    const response = await fetch(`/api/accept/${task?.id}`, {
-      method: "POST",
-    });
+    if (isAccepting) {
+      return;
+    }
 
-    if (response.ok) {
-      setIsAccepted(true);
-    } else {
-      toast.error("Failed to accept task: ${response.statusText}");
+    setIsAccepted(true);
+
+    try {
+      const response = await fetch(`/api/accept/${task?.id}`, {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        setIsAccepted(true);
+      } else {
+        toast.error("Failed to accept task: ${response.statusText}");
+      }
+    } finally {
+      setIsAccepting(false);
     }
   };
 
@@ -99,15 +110,19 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
               <button
                 type="button"
                 className={`text-white ${
-                  authStatus !== "authenticated" || isAccepted
+                  authStatus !== "authenticated" ||
+                  isAccepted ||
+                  task?.userId === session.user.id ||
+                  isAccepting
                     ? "bg-gray-500 cursor-not-allowed"
                     : "bg-green-800 hover:bg-green-700"
                 } px-5 py-2.5 font-medium rounded-lg text-sm`}
                 onClick={handleAcceptTask}
                 disabled={
-                  task?.userId === session?.user.id ||
                   authStatus !== "authenticated" ||
-                  isAccepted
+                  isAccepted ||
+                  task?.userId === session.user.id ||
+                  isAccepting
                 }
               >
                 {getButtonContent()}
