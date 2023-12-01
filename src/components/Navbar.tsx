@@ -7,6 +7,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import ThemeButton from "@/components/ThemeButton";
 import ProfileOption from "@/components/ProfileOption";
 import Link from "next/link";
+import logo from "../app/taskbruinlogo.png";
+import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -38,15 +40,13 @@ const Navbar = () => {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
-                </div>
                 <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
+                  <div className="flex space-x-4 items-center">
+                    <img
+                      className="h-20 w-auto"
+                      src={logo.src}
+                      alt="Your Company"
+                    />
                     {navigation.map((item) => (
                       <Link
                         key={item.name}
@@ -81,7 +81,10 @@ const Navbar = () => {
                       <span className="absolute -inset-1.5" />
                       <img
                         className="h-12 w-12 rounded-full"
-                        src={session?.user?.image ?? "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
+                        src={
+                          session?.user?.image ??
+                          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        }
                         alt=""
                       />
                     </Menu.Button>
@@ -111,7 +114,7 @@ const Navbar = () => {
                               active ? "bg-gray-100" : "",
                               "w-full block px-4 py-2 text-sm text-gray-700 text-left",
                             )}
-                            onClick={() => signOut({ callbackUrl: '/' })}
+                            onClick={() => signOut({ callbackUrl: "/" })}
                           >
                             Sign Out
                           </button>
