@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { ResponseDisplayProps } from "./page";
-import {v4 as uuidv4} from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
 
 export default function Upload({
   setResponse,
@@ -28,12 +27,12 @@ export default function Upload({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({filename: file_uuid, contentType: file.type }),
+      body: JSON.stringify({ filename: file_uuid, contentType: file.type }),
     });
     setResponseStatus(response.status.toString());
 
     if (response.ok) {
-      const {url, fields} = await response.json();
+      const { url, fields } = await response.json();
 
       const formData = new FormData();
       Object.entries(fields).forEach(([key, value]) => {
@@ -47,7 +46,8 @@ export default function Upload({
       });
 
       if (uploadResponse.ok) {
-        let obj_url = 'http://taskbruin.s3.us-west-1.amazonaws.com/' + file_uuid;
+        let obj_url =
+          "http://taskbruin.s3.us-west-1.amazonaws.com/" + file_uuid;
         setResponse(obj_url);
         alert("Upload successful!");
       } else {
