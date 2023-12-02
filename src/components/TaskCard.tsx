@@ -4,9 +4,14 @@ import { Task } from "../../types/task";
 interface CardProps {
   task: Task;
   horizontal?: boolean;
+  onClick?: () => void;
 }
 
-const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
+const TaskCard: React.FC<CardProps> = ({
+  task,
+  horizontal = false,
+  onClick,
+}) => {
   const formatDateString = (dateString: string | null) => {
     if (typeof dateString === "string") {
       const date = new Date(dateString);
@@ -23,6 +28,7 @@ const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
         horizontal ? "flex" : ""
       } flex-shrink-0 rounded-lg overflow-hidden p-4 mb-11`}
       style={{ boxShadow: "0 4px 6px rgba(100, 149, 237, 0.5)" }}
+      onClick={onClick}
     >
       <img
         src={task.image}
