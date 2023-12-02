@@ -21,7 +21,7 @@ const FilterMenuPrice: React.FC<FilterMenuPriceProps> = ({
         <Box sx={{ width: 300 }}>
             <Slider
                 min={1}
-                max={50}
+                max={10}
                 getAriaLabel={() => 'Price'}
                 value={value}
                 onChange={handleSliderChange}
