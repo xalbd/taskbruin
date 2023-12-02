@@ -56,8 +56,7 @@ const TaskDisplay = () => {
     return tasks;
   };
 
-  const tasksToRender1 = filterTasksUsingCategories(filterTasksUsingSearch());
-  const tasksToRender = filterTasksUsingPrice(tasksToRender1);
+  const tasksToRender = filterTasksUsingPrice(filterTasksUsingCategories(filterTasksUsingSearch()));
 
   return (
     <>
