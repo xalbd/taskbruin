@@ -6,7 +6,6 @@ export default function AcceptTask({
   setResponseStatus,
 }: ResponseDisplayProps) {
   const [taskId, setTaskId] = React.useState("");
-
   async function fetchAcceptanceAPI(event: React.FormEvent, method: string) {
     event.preventDefault();
 

@@ -5,9 +5,14 @@ import { GiTicket } from "react-icons/gi";
 interface CardProps {
   task: Task;
   horizontal?: boolean;
+  onClick?: () => void;
 }
 
-const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
+const TaskCard: React.FC<CardProps> = ({
+  task,
+  horizontal = false,
+  onClick,
+}) => {
   const formatDateString = (dateString: string | null) => {
     if (typeof dateString === "string") {
       const date = new Date(dateString);
@@ -50,11 +55,10 @@ const TaskCard: React.FC<CardProps> = ({ task, horizontal = false }) => {
         horizontal ? "flex" : "flex-col "
       } rounded-lg overflow-hidden cursor-pointer p-8 mb-11`}
       style={{ boxShadow: "0 4px 6px rgba(100, 149, 237, 0.5)" }}
+      onClick={onClick}
     >
       <img
-        src={
-          "https://static.demilked.com/wp-content/uploads/2018/03/5aaa1cc04ed34-funny-weird-wtf-stock-photos-19-5a3926af95d9d__700.jpg"
-        }
+        src={task.image}
         className={`${horizontal ? "w-1/2 mr-4 mb-2" : ""} rounded-lg`}
         style={{ maxWidth: "100%" }}
       />

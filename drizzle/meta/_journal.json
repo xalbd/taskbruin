@@ -50,6 +50,13 @@
       "when": 1700736827115,
       "tag": "0006_lethal_jack_murdock",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1701404950849,
+      "tag": "0007_bizarre_thunderbolt",
+      "breakpoints": true
     }
   ]
 }
