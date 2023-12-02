@@ -63,7 +63,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
       isOpen={task !== null}
       onRequestClose={closeModal}
       contentLabel="Task Modal"
-      className="modal fixed inset-0 flex items-center justify-center"
+      className="modal fixed inset-0 flex items-center justify-center z-50"
     >
       {task && (
         <div className="relative p-4 w-full max-w-2xl max-h-full">

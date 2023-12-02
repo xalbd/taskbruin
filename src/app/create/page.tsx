@@ -146,6 +146,7 @@ const TaskForm = () => {
           title="Task Price"
           type="number"
           min={1}
+          max={10}
           required={true}
           value={price}
           setValue={setPrice}
