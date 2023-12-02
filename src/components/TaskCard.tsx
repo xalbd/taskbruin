@@ -51,20 +51,22 @@ const TaskCard: React.FC<CardProps> = ({
       }
       return prices;
     }
-    return [
-      <GiTicket
-        className={`mx-1 ${
-          horizontal ? "md:text-2xl lg:text-3xl" : "text-3xl"
-        }`}
-      ></GiTicket>,
-      <h3
-        className={`${
-          horizontal ? "pt-1" : ""
-        } text-center text-ml font-semibold`}
-      >
-        {price}x
-      </h3>,
-    ];
+    return (
+      <>
+        <GiTicket
+          className={`mx-1 ${
+            horizontal ? "md:text-2xl lg:text-3xl" : "text-3xl"
+          }`}
+        ></GiTicket>
+        <h3
+          className={`${
+            horizontal ? "pt-1" : ""
+          } text-center text-ml font-semibold`}
+        >
+          {price}x
+        </h3>
+      </>
+    );
   };
 
   return (
