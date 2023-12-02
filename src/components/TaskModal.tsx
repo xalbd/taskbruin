@@ -15,46 +15,47 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isAccepting, setIsAccepting] = useState(false);
   const { data: session, status: authStatus } = useSession();
-  session?.user.id;
 
   useEffect(() => {
     setIsAccepted(task?.acceptedByUserId !== null);
   }, [task]);
 
   const handleAcceptTask = async () => {
-    if (isAccepting) {
+    if (isAccepting || isAccepted) {
       return;
     }
 
-    setIsAccepted(true);
+    setIsAccepting(true);
 
-    try {
-      const response = await fetch(`/api/accept/${task?.id}`, {
-        method: "POST",
-      });
+    const response = await fetch(`/api/accept/${task?.id}`, {
+      method: "POST",
+    });
 
-      if (response.ok) {
-        setIsAccepted(true);
-      } else {
-        toast.error("Failed to accept task: ${response.statusText}");
-      }
-    } finally {
-      setIsAccepting(false);
+    if (response.ok) {
+      setIsAccepted(true);
+      task.acceptedByUserId = session?.user.id ?? ""; // hack because I don't have a way to refresh information of single task via API
+      toast.success("Task accepted!", { id: "accepted" });
+    } else {
+      toast.error("Failed to accept task.", { id: "failed" });
     }
+    setIsAccepting(false);
   };
 
   const getButtonContent = () => {
     if (authStatus !== "authenticated") {
-      return "Log in to accept!";
+      return "Log in to accept.";
     } else if (task?.userId === session.user.id) {
       return "This is your own task!";
     } else if (isAccepted) {
-      return "Task Accepted!";
-    } else if (task?.acceptedByUserId) {
-      return "Task Already Accepted";
-    } else {
-      return "Accept this task";
+      if (task?.acceptedByUserId === session.user.id) {
+        return "You've accepted this task!";
+      } else {
+        return "Someone else already accepted this task.";
+      }
+    } else if (isAccepting) {
+      return "Accepting...";
     }
+    return "Accept this task!";
   };
 
   return (
@@ -131,6 +132,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
           </div>
         </div>
       )}
+      <Toaster />
     </Modal>
   );
 };
