@@ -31,9 +31,7 @@ const TaskCard: React.FC<CardProps> = ({
       onClick={onClick}
     >
       <img
-        src={
-          "https://static.demilked.com/wp-content/uploads/2018/03/5aaa1cc04ed34-funny-weird-wtf-stock-photos-19-5a3926af95d9d__700.jpg"
-        }
+        src={task.image}
         className={`w-1/2 ${horizontal ? "mr-4 mb-2" : ""} rounded-lg`}
         style={{ maxWidth: "100%" }}
       />

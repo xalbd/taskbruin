@@ -5,6 +5,7 @@ import PostTasks from "./PostTasks";
 import GetTasks from "./GetTasks";
 import NavBar from "./NavBar";
 import DelTasks from "./DelTasks";
+import Upload from "./Upload";
 import AcceptTask from "./AcceptTask";
 import GetUser from "./GetUser";
 
@@ -36,6 +37,10 @@ export default function Dev() {
             setResponse={setResponseBody}
           />
           <AcceptTask
+            setResponseStatus={setResponseStatus}
+            setResponse={setResponseBody}
+          />
+          <Upload 
             setResponseStatus={setResponseStatus}
             setResponse={setResponseBody}
           />
