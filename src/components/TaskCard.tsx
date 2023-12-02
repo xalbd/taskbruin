@@ -57,7 +57,13 @@ const TaskCard: React.FC<CardProps> = ({
           horizontal ? "md:text-2xl lg:text-3xl" : "text-3xl"
         }`}
       ></GiTicket>,
-      <h3 className="text-center text-ml font-semibold">{price}x</h3>,
+      <h3
+        className={`${
+          horizontal ? "pt-1" : ""
+        } text-center text-ml font-semibold`}
+      >
+        {price}x
+      </h3>,
     ];
   };
 
