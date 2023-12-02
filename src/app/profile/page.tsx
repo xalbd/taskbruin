@@ -78,10 +78,10 @@ const Profile = () => {
             </div>
 
             <div className="flex mt-24 mb-10 mr-5 ml-5">
-              <div className="w-1/2">
+              <div className=" w-1/2">
                 <ProfileTasks title={"My Tasks"} tasks={createdTasks} />
               </div>
-              <div className="ml-9 w-1/2">
+              <div className="w-1/2">
                 <ProfileTasks title={"Accepted Tasks"} tasks={acceptedTasks} />
               </div>
             </div>
