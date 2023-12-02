@@ -22,7 +22,7 @@ const TaskDisplay = () => {
   const [selectedCategories, setSelectedCategories] = React.useState<number[]>(
     [],
   );
-  const [value, setValue] =  React.useState<number[]>([1, 50]);
+  const [value, setValue] =  React.useState<number[]>([1, 10]);
 
   const filterTasksUsingSearch = () => {
     if (searchString.length !== 0 && taskData) {
@@ -48,7 +48,7 @@ const TaskDisplay = () => {
   };
 
   function filterTasksUsingPrice(tasks: Array<Task>) {
-    if (value[0] != 1 || value[1] != 50) {
+    if (value[0] != 1 || value[1] != 10) {
       return tasks.filter((item: Task) =>
         value[0] <= item.price && item.price <= value[1],
       );
