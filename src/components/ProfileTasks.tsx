@@ -15,10 +15,10 @@ const ProfileTasks: React.FC<ProfileTasksProps> = ({ title, tasks }) => {
     <>
       <div>
         {tasks && (
-          <div className="mx-2">
+          <div className="px-2 w-full shrink-0">
             <h3 className="text-center text-xl font-bold mb-6">{title}</h3>
             {tasks.length === 0 ? (
-              <h1 className="mt-5 text-2xl text-center text-gray-400">
+              <h1 className="my-5 text-2xl text-center text-gray-400">
                 No results found.
               </h1>
             ) : (

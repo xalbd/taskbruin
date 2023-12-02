@@ -55,7 +55,7 @@ const Profile = () => {
         />
 
         <div className="flex items-center justify-center mt-7 relative">
-          <div>
+          <div className="grow">
             <div className="flex flex-col items-center justify-center text-white">
               {status === "authenticated" && (
                 <>
@@ -80,14 +80,14 @@ const Profile = () => {
               )}
             </div>
 
-            <div className="flex w-full mt-24 mb-10 mr-5 ml-5">
+            <div className="flex w-full mt-24 mb-10 px-5">
               {tasksReady === "loading" && (
-                <h1 className="mt-5 text-2xl text-center text-gray-400">
+                <h1 className="mt-5 text-2xl text-center text-gray-400 grow">
                   Tasks loading...
                 </h1>
               )}
               {tasksReady === "error" && (
-                <h1 className="mt-5 text-2xl text-center text-gray-400">
+                <h1 className="mt-5 text-2xl text-center text-gray-400 grow">
                   Tasks could not be loaded.
                 </h1>
               )}

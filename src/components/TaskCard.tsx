@@ -70,20 +70,16 @@ const TaskCard: React.FC<CardProps> = ({
   return (
     <div
       className={`${
-        horizontal ? "flex" : "flex-col "
-      } rounded-lg overflow-hidden cursor-pointer p-8 mb-11`}
+        horizontal ? "flex" : "flex-col"
+      } rounded-lg overflow-hidden cursor-pointer p-8 mb-5`}
       style={{ boxShadow: "0 4px 6px rgba(100, 149, 237, 0.5)" }}
       onClick={onClick}
     >
-      <div className={`${horizontal ? "mr-4 mb-2" : ""} w-full`}>
-        <img
-          src={task.image}
-          className={`rounded-lg h-auto w-full`}
-          style={{ maxWidth: "100%" }}
-        />
+      <div className={`${horizontal ? "mr-4 hidden md:block" : ""} w-full`}>
+        <img src={task.image} className={`rounded-lg h-auto w-full`} />
       </div>
 
-      <div className={"w-full "}>
+      <div className={"w-full"}>
         <p className="mb-2 mt-5 italic">
           {formatDateString(task.startDate)} - {formatDateString(task.endDate)}
         </p>
