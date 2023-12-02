@@ -37,18 +37,28 @@ const TaskCard: React.FC<CardProps> = ({
   };
 
   const renderPrices = (price: number) => {
-    const prices = [];
-    for (let i = 0; i < price; i++) {
-      prices.push(
-        <GiTicket
-          key={i}
-          className={`shrink-0 mr-2 ${
-            horizontal ? "md:text-2xl lg:text-3xl" : "text-3xl"
-          }`}
-        />,
-      );
+    if (price <= 4) {
+      const prices = [];
+      for (let i = 0; i < price; i++) {
+        prices.push(
+          <GiTicket
+            key={i}
+            className={`shrink-0 mx-1 ${
+              horizontal ? "md:text-2xl lg:text-3xl" : "text-3xl"
+            }`}
+          />,
+        );
+      }
+      return prices;
     }
-    return prices;
+    return [
+      <GiTicket
+        className={`mx-1 ${
+          horizontal ? "md:text-2xl lg:text-3xl" : "text-3xl"
+        }`}
+      ></GiTicket>,
+      <h3 className="text-center text-ml font-semibold">{price}x</h3>,
+    ];
   };
 
   return (
@@ -75,7 +85,9 @@ const TaskCard: React.FC<CardProps> = ({
         <p>{task.description}</p>
       </div>
       <div
-        className={`${horizontal ? "flex-col" : "flex"} justify-center mt-4`}
+        className={`${
+          horizontal ? "flex-col" : "flex"
+        } justify-center items-center mt-4`}
       >
         {renderPrices(task.price)}
       </div>
