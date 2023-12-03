@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TaskCard from "@/components/TaskCard";
 import useSWR from "swr";
 import SearchBar from "@/components/SearchBar";
@@ -8,6 +8,7 @@ import TaskModal from "@/components/TaskModal";
 import FilterMenu from "@/components/FilterMenu";
 import fetcher from "@/utils/getFetcher";
 import { Task } from "../../types/task";
+import FilterMenuPrice from "./FilterMenuPrice";
 
 const TaskDisplay = () => {
   const { data: taskData, isLoading: taskDataIsLoading } = useSWR(
@@ -22,6 +23,7 @@ const TaskDisplay = () => {
   const [selectedCategories, setSelectedCategories] = React.useState<number[]>(
     [],
   );
+  const [value, setValue] = React.useState<number[]>([1, 10]);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const filterTasksUsingSearch = () => {
@@ -47,7 +49,18 @@ const TaskDisplay = () => {
     return tasks;
   }
 
-  const tasksToRender = filterTasksUsingCategories(filterTasksUsingSearch());
+  function filterTasksUsingPrice(tasks: Array<Task>) {
+    if (value[0] != 1 || value[1] != 10) {
+      return tasks.filter(
+        (item: Task) => value[0] <= item.price && item.price <= value[1],
+      );
+    }
+    return tasks;
+  }
+
+  const tasksToRender = filterTasksUsingPrice(
+    filterTasksUsingCategories(filterTasksUsingSearch()),
+  );
 
   const openModal = (task: Task) => {
     setSelectedTask(task);
@@ -59,8 +72,8 @@ const TaskDisplay = () => {
 
   return (
     <>
-      <div className="max-w-7xl m-auto p-5 sm:p-8">
-        <div className="flex flex-row">
+      <div className="max-w-7xl m-auto p-5">
+        <div className="flex flex-row items-center mb-1">
           <FilterMenu
             categories={categoryData}
             selectedCategories={selectedCategories}
@@ -69,6 +82,7 @@ const TaskDisplay = () => {
           <div className="flex-grow" />
           <SearchBar setResults={setSearchString} />
         </div>
+        <FilterMenuPrice value={value} setValue={setValue} />
 
         {taskDataIsLoading && (
           <h1 className="mt-5 text-2xl text-center text-gray-400">
@@ -86,7 +100,7 @@ const TaskDisplay = () => {
           </h1>
         )}
 
-        <div className="mt-8 columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-3 lg:columns-4 xl:columns-5 ">
+        <div className="mt-5 columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-3 lg:columns-4 xl:columns-5 ">
           {tasksToRender?.map((task: Task) => (
             <TaskCard
               task={task}

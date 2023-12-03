@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 interface FilterMenuProps {
@@ -22,14 +24,24 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
       setSelectedCategories([...selectedCategories, index]);
     }
   };
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
-    <div>
+    <div className="flex flex-row items-center mb-1">
+      <h3 className="mr-5">Categories: </h3>
       {categories &&
         categories.map((category) => (
           <button
             key={category.id}
-            className={`mr-3 mb-2 text-sm px-4 py-2 rounded-full ${
+            className={`mr-3 text-sm px-4 py-2 rounded-full ${
               selectedCategories.includes(category.id)
                 ? "border border-blue-500 text-blue-500"
                 : "border border-gray-400"
