@@ -12,8 +12,7 @@ import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
-  { name: "Create Task", href: "/create", current: false },
-  { name: "Dev", href: "/dev", current: false },
+  { name: "Create", href: "/create", current: false },
 ];
 
 function classNames<T extends string>(...classes: T[]) {

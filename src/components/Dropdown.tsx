@@ -23,9 +23,7 @@ const Dropdown: React.FC<InputProps> = ({ categories, title, setValue }) => {
   }, [selectedCategory, setValue]);
 
   useEffect(() => {
-    if (categories.length !== 0) {
-      setSelectedCategory(categories[categories.length - 1]);
-    }
+    setSelectedCategory(categories[categories.length - 1]);
   }, [categories]);
 
   const filteredPeople: Category[] =
