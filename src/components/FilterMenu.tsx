@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 interface FilterMenuProps {
@@ -22,9 +24,19 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
       setSelectedCategories([...selectedCategories, index]);
     }
   };
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
-    <div>
+    <div className="flex flex-row items-center mb-1">
+      <h3 className="mr-5">Categories: </h3>
       {categories &&
         categories.map((category) => (
           <button

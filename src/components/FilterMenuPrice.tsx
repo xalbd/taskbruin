@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
@@ -19,9 +21,19 @@ const FilterMenuPrice: React.FC<FilterMenuPriceProps> = ({
   const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const marks = nums.map((num) => ({ value: num, label: num.toString() }));
   const { theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
-    <div>
+    <div className="flex flex-row items-center">
+      <h3 className="mr-5">Price: </h3>
       <Box sx={{ width: 300 }}>
         <Slider
           sx={{

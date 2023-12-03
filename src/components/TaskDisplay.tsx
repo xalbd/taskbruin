@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TaskCard from "@/components/TaskCard";
 import useSWR from "swr";
 import SearchBar from "@/components/SearchBar";
@@ -72,9 +72,8 @@ const TaskDisplay = () => {
 
   return (
     <>
-      <div className="max-w-7xl m-auto p-5 sm:p-8">
+      <div className="max-w-7xl m-auto p-5">
         <div className="flex flex-row items-center mb-1">
-          <h3 className="mr-5">Categories: </h3>
           <FilterMenu
             categories={categoryData}
             selectedCategories={selectedCategories}
@@ -83,11 +82,7 @@ const TaskDisplay = () => {
           <div className="flex-grow" />
           <SearchBar setResults={setSearchString} />
         </div>
-        <div className="flex flex-row items-center">
-          {" "}
-          <h3 className="mr-5">Price: </h3>
-          <FilterMenuPrice value={value} setValue={setValue} />
-        </div>
+        <FilterMenuPrice value={value} setValue={setValue} />
 
         {taskDataIsLoading && (
           <h1 className="mt-5 text-2xl text-center text-gray-400">
@@ -105,7 +100,7 @@ const TaskDisplay = () => {
           </h1>
         )}
 
-        <div className="mt-8 columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-3 lg:columns-4 xl:columns-5 ">
+        <div className="mt-5 columns-1 gap-5 sm:columns-2 sm:gap-8 md:columns-3 lg:columns-4 xl:columns-5 ">
           {tasksToRender?.map((task: Task) => (
             <TaskCard
               task={task}
