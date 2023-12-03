@@ -29,7 +29,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         categories.map((category) => (
           <button
             key={category.id}
-            className={`mr-3 mb-2 text-sm px-4 py-2 rounded-full ${
+            className={`mr-3 text-sm px-4 py-2 rounded-full ${
               selectedCategories.includes(category.id)
                 ? "border border-blue-500 text-blue-500"
                 : "border border-gray-400"

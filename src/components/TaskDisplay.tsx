@@ -73,8 +73,8 @@ const TaskDisplay = () => {
   return (
     <>
       <div className="max-w-7xl m-auto p-5 sm:p-8">
-        <FilterMenuPrice value={value} setValue={setValue} />
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center mb-1">
+          <h3 className="mr-5">Categories: </h3>
           <FilterMenu
             categories={categoryData}
             selectedCategories={selectedCategories}
@@ -82,6 +82,11 @@ const TaskDisplay = () => {
           />
           <div className="flex-grow" />
           <SearchBar setResults={setSearchString} />
+        </div>
+        <div className="flex flex-row items-center">
+          {" "}
+          <h3 className="mr-5">Price: </h3>
+          <FilterMenuPrice value={value} setValue={setValue} />
         </div>
 
         {taskDataIsLoading && (
