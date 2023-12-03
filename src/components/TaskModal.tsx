@@ -13,7 +13,7 @@ interface TaskModalProps {
 
 const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
   const [isAccepted, setIsAccepted] = useState(false);
-  const [isAccepting, setIsAccepting] = useState(false);
+  const [networkRequestActive, setNetworkRequestActive] = useState(false);
   const { data: session, status: authStatus } = useSession();
 
   useEffect(() => {
@@ -21,11 +21,10 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
   }, [task]);
 
   const handleAcceptTask = async () => {
-    if (isAccepting || isAccepted) {
+    if (networkRequestActive || isAccepted) {
       return;
     }
-
-    setIsAccepting(true);
+    setNetworkRequestActive(true);
 
     const response = await fetch(`/api/accept/${task?.id}`, {
       method: "POST",
@@ -35,28 +34,76 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
       setIsAccepted(true);
       task.acceptedByUserId = session?.user.id ?? ""; // hack because I don't have a way to refresh information of single task via API
       toast.success("Task accepted!", { id: "accepted" });
+    } else if (response.status === 406) {
+      toast.error("Someone else accepted this task before you.", {
+        id: "failed",
+      });
+      task.acceptedByUserId = "OTHER"; // hack to fix display of button
+      setIsAccepted(true);
     } else {
       toast.error("Failed to accept task.", { id: "failed" });
     }
-    setIsAccepting(false);
+    setNetworkRequestActive(false);
   };
+
+  async function handleUnAcceptTask() {
+    if (networkRequestActive || !isAccepted) {
+      return;
+    }
+    setNetworkRequestActive(true);
+
+    const response = await fetch(`/api/accept/${task?.id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      setIsAccepted(false);
+      task.acceptedByUserId = null;
+      toast.success("Task unaccepted!", { id: "accepted" });
+    } else {
+      toast.error("Failed to unaccept task.", { id: "failed" });
+    }
+    setNetworkRequestActive(false);
+  }
 
   const getButtonContent = () => {
     if (authStatus !== "authenticated") {
-      return "Log in to accept.";
+      return "Log in to accept this task.";
     } else if (task?.userId === session.user.id) {
       return "This is your own task!";
     } else if (isAccepted) {
       if (task?.acceptedByUserId === session.user.id) {
-        return "You've accepted this task!";
+        return "Unaccept this task.";
       } else {
         return "Someone else already accepted this task.";
       }
-    } else if (isAccepting) {
-      return "Accepting...";
+    } else if (networkRequestActive) {
+      return `${isAccepted ? "Unaccepting..." : "Accepting..."}`;
     }
     return "Accept this task!";
   };
+
+  function buttonColor() {
+    if (
+      authStatus !== "authenticated" ||
+      (isAccepted && task.acceptedByUserId !== session.user.id) ||
+      networkRequestActive
+    ) {
+      return "bg-gray-500 cursor-not-allowed";
+    } else if (!isAccepted && task.userId !== session.user.id) {
+      return "bg-green-800 hover:bg-green-700";
+    } else {
+      return "bg-red-700 hover:bg-red-600";
+    }
+  }
+
+  function buttonDisabled() {
+    return (
+      authStatus !== "authenticated" ||
+      (isAccepted && task.acceptedByUserId !== session.user.id) ||
+      networkRequestActive
+    );
+  }
 
   return (
     <Modal
@@ -99,32 +146,13 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                 {task.description}
               </p>
-              {/*task.image_url && (
-                <img
-                  src={task.image_url}
-                  alt={task.title}
-                  className="max-w-full h-auto"
-                />
-              )*/}
             </div>
             <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="button"
-                className={`text-white ${
-                  authStatus !== "authenticated" ||
-                  isAccepted ||
-                  task?.userId === session.user.id ||
-                  isAccepting
-                    ? "bg-gray-500 cursor-not-allowed"
-                    : "bg-green-800 hover:bg-green-700"
-                } px-5 py-2.5 font-medium rounded-lg text-sm`}
-                onClick={handleAcceptTask}
-                disabled={
-                  authStatus !== "authenticated" ||
-                  isAccepted ||
-                  task?.userId === session.user.id ||
-                  isAccepting
-                }
+                className={`text-white ${buttonColor()} px-5 py-2.5 font-medium rounded-lg text-sm`}
+                onClick={isAccepted ? handleUnAcceptTask : handleAcceptTask}
+                disabled={buttonDisabled()}
               >
                 {getButtonContent()}
               </button>

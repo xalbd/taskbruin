@@ -7,7 +7,7 @@ export interface Task {
   startDate: string | null;
   endDate: string | null;
   userId: string;
-  acceptedByUserId: string;
+  acceptedByUserId: string | null;
   category: number;
   image: string;
 }

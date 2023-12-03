@@ -9,6 +9,7 @@ import FilterMenu from "@/components/FilterMenu";
 import fetcher from "@/utils/getFetcher";
 import { Task } from "../../types/task";
 import FilterMenuPrice from "./FilterMenuPrice";
+import { useSession } from "next-auth/react";
 
 const TaskDisplay = () => {
   const { data: taskData, isLoading: taskDataIsLoading } = useSWR(
@@ -25,6 +26,19 @@ const TaskDisplay = () => {
   );
   const [value, setValue] = React.useState<number[]>([1, 10]);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const { data: session, status } = useSession();
+
+  function filterTasksUsingUser(tasks: Array<Task>) {
+    if (status === "authenticated" && tasks) {
+      return tasks.filter(
+        (item: Task) =>
+          item.acceptedByUserId === null ||
+          item.acceptedByUserId === session.user.id ||
+          item.userId === session.user.id,
+      );
+    }
+    return tasks;
+  }
 
   const filterTasksUsingSearch = () => {
     if (searchString.length !== 0 && taskData) {
@@ -50,7 +64,7 @@ const TaskDisplay = () => {
   }
 
   function filterTasksUsingPrice(tasks: Array<Task>) {
-    if (value[0] != 1 || value[1] != 10) {
+    if ((value[0] != 1 || value[1] != 10) && tasks) {
       return tasks.filter(
         (item: Task) => value[0] <= item.price && item.price <= value[1],
       );
@@ -58,8 +72,8 @@ const TaskDisplay = () => {
     return tasks;
   }
 
-  const tasksToRender = filterTasksUsingPrice(
-    filterTasksUsingCategories(filterTasksUsingSearch()),
+  const tasksToRender = filterTasksUsingUser(
+    filterTasksUsingPrice(filterTasksUsingCategories(filterTasksUsingSearch())),
   );
 
   const openModal = (task: Task) => {

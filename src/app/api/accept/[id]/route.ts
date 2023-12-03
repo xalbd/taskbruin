@@ -24,8 +24,8 @@ export async function POST(
         ),
       );
 
-    if (!availableToAccept) {
-      return Response.json({ status: 406 });
+    if (Object.keys(availableToAccept).length === 0) {
+      return Response.json({}, { status: 406 });
     }
 
     const result = await db
