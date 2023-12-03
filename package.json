@@ -14,8 +14,11 @@
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^0.3.5",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@mui/material": "^5.14.19",
     "@neondatabase/serverless": "^0.6.0",
     "@radix-ui/themes": "^2.0.0",
     "drizzle-orm": "^0.28.6",
