@@ -1,5 +1,6 @@
 import React from "react";
 import { RequestResponseDisplayProps } from "./page";
+import Upload from "./Upload";
 
 export default function PostTasks({
   setRequest,
@@ -9,22 +10,27 @@ export default function PostTasks({
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [price, setPrice] = React.useState("");
+  const [image, setImage] = React.useState("");
   const [category, setCategory] = React.useState("");
 
   const id = React.useId();
   const titleId = `${id}-title`;
   const descriptionId = `${id}-message`;
   const priceId = `${id}-price`;
+  const imageId = `${id}-image`;
   const categoryId = `${id}-category`;
 
   async function handlePostTasksSubmit(event: React.FormEvent) {
     event.preventDefault();
+
     const requestBody = JSON.stringify({
       title,
       description,
       price,
       category,
+      image,
     });
+
     setRequest(requestBody);
 
     const response = await fetch("api/task", {
@@ -87,6 +93,16 @@ export default function PostTasks({
         }}
       />
 
+      <label htmlFor={imageId}>Image</label>
+      <input
+        className="outline p-1"
+        id={imageId}
+        value={image}
+        required={true}
+        onChange={(event) => {
+          setImage(event.target.value);
+        }}
+      />
       <button className="outline p-1">/api/task POST</button>
     </form>
   );
