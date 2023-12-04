@@ -66,6 +66,10 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
     setNetworkRequestActive(false);
   }
 
+  async function handleDeleteTask() {
+    console.log("need to delete");
+  }
+
   async function handleUnauthenticated() {
     signIn();
   }
@@ -74,7 +78,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
     if (authStatus !== "authenticated") {
       return "Log in to accept this task.";
     } else if (task?.userId === session.user.id) {
-      return "This is your own task!";
+      return "Delete task!";
     } else if (isAccepted) {
       if (task?.acceptedByUserId === session.user.id) {
         return "Unaccept this task.";
@@ -91,18 +95,17 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
     if ((authStatus !== "authenticated") || (!isAccepted && task.userId !== session.user.id)){
       return "bg-green-800 hover:bg-green-700"
     }
-    else if ((isAccepted && task.acceptedByUserId !== session.user.id) ||
-      networkRequestActive
-    ) {
-      return "bg-gray-500 cursor-not-allowed";
-    } else {
+    else if (isAccepted || task.userId === session.user.id){
       return "bg-red-700 hover:bg-red-600";
+    }
+    else {
+      return "bg-gray-500 cursor-not-allowed";
     }
   }
 
   function buttonDisabled() {
     return (
-      (isAccepted && task.acceptedByUserId !== session.user.id) ||
+      (isAccepted && task.acceptedByUserId !== session?.user.id) ||
       networkRequestActive
     );
   }
@@ -153,7 +156,9 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
               <button
                 type="button"
                 className={`text-white ${buttonColor()} px-5 py-2.5 font-medium rounded-lg text-sm`}
-                onClick={authStatus !== "authenticated" ? handleUnauthenticated : isAccepted ? handleUnAcceptTask : handleAcceptTask}
+                onClick={authStatus !== "authenticated" ? handleUnauthenticated
+                  : task.userId === session.user.id ? handleDeleteTask
+                  : isAccepted ? handleUnAcceptTask : handleAcceptTask}
                 disabled={buttonDisabled()}
               >
                 {getButtonContent()}
