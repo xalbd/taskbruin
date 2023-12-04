@@ -67,7 +67,23 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
   }
 
   async function handleDeleteTask() {
-    console.log("need to delete");
+    if (networkRequestActive || task?.userId !== session?.user.id) {
+      return;
+    }
+    setNetworkRequestActive(true);
+
+    const response = await fetch(`/api/task/${task?.id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      setIsAccepted(true);
+      task.acceptedByUserId = "OTHER";
+      toast.success("Task deleted!", { id: "accepted" });
+    } else {
+      toast.error("Failed to delete task.", { id: "failed" });
+    }
+    setNetworkRequestActive(false);
   }
 
   async function handleUnauthenticated() {
