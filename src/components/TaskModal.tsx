@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import toast, { Toaster } from "react-hot-toast";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { Task } from "../../types/task";
 
 interface TaskModalProps {
@@ -66,6 +66,10 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
     setNetworkRequestActive(false);
   }
 
+  async function handleUnauthenticated() {
+    signIn();
+  }
+
   const getButtonContent = () => {
     if (authStatus !== "authenticated") {
       return "Log in to accept this task.";
@@ -84,14 +88,13 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
   };
 
   function buttonColor() {
-    if (
-      authStatus !== "authenticated" ||
-      (isAccepted && task.acceptedByUserId !== session.user.id) ||
+    if ((authStatus !== "authenticated") || (!isAccepted && task.userId !== session.user.id)){
+      return "bg-green-800 hover:bg-green-700"
+    }
+    else if ((isAccepted && task.acceptedByUserId !== session.user.id) ||
       networkRequestActive
     ) {
       return "bg-gray-500 cursor-not-allowed";
-    } else if (!isAccepted && task.userId !== session.user.id) {
-      return "bg-green-800 hover:bg-green-700";
     } else {
       return "bg-red-700 hover:bg-red-600";
     }
@@ -99,7 +102,6 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
 
   function buttonDisabled() {
     return (
-      authStatus !== "authenticated" ||
       (isAccepted && task.acceptedByUserId !== session.user.id) ||
       networkRequestActive
     );
@@ -151,7 +153,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
               <button
                 type="button"
                 className={`text-white ${buttonColor()} px-5 py-2.5 font-medium rounded-lg text-sm`}
-                onClick={isAccepted ? handleUnAcceptTask : handleAcceptTask}
+                onClick={authStatus !== "authenticated" ? handleUnauthenticated : isAccepted ? handleUnAcceptTask : handleAcceptTask}
                 disabled={buttonDisabled()}
               >
                 {getButtonContent()}
