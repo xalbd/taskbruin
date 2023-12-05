@@ -3,9 +3,10 @@
 import React, { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import ThemeButton from "@/components/ThemeButton";
 import ProfileOption from "@/components/ProfileOption";
+import LoginButton from "@/components/LoginButton"
 import Link from "next/link";
 import logo from "../app/taskbruinlogo.png";
 
@@ -88,12 +89,7 @@ const Navbar = () => {
                       />
                     </Menu.Button>
                   ) : (
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                      onClick={() => signIn()}
-                    >
-                      Sign In
-                    </button>
+                    <LoginButton />
                   )}
                   <Transition
                     as={Fragment}
