@@ -108,7 +108,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   function buttonColor() {
-    if (networkRequestActive) {
+    if (networkRequestActive || authStatus !== "authenticated") {
       return "bg-gray-500 cursor-not-allowed";
     } else if (
       authStatus !== "authenticated" ||
@@ -124,6 +124,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
 
   function buttonDisabled() {
     return (
+      authStatus !== "authenticated" ||
       (isAccepted && task.acceptedByUserId !== session?.user.id) ||
       networkRequestActive
     );
