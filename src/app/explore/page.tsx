@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import TaskCard from "@/components/TaskCard";
 import useSWR from "swr";
@@ -7,8 +6,8 @@ import SearchBar from "@/components/SearchBar";
 import TaskModal from "@/components/TaskModal";
 import FilterMenu from "@/components/FilterMenu";
 import fetcher from "@/utils/getFetcher";
-import { Task } from "../../types/task";
-import FilterMenuPrice from "./FilterMenuPrice";
+import { Task } from "../../../types/task";
+import FilterMenuPrice from "../../components/FilterMenuPrice";
 import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 import { useDeleteTaskList } from "@/utils/useDeleteTaskList";

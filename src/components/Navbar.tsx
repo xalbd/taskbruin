@@ -8,10 +8,10 @@ import ThemeButton from "@/components/ThemeButton";
 import ProfileOption from "@/components/ProfileOption";
 import Link from "next/link";
 import logo from "../app/taskbruinlogo.png";
-import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
+  { name: "Explore", href: "/explore", current: false },
   { name: "Create", href: "/create", current: false },
 ];
 
