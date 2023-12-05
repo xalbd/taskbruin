@@ -174,7 +174,7 @@ const TaskForm = () => {
           </div>
         </div>
         <Input
-          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
+          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 pl-2 py-1"
           type="file"
           title="Image"
           setValue={() => {}}
