@@ -6,7 +6,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { signOut, useSession } from "next-auth/react";
 import ThemeButton from "@/components/ThemeButton";
 import ProfileOption from "@/components/ProfileOption";
-import LoginButton from "@/components/LoginButton"
+import LoginButton from "@/components/LoginButton";
 import Link from "next/link";
 import logo from "../app/taskbruinlogo.png";
 
@@ -52,12 +52,13 @@ const Navbar = () => {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? "" : "hover:underline",
-                          "rounded-md px-3 py-2 text-xl font-medium",
+                          "group rounded-md px-3 py-2 text-xl font-medium relative",
+                          item.current ? "" : "group-hover:underline",
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
+                        <span className="absolute bottom-0 left-0 w-full h-1 bg-indigo-500 transform scale-x-0 origin-bottom transition-transform group-hover:scale-x-100"></span>
                       </Link>
                     ))}
                   </div>
