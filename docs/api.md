@@ -8,6 +8,7 @@ If it is false, the error is reported in the body of the response.
 - 200: success
 - 400: bad request
 - 401: unauthenticated
+- 406: everything went okay, but something about the request was not acceptable
 - 500: error occured server-side
 
 ## /api/task
@@ -63,7 +64,7 @@ Requires authentication.
 Attempts to accept task with given `id`.
 Returns same `id` back if successful acceptance occured.
 
-Status 200 for success, 401 for unauthenticated, 400 when no task was successfully accepted, and 500 for error server-side.
+Status 200 for success, 401 for unauthenticated, 400 when no task was successfully accepted, 406 when attempting to accepted a task that has already been accepted, and 500 for error server-side.
 
 ### DELETE
 

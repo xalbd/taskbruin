@@ -13,6 +13,21 @@ export async function POST(
   }
 
   try {
+    const availableToAccept = await db
+      .select({ id: task.id })
+      .from(task)
+      .where(
+        and(
+          eq(task.id, params.id),
+          isNull(task.acceptedByUserId),
+          ne(task.userId, userId),
+        ),
+      );
+
+    if (Object.keys(availableToAccept).length === 0) {
+      return Response.json({}, { status: 406 });
+    }
+
     const result = await db
       .update(task)
       .set({ acceptedByUserId: userId })
