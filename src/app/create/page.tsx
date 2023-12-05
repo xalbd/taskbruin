@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const TaskForm = () => {
   React.useEffect(() => {
+    toast.remove();
     fetch("api/category")
       .then((response) => response.json())
       .then((data) => setCategoryData(data));

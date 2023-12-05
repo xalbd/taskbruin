@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Task } from "../../types/task";
 import TaskCard from "@/components/TaskCard";
 import TaskModal from "./TaskModal";
+import { Toaster } from "react-hot-toast";
+import { useDeleteTaskList } from "@/utils/useDeleteTaskList";
 
 interface ProfileTasksProps {
   title: string;
@@ -10,9 +12,11 @@ interface ProfileTasksProps {
 
 const ProfileTasks: React.FC<ProfileTasksProps> = ({ title, tasks }) => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [deletedIds, deleteTask] = useDeleteTaskList();
 
   return (
     <>
+      <Toaster />
       <div>
         {tasks && (
           <div className="px-2 w-full shrink-0">
@@ -23,14 +27,16 @@ const ProfileTasks: React.FC<ProfileTasksProps> = ({ title, tasks }) => {
               </h1>
             ) : (
               <>
-                {tasks.map((task) => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    horizontal={true}
-                    onClick={() => setSelectedTask(task)}
-                  />
-                ))}
+                {tasks
+                  .filter((task) => !deletedIds.includes(task.id))
+                  .map((task) => (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      horizontal={true}
+                      onClick={() => setSelectedTask(task)}
+                    />
+                  ))}
               </>
             )}
           </div>
@@ -39,6 +45,7 @@ const ProfileTasks: React.FC<ProfileTasksProps> = ({ title, tasks }) => {
           <TaskModal
             task={selectedTask}
             closeModal={() => setSelectedTask(null)}
+            deleteTask={deleteTask}
           />
         )}
       </div>

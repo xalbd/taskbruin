@@ -9,16 +9,17 @@ import { Task } from "../../types/task";
 interface TaskModalProps {
   task: Task;
   closeModal: () => void;
+  deleteTask: (taskId: number) => void;
 }
 
-const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
-  const [isAccepted, setIsAccepted] = useState(false);
+const TaskModal: React.FC<TaskModalProps> = ({
+  task,
+  closeModal,
+  deleteTask,
+}) => {
+  const [isAccepted, setIsAccepted] = useState(task.acceptedByUserId !== null);
   const [networkRequestActive, setNetworkRequestActive] = useState(false);
   const { data: session, status: authStatus } = useSession();
-
-  useEffect(() => {
-    setIsAccepted(task?.acceptedByUserId !== null);
-  }, [task]);
 
   const handleAcceptTask = async () => {
     if (networkRequestActive || isAccepted) {
@@ -77,9 +78,8 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
     });
 
     if (response.ok) {
-      setIsAccepted(true);
-      task.acceptedByUserId = "OTHER";
-      toast.success("Task deleted!", { id: "accepted" });
+      deleteTask(task.id);
+      closeModal();
     } else {
       toast.error("Failed to delete task.", { id: "failed" });
     }
@@ -94,27 +94,30 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
     if (authStatus !== "authenticated") {
       return "Log in to accept this task.";
     } else if (task?.userId === session.user.id) {
-      return "Delete task!";
+      return `${networkRequestActive ? "Deleting..." : "Delete this task."}`;
     } else if (isAccepted) {
       if (task?.acceptedByUserId === session.user.id) {
-        return "Unaccept this task.";
+        return `${
+          networkRequestActive ? "Unaccepting..." : "Unaccept this task."
+        }`;
       } else {
         return "Someone else already accepted this task.";
       }
-    } else if (networkRequestActive) {
-      return `${isAccepted ? "Unaccepting..." : "Accepting..."}`;
     }
-    return "Accept this task!";
+    return `${networkRequestActive ? "Accepting..." : "Accept this task!"}`;
   };
 
   function buttonColor() {
-    if ((authStatus !== "authenticated") || (!isAccepted && task.userId !== session.user.id)){
-      return "bg-green-800 hover:bg-green-700"
-    }
-    else if (isAccepted || task.userId === session.user.id){
+    if (networkRequestActive) {
+      return "bg-gray-500 cursor-not-allowed";
+    } else if (
+      authStatus !== "authenticated" ||
+      (!isAccepted && task.userId !== session.user.id)
+    ) {
+      return "bg-green-800 hover:bg-green-700";
+    } else if (isAccepted || task.userId === session.user.id) {
       return "bg-red-700 hover:bg-red-600";
-    }
-    else {
+    } else {
       return "bg-gray-500 cursor-not-allowed";
     }
   }
@@ -172,9 +175,15 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, closeModal }) => {
               <button
                 type="button"
                 className={`text-white ${buttonColor()} px-5 py-2.5 font-medium rounded-lg text-sm`}
-                onClick={authStatus !== "authenticated" ? handleUnauthenticated
-                  : task.userId === session.user.id ? handleDeleteTask
-                  : isAccepted ? handleUnAcceptTask : handleAcceptTask}
+                onClick={
+                  authStatus !== "authenticated"
+                    ? handleUnauthenticated
+                    : task.userId === session.user.id
+                    ? handleDeleteTask
+                    : isAccepted
+                    ? handleUnAcceptTask
+                    : handleAcceptTask
+                }
                 disabled={buttonDisabled()}
               >
                 {getButtonContent()}

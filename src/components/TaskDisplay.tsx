@@ -10,6 +10,8 @@ import fetcher from "@/utils/getFetcher";
 import { Task } from "../../types/task";
 import FilterMenuPrice from "./FilterMenuPrice";
 import { useSession } from "next-auth/react";
+import toast, { Toaster } from "react-hot-toast";
+import { useDeleteTaskList } from "@/utils/useDeleteTaskList";
 
 const TaskDisplay = () => {
   const { data: taskData, isLoading: taskDataIsLoading } = useSWR(
@@ -27,6 +29,11 @@ const TaskDisplay = () => {
   const [value, setValue] = React.useState<number[]>([1, 10]);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const { data: session, status } = useSession();
+  const [deletedIds, deleteTask] = useDeleteTaskList();
+
+  React.useEffect(() => {
+    toast.remove();
+  }, []);
 
   function filterTasksUsingUser(tasks: Array<Task>) {
     if (status === "authenticated" && tasks) {
@@ -72,8 +79,19 @@ const TaskDisplay = () => {
     return tasks;
   }
 
-  const tasksToRender = filterTasksUsingUser(
-    filterTasksUsingPrice(filterTasksUsingCategories(filterTasksUsingSearch())),
+  function filterTasksByDeleted(tasks: Array<Task>) {
+    if (tasks) {
+      return tasks.filter((item: Task) => !deletedIds.includes(item.id));
+    }
+    return tasks;
+  }
+
+  const tasksToRender = filterTasksByDeleted(
+    filterTasksUsingUser(
+      filterTasksUsingPrice(
+        filterTasksUsingCategories(filterTasksUsingSearch()),
+      ),
+    ),
   );
 
   const openModal = (task: Task) => {
@@ -124,9 +142,14 @@ const TaskDisplay = () => {
           ))}
         </div>
         {selectedTask && (
-          <TaskModal task={selectedTask} closeModal={closeModal} />
+          <TaskModal
+            task={selectedTask}
+            closeModal={closeModal}
+            deleteTask={deleteTask}
+          />
         )}
       </div>
+      <Toaster />
     </>
   );
 };

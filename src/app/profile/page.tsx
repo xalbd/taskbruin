@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Task } from "../../../types/task";
 import ProfileTasks from "@/components/ProfileTasks";
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const Profile = () => {
   const { data: session, status } = useSession();
@@ -11,6 +12,7 @@ const Profile = () => {
   const [tasksReady, setTasksReady] = useState("loading");
 
   useEffect(() => {
+    toast.remove();
     const fetchMyTasks = async () => {
       try {
         const response = await fetch(`/api/me`);
