@@ -10,7 +10,7 @@ Before you try doing anything, make sure you're connected to eduroam, and not UC
 
 Front-end development should just use the data in the production database. To develop, you just need to set up your environment variables.
 
-To do this, make a copy of `.env.TEMPLATE` and name it `.env`. Navigate to the Neon dashboard and select the main branch and main-db database. Reveal the password by clicking the static rectangle, enable "Pooled connection", and update your `.env`'s `DATABASE_URL` with the given psql string. **Then, importantly, append `?sslmode=require` at the end of the DATABASE_URL.**
+To do this, make a copy of `.env.TEMPLATE` and name it `.env`. Navigate to the Neon dashboard and select the main branch and main-db database. Reveal the password by clicking the static rectangle, enable "Pooled connection", and update your `.env`'s `DATABASE_URL` with the given psql string.
 
 If back-end development pushes any changes to main, pull them to ensure API functionality.
 
@@ -18,7 +18,7 @@ If back-end development pushes any changes to main, pull them to ensure API func
 
 **❗️Branch the database in Neon before doing any back-end development!❗️** Name it whatever you'd like.
 
-Once the database is branched, go back to the dashboard. Select the correct branch, reveal the password by clicking the static rectangle, enable "Pooled connection" and update your `.env` file with the new branch's `DATABASE_URL`. **Then, importantly, append `?sslmode=require` at the end of the DATABASE_URL.**
+Once the database is branched, go back to the dashboard. Select the correct branch, reveal the password by clicking the static rectangle, enable "Pooled connection" and update your `.env` file with the new branch's `DATABASE_URL`.
 
 To edit the database schema, edit the `db/schema.ts` file.
 
