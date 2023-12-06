@@ -6,6 +6,7 @@ import {
   timestamp,
   primaryKey,
   date,
+  boolean,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 
@@ -29,6 +30,7 @@ export const task = pgTable("task", {
       onDelete: "cascade",
     }),
   image: text("image").notNull(),
+  completed: boolean("completed").default(false).notNull(),
 });
 
 export const category = pgTable("category", {

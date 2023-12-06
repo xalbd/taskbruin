@@ -4,12 +4,18 @@ import { Task } from "../../../types/task";
 import ProfileTasks from "@/components/ProfileTasks";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
 
 const Profile = () => {
   const { data: session, status } = useSession();
   const [createdTasks, setCreatedTasks] = useState<Task[]>([]);
   const [acceptedTasks, setAcceptedTasks] = useState<Task[]>([]);
   const [tasksReady, setTasksReady] = useState("loading");
+  const { status: authStatus } = useSession();
+
+  if (authStatus !== "authenticated") {
+    return redirect("/");
+  }
 
   useEffect(() => {
     toast.remove();
