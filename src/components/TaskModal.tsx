@@ -113,7 +113,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   }
 
   async function handleUnauthenticated() {
-    signIn();
+    signIn(undefined, { callbackUrl: "/explore" });
   }
 
   const getButtonContent = () => {
