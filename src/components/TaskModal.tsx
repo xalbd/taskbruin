@@ -36,8 +36,15 @@ const TaskModal: React.FC<TaskModalProps> = ({
         setUserPfpic(userData[0]?.image || "");
       } else {
       }
-    } catch (error) {}
+    } catch (error) {
+      toast.error("Could not retrieve contact information.", { id: "failed" });
+    }
   };
+
+  if (!isContactInfoVisible && task.acceptedByUserId === session?.user.id) {
+    obtainContact();
+    setIsContactInfoVisible(true);
+  }
 
   const handleAcceptTask = async () => {
     if (networkRequestActive || isAccepted) {
@@ -53,7 +60,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
       task.acceptedByUserId = session?.user.id ?? ""; // hack because I don't have a way to refresh information of single task via API
       await obtainContact();
       setIsAccepted(true);
-      setIsContactInfoVisible(true);
       toast.success("Task accepted!", { id: "accepted" });
     } else if (response.status === 406) {
       toast.error("Someone else has already accepted this task.", {
