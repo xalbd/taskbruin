@@ -133,7 +133,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
       isOpen={task !== null}
       onRequestClose={closeModal}
       contentLabel="Task Modal"
-      className="modal fixed inset-0 flex items-center justify-center z-50"
+      className="modal fixed inset-0 flex items-center justify-center z-50 "
     >
       {task && (
         <div className="relative p-4 w-full max-w-2xl max-h-full">
@@ -169,6 +169,13 @@ const TaskModal: React.FC<TaskModalProps> = ({
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                 {task.description}
               </p>
+              <div className="flex items-center justify-center">
+                <img
+                  src={task.image}
+                  alt="Task image"
+                  className="max-h-96 w-auto rounded-lg"
+                />
+              </div>
             </div>
             <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
