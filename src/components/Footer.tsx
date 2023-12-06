@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
-    <footer className="mx-auto w-full max-w-screen-xl">
-      <div className="grid grid-cols-2 gap-8 px-4 py-6 md:grid-cols-4 justify-center">
+    <footer className="mx-auto w-full max-w-screen-xl mt-auto">
+      <div className="grid grid-cols-2 gap-8 px-6 py-6 md:grid-cols-4 justify-center">
         <div>
           <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
             Company
@@ -22,7 +22,7 @@ const Footer = () => {
                 Brand Center
               </a>
             </li>
-            <li className="mb-4">
+            <li className="">
               <a href="#" className="hover:underline">
                 Blog
               </a>
@@ -49,7 +49,7 @@ const Footer = () => {
                 Facebook
               </a>
             </li>
-            <li className="mb-4">
+            <li className="">
               <a href="#" className="hover:underline">
                 Contact Us
               </a>
