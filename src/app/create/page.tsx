@@ -27,7 +27,6 @@ const TaskForm = () => {
   const [endDate, setEndDate] = React.useState(offsetDate(7));
   const [file, setFile] = React.useState<File | null>(null);
 
-  // control usage of submit button
   const { status: authStatus } = useSession();
   const [formWaiting, setFormWaiting] = React.useState(false);
   const formButtonDisabled = formWaiting || authStatus !== "authenticated";
@@ -188,7 +187,7 @@ const TaskForm = () => {
         />
 
         <button
-          className="mt-5 font-bold py-2 px-4 rounded border border-gray-400 bg-green-600 hover:bg-green-500 text-base block w-full p-3 disabled:text-gray-400 disabled:bg-gray-600"
+          className="mt-5 font-bold py-2 px-4 rounded border text-indigo-500 border-indigo-500 focus:ring transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-500 hover:text-white text-base block w-full p-3 disabled:text-gray-400 disabled:bg-gray-600"
           type="submit"
           disabled={formButtonDisabled}
         >
