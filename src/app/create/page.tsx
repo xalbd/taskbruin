@@ -49,6 +49,7 @@ const TaskForm = () => {
 
   const handleTasksSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setFormWaiting(true);
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
     if (startDateObj > endDateObj) {
@@ -106,7 +107,6 @@ const TaskForm = () => {
       endDate: endDateObj,
       image: obj_url,
     });
-    setFormWaiting(true);
     const response = await fetch("api/task", {
       method: "POST",
       body: requestBody,
@@ -173,7 +173,7 @@ const TaskForm = () => {
           </div>
         </div>
         <Input
-          className="block w-full text-sm border border-gray-300 rounded-lg cursor-pointer  pl-2 py-1"
+          className="file:border-0 file:px-2 file:py-1 block w-full text-sm text-gray-900 border border-gray-400 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:placeholder-gray-400"
           type="file"
           title="Image"
           setValue={() => {}}
@@ -187,7 +187,7 @@ const TaskForm = () => {
         />
 
         <button
-          className="mt-5 font-bold py-2 px-4 rounded border text-indigo-500 border-indigo-500 focus:ring transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-500 hover:text-white text-base block w-full p-3 disabled:text-gray-400 disabled:bg-gray-600"
+          className="mt-5 font-bold py-2 px-4 rounded border text-indigo-500 border-indigo-500 focus:ring transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-500 hover:text-white text-base block w-full p-3 disabled:text-gray-400 disabled:bg-gray-600 disabled:border-gray-400"
           type="submit"
           disabled={formButtonDisabled}
         >

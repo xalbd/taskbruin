@@ -113,7 +113,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   }
 
   async function handleUnauthenticated() {
-    signIn();
+    signIn(undefined, { callbackUrl: "/explore" });
   }
 
   const getButtonContent = () => {
@@ -140,7 +140,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
       authStatus !== "authenticated" ||
       (!isAccepted && task.userId !== session.user.id)
     ) {
-      return "bg-green-800 hover:bg-green-700";
+      return "bg-green-700 hover:bg-green-600";
     } else if (isAccepted || task.userId === session.user.id) {
       return "bg-red-700 hover:bg-red-600";
     } else {
@@ -151,7 +151,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
   function buttonDisabled() {
     return (
       authStatus !== "authenticated" ||
-      (isAccepted && task.acceptedByUserId !== session?.user.id) ||
+      (isAccepted &&
+        task.acceptedByUserId !== session?.user.id &&
+        task.userId !== session.user.id) ||
       networkRequestActive
     );
   }
@@ -194,7 +196,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
               </button>
             </div>
             <div className="p-4 md:p-5 space-y-4">
-              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-300">
                 {task.description}
               </p>
               <div className="flex items-center justify-center">

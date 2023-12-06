@@ -103,20 +103,24 @@ const TaskDisplay = () => {
 
   return (
     <>
-      <div className="max-w-7xl m-auto p-5">
-        <div className="flex flex-row items-center mb-1">
-          <FilterMenu
-            categories={categoryData}
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-          />
-          <div className="flex-grow" />
-          <SearchBar setResults={setSearchString} />
-        </div>
-        <FilterMenuPrice value={value} setValue={setValue} />
+      <div className="max-w-7xl p-5 mx-auto">
+        {!taskDataIsLoading && !categoryDataIsLoading && (
+          <>
+            <div className="flex flex-wrap sm:flex-col md:flex-row mb-1 md:justify-between">
+              <FilterMenu
+                categories={categoryData}
+                selectedCategories={selectedCategories}
+                setSelectedCategories={setSelectedCategories}
+              />
+              <div />
+              <SearchBar setResults={setSearchString} />
+            </div>
+            <FilterMenuPrice value={value} setValue={setValue} />{" "}
+          </>
+        )}
 
         {taskDataIsLoading && (
-          <h1 className="mt-5 text-2xl text-center text-gray-400">
+          <h1 className="mt-5 text-3xl text-center text-gray-400">
             Hold tight, tasks are loading...
           </h1>
         )}

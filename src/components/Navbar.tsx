@@ -82,7 +82,7 @@ const Navbar = () => {
                       />
                     </Menu.Button>
                   ) : (
-                    <LoginButton />
+                    <LoginButton loggedIn={false} />
                   )}
                   <Transition
                     as={Fragment}

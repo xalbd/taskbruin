@@ -5,7 +5,6 @@ import SessionProvider from "@/components/SessionProvider";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import NavBar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,12 +22,11 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} pb-5`}>
         <SessionProvider session={session}>
           <ThemeProvider>
             <NavBar />
             {children}
-            <Footer />
           </ThemeProvider>
         </SessionProvider>
       </body>
