@@ -10,4 +10,5 @@ export interface Task {
   acceptedByUserId: string | null;
   category: number;
   image: string;
+  completed: boolean;
 }

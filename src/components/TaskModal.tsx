@@ -156,6 +156,38 @@ const TaskModal: React.FC<TaskModalProps> = ({
     );
   }
 
+  async function handleCompleteTask() {
+    if (networkRequestActive || task?.userId !== session?.user.id) {
+      return;
+    }
+    setNetworkRequestActive(true);
+
+    const response = await fetch(`/api/task/${task?.id}`, {
+      method: "COMPLETE",
+    });
+
+    if (response.ok) {
+      //completeTask(task.id);
+      closeModal();
+    } else {
+      toast.error("Failed to complete task: " + response.status, {
+        id: "failed",
+      });
+    }
+    setNetworkRequestActive(false);
+  }
+
+  function showCompleteButton() {
+    return (
+      authStatus == "authenticated" &&
+      isAccepted &&
+      task.acceptedByUserId !== session?.user.id &&
+      !networkRequestActive &&
+      !task.completed &&
+      task.userId == session?.user.id
+    );
+  }
+
   return (
     <Modal
       isOpen={task !== null}
@@ -222,6 +254,16 @@ const TaskModal: React.FC<TaskModalProps> = ({
               >
                 {getButtonContent()}
               </button>
+
+              {showCompleteButton() && (
+                <button
+                  type="button"
+                  className={`ml-5 text-white bg-blue-500 px-5 py-2.5 font-medium rounded-lg text-sm`}
+                  onClick={handleCompleteTask}
+                >
+                  Complete Task
+                </button>
+              )}
             </div>
           </div>
         </div>
