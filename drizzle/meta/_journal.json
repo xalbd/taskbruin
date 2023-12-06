@@ -57,6 +57,13 @@
       "when": 1701404950849,
       "tag": "0007_bizarre_thunderbolt",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1701855533835,
+      "tag": "0008_fair_grandmaster",
+      "breakpoints": true
     }
   ]
 }

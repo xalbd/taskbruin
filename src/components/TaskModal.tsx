@@ -7,7 +7,7 @@ import { Task } from "../../types/task";
 interface TaskModalProps {
   task: Task;
   closeModal: () => void;
-  deleteTask: (taskId: number) => void;
+  deleteTask: (taskId: number, trueIfCompleting: boolean) => void;
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({
@@ -17,6 +17,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
 }) => {
   const [isAccepted, setIsAccepted] = useState(task.acceptedByUserId !== null);
   const [networkRequestActive, setNetworkRequestActive] = useState(false);
+  const [completeRequestActive, setCompleteRequestActive] = useState(false);
   const { data: session, status: authStatus } = useSession();
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [usersName, setUserName] = useState<string | null>(null);
@@ -74,7 +75,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   async function handleUnAcceptTask() {
-    if (networkRequestActive || !isAccepted) {
+    if (networkRequestActive || completeRequestActive || !isAccepted) {
       return;
     }
     setNetworkRequestActive(true);
@@ -95,22 +96,26 @@ const TaskModal: React.FC<TaskModalProps> = ({
   }
 
   async function handleDeleteTask() {
-    if (networkRequestActive || task?.userId !== session?.user.id) {
+    if (
+      networkRequestActive ||
+      completeRequestActive ||
+      task?.userId !== session?.user.id
+    ) {
       return;
     }
-    setNetworkRequestActive(true);
+    setCompleteRequestActive(true);
 
     const response = await fetch(`/api/task/${task?.id}`, {
       method: "DELETE",
     });
 
     if (response.ok) {
-      deleteTask(task.id);
+      deleteTask(task.id, false);
       closeModal();
     } else {
       toast.error("Failed to delete task.", { id: "failed" });
     }
-    setNetworkRequestActive(false);
+    setCompleteRequestActive(false);
   }
 
   async function handleUnauthenticated() {
@@ -135,7 +140,11 @@ const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   function buttonColor() {
-    if (networkRequestActive || authStatus !== "authenticated") {
+    if (
+      networkRequestActive ||
+      completeRequestActive ||
+      authStatus !== "authenticated"
+    ) {
       return "bg-gray-500 cursor-not-allowed";
     } else if (
       authStatus !== "authenticated" ||
@@ -155,7 +164,39 @@ const TaskModal: React.FC<TaskModalProps> = ({
       (isAccepted &&
         task.acceptedByUserId !== session?.user.id &&
         task.userId !== session.user.id) ||
-      networkRequestActive
+      networkRequestActive ||
+      completeRequestActive
+    );
+  }
+
+  async function handleCompleteTask() {
+    if (networkRequestActive || task?.userId !== session?.user.id) {
+      return;
+    }
+    setNetworkRequestActive(true);
+
+    const response = await fetch(`/api/complete/${task?.id}`, {
+      method: "POST",
+    });
+
+    if (response.ok) {
+      deleteTask(task.id, true);
+      closeModal();
+    } else {
+      toast.error("Failed to complete task: " + response.status, {
+        id: "failed",
+      });
+    }
+    setNetworkRequestActive(false);
+  }
+
+  function showCompleteButton() {
+    return (
+      authStatus == "authenticated" &&
+      isAccepted &&
+      task.acceptedByUserId !== session?.user.id &&
+      !task.completed &&
+      task.userId == session?.user.id
     );
   }
 
@@ -249,6 +290,17 @@ const TaskModal: React.FC<TaskModalProps> = ({
               >
                 {getButtonContent()}
               </button>
+
+              {showCompleteButton() && (
+                <button
+                  type="button"
+                  className={`ml-5 text-white bg-blue-500 hover:bg-blue-400 px-5 py-2.5 font-medium rounded-lg text-sm`}
+                  onClick={handleCompleteTask}
+                  disabled={completeRequestActive}
+                >
+                  Complete Task
+                </button>
+              )}
             </div>
           </div>
         </div>
