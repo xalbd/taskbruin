@@ -82,7 +82,7 @@ const Navbar = () => {
                     </Menu.Button>
                   ) : (
                     <Link
-                      className="font-bold py-2 px-4 rounded border text-indigo-500 border-indigo-500 focus:ring transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-500 hover:text-white"
+                      className="font-bold py-2 px-4 rounded border text-indigo-400 border-indigo-400 focus:ring transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-500 hover:text-white"
                       href="/"
                     >
                       Sign In
