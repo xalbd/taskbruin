@@ -17,6 +17,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
 }) => {
   const [isAccepted, setIsAccepted] = useState(task.acceptedByUserId !== null);
   const [networkRequestActive, setNetworkRequestActive] = useState(false);
+  const [completeRequestActive, setCompleteRequestActive] = useState(false);
   const { data: session, status: authStatus } = useSession();
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
@@ -74,7 +75,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   async function handleUnAcceptTask() {
-    if (networkRequestActive || !isAccepted) {
+    if (networkRequestActive || completeRequestActive || !isAccepted) {
       return;
     }
     setNetworkRequestActive(true);
@@ -94,10 +95,14 @@ const TaskModal: React.FC<TaskModalProps> = ({
   }
 
   async function handleDeleteTask() {
-    if (networkRequestActive || task?.userId !== session?.user.id) {
+    if (
+      networkRequestActive ||
+      completeRequestActive ||
+      task?.userId !== session?.user.id
+    ) {
       return;
     }
-    setNetworkRequestActive(true);
+    setCompleteRequestActive(true);
 
     const response = await fetch(`/api/task/${task?.id}`, {
       method: "DELETE",
@@ -109,7 +114,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
     } else {
       toast.error("Failed to delete task.", { id: "failed" });
     }
-    setNetworkRequestActive(false);
+    setCompleteRequestActive(false);
   }
 
   async function handleUnauthenticated() {
@@ -134,7 +139,11 @@ const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   function buttonColor() {
-    if (networkRequestActive || authStatus !== "authenticated") {
+    if (
+      networkRequestActive ||
+      completeRequestActive ||
+      authStatus !== "authenticated"
+    ) {
       return "bg-gray-500 cursor-not-allowed";
     } else if (
       authStatus !== "authenticated" ||
@@ -154,7 +163,8 @@ const TaskModal: React.FC<TaskModalProps> = ({
       (isAccepted &&
         task.acceptedByUserId !== session?.user.id &&
         task.userId !== session.user.id) ||
-      networkRequestActive
+      networkRequestActive ||
+      completeRequestActive
     );
   }
 
@@ -169,7 +179,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
     });
 
     if (response.ok) {
-      //completeTask(task.id);
+      deleteTask(task.id);
       closeModal();
     } else {
       toast.error("Failed to complete task: " + response.status, {
@@ -259,8 +269,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
               {showCompleteButton() && (
                 <button
                   type="button"
-                  className={`ml-5 text-white bg-blue-500 px-5 py-2.5 font-medium rounded-lg text-sm`}
+                  className={`ml-5 text-white bg-blue-500 hover:bg-blue-400 px-5 py-2.5 font-medium rounded-lg text-sm`}
                   onClick={handleCompleteTask}
+                  disabled={completeRequestActive}
                 >
                   Complete Task
                 </button>

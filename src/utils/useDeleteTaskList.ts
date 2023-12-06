@@ -6,7 +6,7 @@ export function useDeleteTaskList() {
 
   function deleteTask(id: number) {
     setDeletedIds([...deletedIds, id]);
-    toast.success("Task deleted!", { id: "accepted" });
+    // toast.success("Task deleted!", { id: "accepted" });
   }
 
   return [deletedIds, deleteTask] as const;
