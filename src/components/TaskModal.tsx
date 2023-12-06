@@ -151,7 +151,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
   function buttonDisabled() {
     return (
       authStatus !== "authenticated" ||
-      (isAccepted && task.acceptedByUserId !== session?.user.id) ||
+      (isAccepted &&
+        task.acceptedByUserId !== session?.user.id &&
+        task.userId !== session.user.id) ||
       networkRequestActive
     );
   }
