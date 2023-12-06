@@ -19,6 +19,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   const [networkRequestActive, setNetworkRequestActive] = useState(false);
   const { data: session, status: authStatus } = useSession();
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isContactInfoVisible, setIsContatInfoVisible] = useState(false);
 
   useEffect(() => {
     const fetchUserEmail = async () => {
@@ -59,6 +60,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
 
     if (response.ok) {
       setIsAccepted(true);
+      setIsContatInfoVisible(true);
       task.acceptedByUserId = session?.user.id ?? ""; // hack because I don't have a way to refresh information of single task via API
       toast.success("Task accepted!", { id: "accepted" });
     } else if (response.status === 406) {
@@ -85,6 +87,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
 
     if (response.ok) {
       setIsAccepted(false);
+      setIsContatInfoVisible(false);
       task.acceptedByUserId = null;
       toast.success("Task unaccepted!", { id: "accepted" });
     } else {
@@ -207,6 +210,17 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 />
               </div>
             </div>
+            {isContactInfoVisible && (
+              <div className="p-4 md:p-5 border-t border-gray-200 dark:border-gray-600">
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  Contact Information
+                </h4>
+                <p className="text-sm text-gray-500 dark:text-gray-300">
+                  User ID: {task.userId}
+                </p>
+              </div>
+            )}
+
             <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="button"
