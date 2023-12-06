@@ -140,7 +140,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
       authStatus !== "authenticated" ||
       (!isAccepted && task.userId !== session.user.id)
     ) {
-      return "bg-green-800 hover:bg-green-700";
+      return "bg-green-700 hover:bg-green-600";
     } else if (isAccepted || task.userId === session.user.id) {
       return "bg-red-700 hover:bg-red-600";
     } else {
