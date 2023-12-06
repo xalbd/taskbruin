@@ -1,9 +1,9 @@
 import { task } from "%/schema";
 import db from "@/utils/getDrizzle";
 import getServerSessionUserId from "@/utils/getServerSessionUserId";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNotNull } from "drizzle-orm";
 
-export async function DELETE(
+export async function POST(
   request: Request,
   { params }: { params: { id: number } },
 ) {
@@ -14,8 +14,15 @@ export async function DELETE(
 
   try {
     const result = await db
-      .delete(task)
-      .where(and(eq(task.userId, userId), eq(task.id, params.id)))
+      .update(task)
+      .set({ completed: true })
+      .where(
+        and(
+          eq(task.userId, userId),
+          eq(task.id, params.id),
+          isNotNull(task.acceptedByUserId),
+        ),
+      )
       .returning({ id: task.id });
 
     return Response.json(result, {

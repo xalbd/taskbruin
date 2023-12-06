@@ -15,7 +15,7 @@ If it is false, the error is reported in the body of the response.
 
 ### GET
 
-Returns all tasks in database.
+Returns all tasks in database that have not been completed.
 
 Status 200 for success, 500 for error.
 
@@ -80,5 +80,14 @@ Status 200 for success, 401 for unauthenticated, 400 when no task was successful
 
 Requires authentication.
 Returns the user information of the provided ID. Not providing an ID returns the information of the user that is signed in.
+
+Status 200 for success, 401 for unauthenticated, 400 when no user was found with the requested ID, and 500 for error server-side.
+
+## /api/complete/[id]
+
+### POST
+
+Requires authentication.
+Completes the task with the given id.
 
 Status 200 for success, 401 for unauthenticated, 400 when no user was found with the requested ID, and 500 for error server-side.

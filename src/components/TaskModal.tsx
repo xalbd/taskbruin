@@ -162,8 +162,8 @@ const TaskModal: React.FC<TaskModalProps> = ({
     }
     setNetworkRequestActive(true);
 
-    const response = await fetch(`/api/task/${task?.id}`, {
-      method: "COMPLETE",
+    const response = await fetch(`/api/complete/${task?.id}`, {
+      method: "POST",
     });
 
     if (response.ok) {
@@ -182,7 +182,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
       authStatus == "authenticated" &&
       isAccepted &&
       task.acceptedByUserId !== session?.user.id &&
-      !networkRequestActive &&
       !task.completed &&
       task.userId == session?.user.id
     );
