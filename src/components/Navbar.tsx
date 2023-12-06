@@ -6,7 +6,6 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { signOut, useSession } from "next-auth/react";
 import ThemeButton from "@/components/ThemeButton";
 import ProfileOption from "@/components/ProfileOption";
-import LoginButton from "@/components/LoginButton";
 import Link from "next/link";
 import logo from "../app/taskbruinlogo.png";
 

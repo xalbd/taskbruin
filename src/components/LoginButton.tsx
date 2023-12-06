@@ -10,10 +10,7 @@ import { useEffect, useState } from "react";
 import { BuiltInProviderType } from "next-auth/providers/index";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
-
-interface LoginButtonProps {
-  loggedIn: boolean;
-}
+import Link from "next/link";
 
 const LoginButton = () => {
   const [providers, setProviders] = useState<Record<
@@ -41,7 +38,7 @@ const LoginButton = () => {
             <button
               onClick={() => signIn(provider.id, { callbackUrl: "/explore" })}
               className={
-                "font-bold text-lg py-3 px-6 mb-7 rounded border border-indigo-500 focus:ring transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-500 hover:text-white inline-flex items-center space-x-2"
+                "font-bold text-lg py-3 px-6 mb-7 rounded border text-indigo-400 border-indigo-600 dark:border-indigo-300 focus:ring transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-600 hover:text-white inline-flex items-center space-x-2"
               }
             >
               {provider.name.toLowerCase() === "google" && (
@@ -55,9 +52,12 @@ const LoginButton = () => {
           </div>
         ))
       ) : (
-        <button className="font-bold text-lg py-2 px-5 mb-7 rounded border text-indigo-500 border-indigo-500 focus:ring transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-500 hover:text-white inline-flex items-center space-x-2">
+        <Link
+          className="font-bold text-lg py-2 px-5 mb-7 rounded border text-indigo-400 border-indigo-400 focus:ring transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-500 hover:text-white inline-flex items-center space-x-2"
+          href={"/explore"}
+        >
           Explore
-        </button>
+        </Link>
       )}
     </div>
   );
