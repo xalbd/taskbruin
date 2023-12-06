@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import toast, { Toaster } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
@@ -20,33 +20,32 @@ const TaskModal: React.FC<TaskModalProps> = ({
   const [completeRequestActive, setCompleteRequestActive] = useState(false);
   const { data: session, status: authStatus } = useSession();
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [usersName, setUserName] = useState<string | null>(null);
+  const [userpfpic, setUserPfpic] = useState<string | null>(null);
+  const [isContactInfoVisible, setIsContactInfoVisible] = useState(false);
 
-  useEffect(() => {
-    const fetchUserEmail = async () => {
-      try {
-        if (task?.userId) {
-          const response = await fetch(`/api/user/${task.userId}`, {
-            method: "GET",
-          });
+  const obtainContact = async () => {
+    try {
+      const response = await fetch(`/api/user/${task.userId}`, {
+        method: "GET",
+      });
 
-          if (response.ok) {
-            const userData = await response.json();
-            const userEmail = userData.email;
-            setUserEmail(userEmail);
-          } else {
-            throw new Error(
-              `Failed to fetch user data. Status: ${response.status}`,
-            );
-          }
-        }
-      } catch (error) {
-        console.error("Error during fetch:", error);
-        setUserEmail(null);
+      if (response.ok) {
+        const userData = await response.json();
+        setUserName(userData[0]?.name || "");
+        setUserEmail(userData[0]?.email || "");
+        setUserPfpic(userData[0]?.image || "");
+      } else {
       }
-    };
+    } catch (error) {
+      toast.error("Could not retrieve contact information.", { id: "failed" });
+    }
+  };
 
-    fetchUserEmail();
-  }, [task?.userId]);
+  if (!isContactInfoVisible && task.acceptedByUserId === session?.user.id) {
+    obtainContact();
+    setIsContactInfoVisible(true);
+  }
 
   const handleAcceptTask = async () => {
     if (networkRequestActive || isAccepted) {
@@ -59,8 +58,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
     });
 
     if (response.ok) {
-      setIsAccepted(true);
       task.acceptedByUserId = session?.user.id ?? ""; // hack because I don't have a way to refresh information of single task via API
+      await obtainContact();
+      setIsAccepted(true);
       toast.success("Task accepted!", { id: "accepted" });
     } else if (response.status === 406) {
       toast.error("Someone else has already accepted this task.", {
@@ -86,6 +86,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
 
     if (response.ok) {
       setIsAccepted(false);
+      setIsContactInfoVisible(false);
       task.acceptedByUserId = null;
       toast.success("Task unaccepted!", { id: "accepted" });
     } else {
@@ -248,6 +249,30 @@ const TaskModal: React.FC<TaskModalProps> = ({
                 />
               </div>
             </div>
+            {isContactInfoVisible && (
+              <div className="p-4 md:p-5 border-t border-gray-200 dark:border-gray-600">
+                <div className="flex items-center space-x-4">
+                  {userpfpic && (
+                    <img
+                      src={userpfpic}
+                      alt="User Profile Picture"
+                      className="w-8 rounded-full"
+                    />
+                  )}
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      {usersName}&apos;s contact information
+                    </h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">
+                      Email:{" "}
+                      <a href={`mailto:${userEmail}`} className="text-blue-500">
+                        {userEmail}
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="button"

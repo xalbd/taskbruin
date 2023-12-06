@@ -77,7 +77,11 @@ const TaskCard: React.FC<CardProps> = ({
       onClick={onClick}
     >
       <div className={`${horizontal ? "mr-4 hidden md:block" : ""} w-full`}>
-        <img src={task.image} className={`rounded-lg h-auto w-full`} />
+        <img
+          src={task.image}
+          alt="Task Image"
+          className={`rounded-lg h-auto w-full`}
+        />
       </div>
 
       <div className={"w-full"}>
