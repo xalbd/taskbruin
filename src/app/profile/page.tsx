@@ -13,10 +13,6 @@ const Profile = () => {
   const [tasksReady, setTasksReady] = useState("loading");
   const { status: authStatus } = useSession();
 
-  if (authStatus !== "authenticated") {
-    return redirect("/");
-  }
-
   useEffect(() => {
     toast.remove();
     const fetchMyTasks = async () => {
@@ -38,6 +34,10 @@ const Profile = () => {
 
     fetchMyTasks();
   }, []);
+
+  if (authStatus !== "authenticated") {
+    return redirect("/");
+  }
 
   return (
     <div className={`relative min-h-screen mt-10`}>
