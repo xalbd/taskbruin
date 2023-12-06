@@ -1,5 +1,5 @@
-import TaskDisplay from "@/components/TaskDisplay";
+import Landing from "@/components/Landing";
 
 export default function Home() {
-  return <TaskDisplay />;
+  return <Landing />;
 }
