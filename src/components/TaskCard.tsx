@@ -73,8 +73,7 @@ const TaskCard: React.FC<CardProps> = ({
     <div
       className={`${
         horizontal ? "flex" : "flex-col"
-      } rounded-lg overflow-hidden cursor-pointer p-8 mb-5`}
-      style={{ boxShadow: "0 4px 6px rgba(100, 149, 237, 0.5)" }}
+      } rounded-lg overflow-hidden cursor-pointer p-8 mb-5 shadow-gray-md hover:shadow-gray-lg`}
       onClick={onClick}
     >
       <div className={`${horizontal ? "mr-4 hidden md:block" : ""} w-full`}>
