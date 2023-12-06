@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import toast, { Toaster } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
@@ -18,6 +18,34 @@ const TaskModal: React.FC<TaskModalProps> = ({
   const [isAccepted, setIsAccepted] = useState(task.acceptedByUserId !== null);
   const [networkRequestActive, setNetworkRequestActive] = useState(false);
   const { data: session, status: authStatus } = useSession();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserEmail = async () => {
+      try {
+        if (task?.userId) {
+          const response = await fetch(`/api/user/${task.userId}`, {
+            method: "GET",
+          });
+
+          if (response.ok) {
+            const userData = await response.json();
+            const userEmail = userData.email;
+            setUserEmail(userEmail);
+          } else {
+            throw new Error(
+              `Failed to fetch user data. Status: ${response.status}`,
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+        setUserEmail(null);
+      }
+    };
+
+    fetchUserEmail();
+  }, [task?.userId]);
 
   const handleAcceptTask = async () => {
     if (networkRequestActive || isAccepted) {
@@ -34,7 +62,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
       task.acceptedByUserId = session?.user.id ?? ""; // hack because I don't have a way to refresh information of single task via API
       toast.success("Task accepted!", { id: "accepted" });
     } else if (response.status === 406) {
-      toast.error("Someone else accepted this task before you.", {
+      toast.error("Someone else has already accepted this task.", {
         id: "failed",
       });
       task.acceptedByUserId = "OTHER"; // hack to fix display of button
@@ -133,7 +161,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
       isOpen={task !== null}
       onRequestClose={closeModal}
       contentLabel="Task Modal"
-      className="modal fixed inset-0 flex items-center justify-center z-50 "
+      className="modal fixed inset-0 flex items-center justify-center z-50"
     >
       {task && (
         <div className="relative p-4 w-full max-w-2xl max-h-full">
@@ -176,6 +204,26 @@ const TaskModal: React.FC<TaskModalProps> = ({
                   className="max-h-96 w-auto rounded-lg"
                 />
               </div>
+              {/* <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  Contact Info
+                </h4>
+                {userEmail !== null ? (
+                  userEmail ? (
+                    <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                      Email: {userEmail}
+                    </p>
+                  ) : (
+                    <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                      No email available.
+                    </p>
+                  )
+                ) : (
+                  <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    Loading email...
+                  </p>
+                )}
+              </div> */}
             </div>
             <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
