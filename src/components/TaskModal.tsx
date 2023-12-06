@@ -204,26 +204,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
                   className="max-h-96 w-auto rounded-lg"
                 />
               </div>
-              {/* <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Contact Info
-                </h4>
-                {userEmail !== null ? (
-                  userEmail ? (
-                    <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                      Email: {userEmail}
-                    </p>
-                  ) : (
-                    <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                      No email available.
-                    </p>
-                  )
-                ) : (
-                  <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    Loading email...
-                  </p>
-                )}
-              </div> */}
             </div>
             <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
