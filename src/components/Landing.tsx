@@ -23,7 +23,7 @@ const Landing = () => {
           </p>
 
           <div className="flex flex-col md:flex-row items-center justify-center md:justify-between pt-4 mb-8">
-            <LoginButton loggedIn={!!session} />
+            <LoginButton />
           </div>
         </div>
         <div className="w-full md:w-1/2 overflow-hidden">
