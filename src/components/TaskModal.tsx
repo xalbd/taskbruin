@@ -7,7 +7,7 @@ import { Task } from "../../types/task";
 interface TaskModalProps {
   task: Task;
   closeModal: () => void;
-  deleteTask: (taskId: number) => void;
+  deleteTask: (taskId: number, trueIfCompleting: boolean) => void;
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({
@@ -110,7 +110,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
     });
 
     if (response.ok) {
-      deleteTask(task.id);
+      deleteTask(task.id, false);
       closeModal();
     } else {
       toast.error("Failed to delete task.", { id: "failed" });
@@ -180,7 +180,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
     });
 
     if (response.ok) {
-      deleteTask(task.id);
+      deleteTask(task.id, true);
       closeModal();
     } else {
       toast.error("Failed to complete task: " + response.status, {
