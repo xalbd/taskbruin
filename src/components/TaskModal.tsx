@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import toast, { Toaster } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
@@ -42,7 +42,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   useEffect(() => {
     setIsContactInfoVisible(task.acceptedByUserId !== null);
     obtainContact();
-  }, [task.acceptedByUserId]);
+  }, [task.acceptedByUserId, obtainContact]);
 
   const handleAcceptTask = async () => {
     if (networkRequestActive || isAccepted) {
@@ -55,10 +55,10 @@ const TaskModal: React.FC<TaskModalProps> = ({
     });
 
     if (response.ok) {
+      task.acceptedByUserId = session?.user.id ?? ""; // hack because I don't have a way to refresh information of single task via API
       setIsAccepted(true);
       setIsContactInfoVisible(true);
       await obtainContact();
-      task.acceptedByUserId = session?.user.id ?? ""; // hack because I don't have a way to refresh information of single task via API
       toast.success("Task accepted!", { id: "accepted" });
     } else if (response.status === 406) {
       toast.error("Someone else has already accepted this task.", {
@@ -214,12 +214,12 @@ const TaskModal: React.FC<TaskModalProps> = ({
                     <img
                       src={userpfpic}
                       alt="User Profile Picture"
-                      className="w-8 w-8 rounded-full"
+                      className="w-8 rounded-full"
                     />
                   )}
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                      {usersName}'s contact information
+                      {usersName}&apos;s contact information
                     </h4>
                     <p className="text-sm text-gray-500 dark:text-gray-300">
                       Email:{" "}
