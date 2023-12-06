@@ -2,11 +2,10 @@
 
 import React, { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { signOut, useSession } from "next-auth/react";
 import ThemeButton from "@/components/ThemeButton";
 import ProfileOption from "@/components/ProfileOption";
-import LoginButton from "@/components/LoginButton";
 import Link from "next/link";
 import logo from "../app/taskbruinlogo.png";
 
@@ -82,7 +81,12 @@ const Navbar = () => {
                       />
                     </Menu.Button>
                   ) : (
-                    <LoginButton loggedIn={false} />
+                    <Link
+                      className="font-bold py-2 px-4 rounded border text-indigo-400 border-indigo-400 focus:ring transform transition hover:scale-105 duration-300 ease-in-out hover:bg-indigo-500 hover:text-white"
+                      href="/"
+                    >
+                      Sign In
+                    </Link>
                   )}
                   <Transition
                     as={Fragment}

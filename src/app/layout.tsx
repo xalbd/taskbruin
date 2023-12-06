@@ -22,7 +22,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${inter.className} pb-5`}>
+      <body className={`${inter.className} pb-5 dark:bg-slate-900`}>
         <SessionProvider session={session}>
           <ThemeProvider>
             <NavBar />
