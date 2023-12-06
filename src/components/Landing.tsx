@@ -22,11 +22,9 @@ const Landing = () => {
             more.
           </p>
 
-          {!session && (
-            <div className="flex flex-col md:flex-row items-center justify-center md:justify-between pt-4 mb-8">
-              <LoginButton />
-            </div>
-          )}
+          <div className="flex flex-col md:flex-row items-center justify-center md:justify-between pt-4 mb-8">
+            <LoginButton loggedIn={!!session} />
+          </div>
         </div>
         <div className="w-full md:w-1/2 overflow-hidden">
           <img src={hero.src} alt="Hero" className="w-full h-auto" />
