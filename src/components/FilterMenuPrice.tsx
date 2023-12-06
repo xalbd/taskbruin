@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
+import Slider, { SliderMarkLabel } from "@mui/material/Slider";
 import { useTheme } from "next-themes";
 
 interface FilterMenuPriceProps {
@@ -34,9 +34,9 @@ const FilterMenuPrice: React.FC<FilterMenuPriceProps> = ({
       <h3 className="mr-5">Price: </h3>
       <Box sx={{ width: 300 }}>
         <Slider
-          sx={{
-            "& .MuiSlider-markLabel": {
-              color: theme === "dark" ? "white" : "black",
+          slotProps={{
+            markLabel: {
+              className: "text-black dark:text-white",
             },
           }}
           min={1}
@@ -46,7 +46,6 @@ const FilterMenuPrice: React.FC<FilterMenuPriceProps> = ({
           onChange={handleSliderChange}
           valueLabelDisplay="off"
           marks={marks}
-          className=""
         />
       </Box>
     </div>
