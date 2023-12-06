@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import toast, { Toaster } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
@@ -39,11 +39,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
     } catch (error) {}
   };
 
-  useEffect(() => {
-    setIsContactInfoVisible(task.acceptedByUserId !== null);
-    obtainContact();
-  }, [task.acceptedByUserId, obtainContact]);
-
   const handleAcceptTask = async () => {
     if (networkRequestActive || isAccepted) {
       return;
@@ -56,9 +51,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
 
     if (response.ok) {
       task.acceptedByUserId = session?.user.id ?? ""; // hack because I don't have a way to refresh information of single task via API
+      await obtainContact();
       setIsAccepted(true);
       setIsContactInfoVisible(true);
-      await obtainContact();
       toast.success("Task accepted!", { id: "accepted" });
     } else if (response.status === 406) {
       toast.error("Someone else has already accepted this task.", {
