@@ -11,7 +11,6 @@ import FilterMenuPrice from "../../components/FilterMenuPrice";
 import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 import { useDeleteTaskList } from "@/utils/useDeleteTaskList";
-import { TailSpin } from "react-loading-icons";
 
 const TaskDisplay = () => {
   const { data: taskData, isLoading: taskDataIsLoading } = useSWR(
@@ -121,12 +120,9 @@ const TaskDisplay = () => {
         )}
 
         {taskDataIsLoading && (
-          <>
-            <h1 className="mt-5 text-3xl text-center text-gray-400">
-              Hold tight, tasks are loading...
-            </h1>
-            <TailSpin className="mx-auto mt-5 stroke-1	 stroke-black fill-black fill- dark:fill-white dark:stroke-white" />
-          </>
+          <h1 className="mt-5 text-3xl text-center text-gray-400">
+            Hold tight, tasks are loading...
+          </h1>
         )}
         {tasksToRender?.length === 0 && searchString.length !== 0 && (
           <h1 className="mt-5 text-2xl text-center text-gray-400">
