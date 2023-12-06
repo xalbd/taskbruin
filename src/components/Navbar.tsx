@@ -3,15 +3,16 @@
 import React, { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import ThemeButton from "@/components/ThemeButton";
 import ProfileOption from "@/components/ProfileOption";
+import LoginButton from "@/components/LoginButton";
 import Link from "next/link";
 import logo from "../app/taskbruinlogo.png";
-import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
+  { name: "Explore", href: "/explore", current: false },
   { name: "Create", href: "/create", current: false },
 ];
 
@@ -51,12 +52,13 @@ const Navbar = () => {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? "" : "hover:underline",
-                          "rounded-md px-3 py-2 text-xl font-medium",
+                          "group rounded-md px-3 py-2 text-xl font-medium relative",
+                          item.current ? "" : "group-hover:underline",
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
+                        <span className="absolute bottom-0 left-0 w-full h-1 bg-indigo-500 transform scale-x-0 origin-bottom transition-transform group-hover:scale-x-100"></span>
                       </Link>
                     ))}
                   </div>
@@ -88,12 +90,7 @@ const Navbar = () => {
                       />
                     </Menu.Button>
                   ) : (
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                      onClick={() => signIn()}
-                    >
-                      Sign In
-                    </button>
+                    <LoginButton />
                   )}
                   <Transition
                     as={Fragment}
