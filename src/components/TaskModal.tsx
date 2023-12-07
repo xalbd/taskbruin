@@ -103,7 +103,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
     ) {
       return;
     }
-    setCompleteRequestActive(true);
+    setNetworkRequestActive(true);
 
     const response = await fetch(`/api/task/${task?.id}`, {
       method: "DELETE",
@@ -115,7 +115,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
     } else {
       toast.error("Failed to delete task.", { id: "failed" });
     }
-    setCompleteRequestActive(false);
+    setNetworkRequestActive(false);
   }
 
   async function handleUnauthenticated() {
@@ -140,11 +140,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   function buttonColor() {
-    if (
-      networkRequestActive ||
-      completeRequestActive ||
-      authStatus !== "authenticated"
-    ) {
+    if (networkRequestActive || authStatus !== "authenticated") {
       return "bg-gray-500 cursor-not-allowed";
     } else if (
       authStatus !== "authenticated" ||
@@ -173,7 +169,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
     if (networkRequestActive || task?.userId !== session?.user.id) {
       return;
     }
-    setNetworkRequestActive(true);
+    setCompleteRequestActive(true);
 
     const response = await fetch(`/api/complete/${task?.id}`, {
       method: "POST",
@@ -187,7 +183,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
         id: "failed",
       });
     }
-    setNetworkRequestActive(false);
+    setCompleteRequestActive(false);
   }
 
   function showCompleteButton() {
@@ -294,7 +290,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
               {showCompleteButton() && (
                 <button
                   type="button"
-                  className={`ml-5 text-white bg-blue-500 hover:bg-blue-400 px-5 py-2.5 font-medium rounded-lg text-sm`}
+                  className={`ml-5 text-white bg-blue-500 hover:bg-blue-400 disabled:bg-gray-500 disabled:cursor-not-allowed px-5 py-2.5 font-medium rounded-lg text-sm`}
                   onClick={handleCompleteTask}
                   disabled={completeRequestActive}
                 >
